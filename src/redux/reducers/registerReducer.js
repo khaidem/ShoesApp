@@ -1,27 +1,30 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getlogin } from "./loginReducer";
+import axios from 'axios';
+
 const initialState = {
-    token: '',
+    
     loading: false,
-    error: '',
+    error: null,
     user: null,
 }
-export const getRegister = createAsyncThunk(
-    async (value) => {
-        return fetch('https://dummyjson.com/users/add', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              username: value.username,
-              email: value.email,
-              password: value.password,
-              /* other user data */
-            })
-          })
-          .then(res => res.json())
-          .then(console.log);
-    }
-)
+export const registerUser = createAsyncThunk(
+    'registerUser',
+    async (userData , {rejectWithValue}) => {
+      try {
+        const response = await axios.post('https://dummyjson.com/users/add', userData);
+       
+        return response.data;
+      } catch (error) {
+        if(error.response && error.response.data){
+          return rejectWithValue(error.response.data.message);
+        }
+        return rejectWithValue('Something went wrong');
+        
+      } 
+    },
+  );
+
+
 
 
 const registerReducer = createSlice({
@@ -29,21 +32,21 @@ const registerReducer = createSlice({
     initialState,
     reducers: {},
     extraReducers: (bulider)=> {
-        bulider.addCase(getRegister.pending, state => {
+        bulider.addCase(registerUser.pending, state => {
             state.loading = true;
-            state.user= null;
+         
             state.error= null;
         })
-        .addCase(getRegister.fulfilled, (state, action)=> {
+        .addCase(registerUser.fulfilled, (state, action)=> {
             state.loading = false;
-            state.token= action.payload;
-            state.error= null;
+            state.user= action.payload;
+           
         })
-        .addCase(getlogin.rejected, (state, action)=> {
+        .addCase(registerUser.rejected, (state, action)=> {
             state.loading= true;
-            state.user = null;
-            console.log(action.error.message);
-            state.error=action.error.message;
+            state.error = null;
+            console.log(action.payload);
+            state.error=action.payload;
         })
     }
 })

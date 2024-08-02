@@ -15,18 +15,45 @@ import {Pressable, StyleSheet, TouchableOpacity} from 'react-native';
 import GoogleImage from '../../../assets/images/google-logo.png';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {StackActions} from '@react-navigation/native';
-import {useDispatch} from 'react-redux';
-import {getRegister} from '../../redux/reducers/registerReducer';
+import {useDispatch, useSelector} from 'react-redux';
+import {registerUser} from '../../redux/reducers/registerReducer';
 
 const RegisterScreen = props => {
   const [show, setShow] = React.useState(false);
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPasswor] = useState('');
+  const [errors, setErrors] = React.useState({});
   const dispatch = useDispatch();
+  const {loading, error} = useSelector(state => state.register);
 
+  //Validation
+  const validateForm = () => {
+    let success = true;
+    setErrors({});
+    let localError = {};
+    if (username.trim() === undefined || username.trim() === '') {
+      localError.username = 'Username is required';
+      success = false;
+    }
+    if (password.trim() === undefined || password.trim() === '') {
+      localError.password = 'Password is required';
+      success = false;
+    }
+    if (email.trim() === undefined || email.trim() === '') {
+      localError.email = 'Email is required';
+    }
+    setErrors(localError);
+    if (success) {
+      submitSigUp();
+    } else {
+      return success;
+    }
+  };
+
+  //For SigUp Button
   const submitSigUp = () => {
-    dispatch(getRegister({username, email, password}));
+    dispatch(registerUser({username, email, password}));
     console.log(username, email, password);
   };
 
@@ -49,7 +76,7 @@ const RegisterScreen = props => {
             Let's Create Account Together
           </Text>
         </Center>
-        <FormControl>
+        <FormControl isInvalid={'username' in errors}>
           <FormControl.Label
             _text={{
               fontFamily: 'Poppins-Bold',
@@ -67,8 +94,13 @@ const RegisterScreen = props => {
             fontFamily={'Poppins-Light'}
             onChangeText={username => setUsername(username)}
           />
+          {'username' in errors ? (
+            <FormControl.ErrorMessage>
+              {errors.username}
+            </FormControl.ErrorMessage>
+          ) : null}
         </FormControl>
-        <FormControl>
+        <FormControl isInvalid={'email' in errors}>
           <FormControl.Label
             _text={{
               fontFamily: 'Poppins-Bold',
@@ -80,14 +112,17 @@ const RegisterScreen = props => {
           </FormControl.Label>
           <Input
             variant="rounded"
-               autoCapitalize="none"
+            autoCapitalize="none"
             p={2}
             placeholder="Email Address"
             fontFamily={'Poppins-Light'}
             onChangeText={email => setEmail(email)}
           />
+          {'email' in errors ? (
+            <FormControl.ErrorMessage>{errors.email}</FormControl.ErrorMessage>
+          ) : null}
         </FormControl>
-        <FormControl>
+        <FormControl isInvalid={'password' in errors}>
           <FormControl.Label
             _text={{
               fontFamily: 'Poppins-Bold',
@@ -98,7 +133,6 @@ const RegisterScreen = props => {
             Password
           </FormControl.Label>
           <Input
-           
             fontFamily={'Poppins-Light'}
             autoCapitalize="none"
             InputRightElement={
@@ -119,14 +153,21 @@ const RegisterScreen = props => {
             placeholder={'*******'}
             onChangeText={password => setPasswor(password)}
           />
+          {'password' in errors ? (
+            <FormControl.ErrorMessage>
+              {errors.password}
+            </FormControl.ErrorMessage>
+          ) : null}
         </FormControl>
         <Button
           borderRadius={50}
           bg={'#5B9EE1'}
           height={54}
-          onPress={() => submitSigUp()}>
-          Sign In
+          onPress={() => validateForm()}>
+          {loading ? 'Loading' : 'SigUp'}
         </Button>
+        {error && <Text style={{color: 'red'}}>{error}</Text>}
+
         <Button
           borderRadius={50}
           bg={'#FFFFFF'}

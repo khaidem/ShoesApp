@@ -9,7 +9,6 @@ import {
   Icon,
   Image,
   HStack,
-  
   Toast,
   useToast,
 } from 'native-base';
@@ -18,9 +17,9 @@ import React, {useState} from 'react';
 import {Pressable, StyleSheet, TouchableOpacity} from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import GoogleImage from '../../../assets/images/google-logo.png';
-import {getlogin} from '../../redux/reducers/loginReducer';
-import {useDispatch, useSelector} from 'react-redux';
 
+import {useDispatch, useSelector} from 'react-redux';
+import {loginUser} from '../../redux/reducers/loginReducer';
 
 const SigInScreen = pros => {
   const [username, setUsername] = useState('');
@@ -33,39 +32,33 @@ const SigInScreen = pros => {
   };
 
   const dispatch = useDispatch();
-  const message = useSelector(state=> state.error)
+  const {loading, error, user} = useSelector(state => state.auth);
   const toast = useToast();
-
 
   //Validation
   const validateForm = () => {
     let success = true;
     setErrors({});
-    let localError = {}
-    if(username.trim() === undefined || username.trim() === ''){
+    let localError = {};
+    if (username.trim() === undefined || username.trim() === '') {
       localError.username = 'Username is required';
-      success= false;
+      success = false;
     }
-    if(password.trim() === undefined || password.trim()=== ''){
+    if (password.trim() === undefined || password.trim() === '') {
       localError.password = 'Password is required';
-      success= false;
+      success = false;
     }
     setErrors(localError);
-    if(success){
+    if (success) {
       submitLogin();
-    }else {
+    } else {
       return success;
     }
-  }
+  };
 
   // For loginButton
   const submitLogin = () => {
-    
-
-
-    dispatch(getlogin({username, password}));
-  
-    console.log(username, password);
+    dispatch(loginUser({username, password}));
   };
 
   return (
@@ -104,10 +97,13 @@ const SigInScreen = pros => {
             p={2}
             placeholder="Username"
             fontFamily={'Poppins-Light'}
-            
             onChangeText={username => setUsername(username)}
           />
-          {'username' in errors ?(<FormControl.ErrorMessage>{errors.username}</FormControl.ErrorMessage>): null}
+          {'username' in errors ? (
+            <FormControl.ErrorMessage>
+              {errors.username}
+            </FormControl.ErrorMessage>
+          ) : null}
         </FormControl>
         <FormControl isInvalid={'password' in errors}>
           <FormControl.Label
@@ -120,19 +116,13 @@ const SigInScreen = pros => {
             Password
           </FormControl.Label>
           <Input
-            
             fontFamily={'Poppins-Light'}
             autoCapitalize="none"
             // value={password}
             InputRightElement={
               <Pressable onPress={isShowPassword}>
-                
                 <Icon
-                  as={
-                    <MaterialIcons
-                      name="access-time"
-                    />
-                  }
+                  as={<MaterialIcons name="access-time" />}
                   size={5}
                   mr="2"
                   color="black"
@@ -144,7 +134,11 @@ const SigInScreen = pros => {
             placeholder={'*******'}
             onChangeText={password => setPassword(password)}
           />
-            {'password' in errors ?(<FormControl.ErrorMessage>{errors.password}</FormControl.ErrorMessage>): null}
+          {'password' in errors ? (
+            <FormControl.ErrorMessage>
+              {errors.password}
+            </FormControl.ErrorMessage>
+          ) : null}
         </FormControl>
         <Button
           borderRadius={50}
@@ -152,10 +146,11 @@ const SigInScreen = pros => {
           height={54}
           fontFamily={'Poppins-Light'}
           onPress={() => validateForm()}>
-          Sigin
-          {/* {loading? 'loading..': 'SigIN'} */}
+          {loading ? 'loading..' : 'SigIN'}
         </Button>
-        {/* {error && toast.show({description: 'Error'})} */}
+        {error && <Text style={{color: 'red'}}>{error}</Text>}
+
+        {/* {error && toast.show({description: {error}})} */}
 
         <Button
           borderRadius={50}

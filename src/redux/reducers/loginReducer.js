@@ -1,70 +1,65 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-// import axios from 'axios';
+import axios from 'axios';
 
 
 
 const initialState = {
-  token: '',
-  loading: false,
-  error: '',
   user: null,
+  loading: false,
+  error: null,
+  
 };
 
-export const getlogin = createAsyncThunk(
+export const loginUser = createAsyncThunk(
   'user/logInUser',
-  async (values) => {
-    return fetch('https://dummyjson.com/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        
-        username: values.username,
-        password: values.password,
-        expiresInMins: 30, // optional, defaults to 60
-      })
-    })
-    .then(res => res.json())
-    .then(console.log);
-    
-    
-    // const resquest= await axios.post('https://dummyjson.com/auth/login', values);
-    // const response = await resquest.data.data;
-    // // await AsyncStorage.setItem('user', JSON.stringify(response.token));
-    // return response;
-    
-  
+  async (userData , {rejectWithValue}) => {
+    try {
+      const response = await axios.post('https://dummyjson.com/auth/login', userData);
+      return response.data;
+    } catch (error) {
+      if(error.response && error.response.data){
+        return rejectWithValue(error.response.data.message);
+      }
+      return rejectWithValue('Something went wrong');
+      
+    } 
   },
 );
 
 
 
 const loginReducer = createSlice({
-  name: 'user',
+  name: 'loginuser',
   initialState,
-  reducers: {},
+  reducers: {
+    logout: (state) => {
+      state.user = null;
+      state.error= null;
+    }
+  },
+
+
   extraReducers: (builder) => {
     builder
-      .addCase(getlogin.pending, state => {
+      .addCase(loginUser.pending, (state) => {
         state.loading = true;
-        state.user = null;
         state.error = null;
       })
-      .addCase(getlogin.fulfilled, (state, action) => {
+      .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.token = action.payload;
-        state.error = null;
+        state.user = action.payload;
+        console.log("For Reducer Data",action.payload);
       })
-      .addCase(getlogin.rejected, (state, action) => {
-        state.loading = true;
-        state.user = null;
-        console.log(action.error.message);
-        state.error = action.error.message;
+      .addCase(loginUser.rejected, (state, action) => {
+        state.loading = false;
+        console.log("Form Reducer Error",action.payload);
+        state.error = action.payload;
       });
   },
 });
 
 
 
-export const {} = loginReducer.actions;
+export const {logout} = loginReducer.actions;
 export default loginReducer.reducer;
