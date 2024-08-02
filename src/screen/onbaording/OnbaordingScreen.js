@@ -1,3 +1,4 @@
+import {  useNavigation } from '@react-navigation/native';
 import {Button, Flex, Image, Text, View} from 'native-base';
 import {background} from 'native-base/lib/typescript/theme/styled-system';
 
@@ -5,9 +6,11 @@ import React from 'react';
 import {ImageBackground, StyleSheet} from 'react-native';
 import Onboarding from 'react-native-onboarding-swiper';
 
-const Next = () => (
+
+const Next = (pros) => (
   <Button
     width={150}
+    // onPress={navigation.navigate('SigIn')}
     height={10}
     borderRadius={15}
     right={5}
@@ -48,18 +51,19 @@ const Square = ({isLight, selected}) => {
 };
 const skip =()=> {}
 
-const OnbaordingScreen = ({navigation}) => {
+const OnbaordingScreen = () => {
+  const navigation = useNavigation();
   return (
     <Onboarding
       bottomBarColor="#FFFFFF"
       SkipButtonComponent={skip}
-      NextButtonComponent={Next}
+      NextButtonComponent={  Next}
       DoneButtonComponent={Done}
       DotComponent={Square}
       titleStyles={{
         color: '#1A2530',
         fontSize: 40,
-        fontFamily: 'Poppins-Regular',
+        fontFamily: 'heading',
       }}
       subTitleStyles={{
         color: '#707B81',

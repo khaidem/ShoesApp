@@ -9,6 +9,8 @@ import {
   Icon,
   Image,
   HStack,
+  
+  Toast,
   useToast,
 } from 'native-base';
 
@@ -18,7 +20,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import GoogleImage from '../../../assets/images/google-logo.png';
 import {getlogin} from '../../redux/reducers/loginReducer';
 import {useDispatch, useSelector} from 'react-redux';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+
 
 const SigInScreen = pros => {
   const [username, setUsername] = useState('');
@@ -31,8 +33,9 @@ const SigInScreen = pros => {
   };
 
   const dispatch = useDispatch();
-  // const {loading , error} = useSelector((state)=> state.user)
-  // const toast = useToast()
+  const message = useSelector(state=> state.error)
+  const toast = useToast();
+
 
   //Validation
   const validateForm = () => {
@@ -61,6 +64,7 @@ const SigInScreen = pros => {
 
 
     dispatch(getlogin({username, password}));
+  
     console.log(username, password);
   };
 
@@ -122,11 +126,8 @@ const SigInScreen = pros => {
             // value={password}
             InputRightElement={
               <Pressable onPress={isShowPassword}>
-                 <MaterialIcons
-                      name="access-time"
-                      size={22}
-                    />
-                {/* <Icon
+                
+                <Icon
                   as={
                     <MaterialIcons
                       name="access-time"
@@ -135,7 +136,7 @@ const SigInScreen = pros => {
                   size={5}
                   mr="2"
                   color="black"
-                /> */}
+                />
               </Pressable>
             }
             variant="rounded"

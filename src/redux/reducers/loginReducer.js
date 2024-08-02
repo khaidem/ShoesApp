@@ -13,7 +13,7 @@ const initialState = {
 
 export const getlogin = createAsyncThunk(
   'user/logInUser',
-  async () => {
+  async (values) => {
     return fetch('https://dummyjson.com/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -36,6 +36,8 @@ export const getlogin = createAsyncThunk(
   
   },
 );
+
+
 
 const loginReducer = createSlice({
   name: 'user',
@@ -61,6 +63,8 @@ const loginReducer = createSlice({
       });
   },
 });
+
+
 
 export const {} = loginReducer.actions;
 export default loginReducer.reducer;
