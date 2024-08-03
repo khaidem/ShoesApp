@@ -8,6 +8,7 @@ const initialState = {
   user: null,
   loading: false,
   error: null,
+  token: null,
   
 };
 
@@ -16,6 +17,7 @@ export const loginUser = createAsyncThunk(
   async (userData , {rejectWithValue}) => {
     try {
       const response = await axios.post('https://dummyjson.com/auth/login', userData);
+      await AsyncStorage.setItem('token', response.data.token);
       return response.data;
     } catch (error) {
       if(error.response && error.response.data){
@@ -36,6 +38,7 @@ const loginReducer = createSlice({
     logout: (state) => {
       state.user = null;
       state.error= null;
+      state.token= null;
     }
   },
 
@@ -49,6 +52,8 @@ const loginReducer = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
+        state.token = action.payload.token;
+        
         console.log("For Reducer Data",action.payload);
       })
       .addCase(loginUser.rejected, (state, action) => {

@@ -6,12 +6,14 @@ import {
   Icon,
   Image,
   Input,
+  Pressable,
+  StatusBar,
   Text,
   View,
   VStack,
 } from 'native-base';
-import React, {useState} from 'react';
-import {Pressable, StyleSheet, TouchableOpacity} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import { StyleSheet, } from 'react-native';
 import GoogleImage from '../../../assets/images/google-logo.png';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {StackActions} from '@react-navigation/native';
@@ -25,7 +27,7 @@ const RegisterScreen = props => {
   const [password, setPasswor] = useState('');
   const [errors, setErrors] = React.useState({});
   const dispatch = useDispatch();
-  const {loading, error} = useSelector(state => state.register);
+  const {loading, error, user} = useSelector(state => state.register);
 
   //Validation
   const validateForm = () => {
@@ -56,9 +58,16 @@ const RegisterScreen = props => {
     dispatch(registerUser({username, email, password}));
     console.log(username, email, password);
   };
+  useEffect(()=> {
+    if(user){
+      props.navigation.navigate('TabNavigation')
+
+    }
+  }, [user,props])
 
   return (
-    <View backgroundColor={'F8F9FA'} flex={1}>
+    <View backgroundColor={'#F8F9FA'} flex={1}>
+     
       <VStack mx={6} space={5}>
         <Center mt={20}>
           <Text
@@ -165,7 +174,9 @@ const RegisterScreen = props => {
           height={54}
           onPress={() => validateForm()}>
           {loading ? 'Loading' : 'SigUp'}
+
         </Button>
+        
         {error && <Text style={{color: 'red'}}>{error}</Text>}
 
         <Button
@@ -188,7 +199,9 @@ const RegisterScreen = props => {
           </HStack>
         </Button>
 
-        <TouchableOpacity
+      
+      </VStack>
+      <Pressable
           style={{marginTop: 'auto'}}
           onPress={() => {
             props.navigation.dispatch(StackActions.replace('SigIn'));
@@ -199,8 +212,7 @@ const RegisterScreen = props => {
               Sign In
             </Text>
           </Text>
-        </TouchableOpacity>
-      </VStack>
+        </Pressable>
     </View>
   );
 };
@@ -212,7 +224,7 @@ const styles = StyleSheet.create({
     color: '707B81',
     textAlign: 'center',
     letterSpacing: 0.15,
-    top: 140,
+    bottom: 10,
     fontFamily: 'Poppins-Light',
   },
 });

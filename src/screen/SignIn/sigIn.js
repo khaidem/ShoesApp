@@ -13,13 +13,15 @@ import {
   useToast,
 } from 'native-base';
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Pressable, StyleSheet, TouchableOpacity} from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import GoogleImage from '../../../assets/images/google-logo.png';
 
 import {useDispatch, useSelector} from 'react-redux';
 import {loginUser} from '../../redux/reducers/loginReducer';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const SigInScreen = pros => {
   const [username, setUsername] = useState('');
@@ -57,12 +59,22 @@ const SigInScreen = pros => {
   };
 
   // For loginButton
-  const submitLogin = () => {
+  const submitLogin =async () => {
+    
+    
     dispatch(loginUser({username, password}));
+    await AsyncStorage.setItem('token', JSON.stringify({username, password}))
+    
   };
+  useEffect(()=> {
+    if(user){
+      pros.navigation.navigate('TabNavigation')
+
+    }
+  }, [user, pros])
 
   return (
-    <View backgroundColor={'F8F9FA'} flex={1}>
+    <View backgroundColor={'#F8F9FA'} flex={1}>
       <VStack mx={6} space={5}>
         <Center mt={20}>
           <Text
@@ -148,9 +160,11 @@ const SigInScreen = pros => {
           onPress={() => validateForm()}>
           {loading ? 'loading..' : 'SigIN'}
         </Button>
-        {error && <Text style={{color: 'red'}}>{error}</Text>}
+        {/* {error && <Text style={{color: 'red'}}>{error}</Text>} */}
 
-        {/* {error && toast.show({description: {error}})} */}
+        {/* {error && Toast.show({
+          text: 'error'
+        })} */}
 
         <Button
           borderRadius={50}
@@ -172,8 +186,14 @@ const SigInScreen = pros => {
           </HStack>
         </Button>
 
-        <TouchableOpacity
-          style={{marginTop: 'auto'}}
+       
+       
+      
+
+       
+      </VStack>
+      <TouchableOpacity
+          style={{marginTop: "auto",}}
           onPress={() => {
             pros.navigation.navigate('Register');
           }}>
@@ -184,7 +204,6 @@ const SigInScreen = pros => {
             </Text>
           </Text>
         </TouchableOpacity>
-      </VStack>
     </View>
   );
 };
@@ -196,7 +215,7 @@ const styles = StyleSheet.create({
     color: '#707B81',
     textAlign: 'center',
     letterSpacing: 0.15,
-    top: 240,
+    bottom: 10,
     fontFamily: 'Poppins-Light',
   },
 });
