@@ -160,7 +160,7 @@ const SigInScreen = pros => {
           onPress={() => validateForm()}>
           {loading ? 'loading..' : 'SigIN'}
         </Button>
-        {/* {error && <Text style={{color: 'red'}}>{error}</Text>} */}
+        {error && <Text style={{color: 'red'}}>{error}</Text>}
 
         {/* {error && Toast.show({
           text: 'error'
