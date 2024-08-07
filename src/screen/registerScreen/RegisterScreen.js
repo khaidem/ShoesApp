@@ -18,7 +18,8 @@ import GoogleImage from '../../../assets/images/google-logo.png';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {StackActions} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
-import {registerUser} from '../../redux/reducers/registerReducer';
+import {registerUser} from '../../redux/reducers/RegisterReducer';
+import { COLOURS } from '../../constant/Constant';
 
 const RegisterScreen = props => {
   const [show, setShow] = React.useState(false);
@@ -66,7 +67,7 @@ const RegisterScreen = props => {
   }, [user,props])
 
   return (
-    <View backgroundColor={'#F8F9FA'} flex={1}>
+    <View style={{backgroundColor: COLOURS.bg}} flex={1}>
      
       <VStack mx={6} space={5}>
         <Center mt={20}>

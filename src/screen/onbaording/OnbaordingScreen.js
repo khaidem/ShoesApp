@@ -1,6 +1,5 @@
 import {  useNavigation } from '@react-navigation/native';
 import {Button, Flex, Image, Text, View} from 'native-base';
-import {background} from 'native-base/lib/typescript/theme/styled-system';
 
 import React from 'react';
 import {ImageBackground, StyleSheet} from 'react-native';

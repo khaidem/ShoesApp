@@ -1,17 +1,19 @@
 import {NavigationContainer, TabRouter} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React, {useEffect} from 'react';
-import SigInScreen from '../screen/SignIn/sigIn';
-import RegisterScreen from '../screen/registerScreen/RegisterScreen';
+
 import OnbaordingScreen from '../screen/onbaording/OnbaordingScreen';
 import SplashScreen from 'react-native-splash-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import TabNavigation from './tabNavigation';
+
 import { StatusBar } from 'native-base';
+
+
+import DrawerNavigation from './DrawerNavigation';
 
 const Stack = createNativeStackNavigator();
 
-const Navigation = () => {
+const Root = () => {
   const [FirstLaunch, setFirstLaunch] = React.useState(null);
 
   useEffect(() => {
@@ -34,16 +36,11 @@ const Navigation = () => {
             name={'Onbaording'}
             component={OnbaordingScreen}></Stack.Screen>
         )}
+       <Stack.Screen name={'DrawerNavigation'} component={DrawerNavigation}></Stack.Screen>
 
-        <Stack.Screen  name={'SigIn'} component={SigInScreen}></Stack.Screen>
-        <Stack.Screen
-          name={'Register'}
-          component={RegisterScreen}></Stack.Screen>
-        <Stack.Screen
-          name={'TabNavigation'}
-          component={TabNavigation}></Stack.Screen>
+       
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
-export default Navigation;
+export default Root;

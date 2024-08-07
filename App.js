@@ -1,11 +1,13 @@
 import React from 'react';
 
 import {NativeBaseProvider, theme} from 'native-base';
-import Navigation from './src/router/navigation';
+
 
 import {Provider} from 'react-redux';
-import {store, persistor} from './src/redux/store';
+
 import { PersistGate } from 'redux-persist/integration/react';
+import Root from './src/router/Root';
+import { persistor, store } from './src/redux/Store';
 
 
 export default function App() {
@@ -13,7 +15,7 @@ export default function App() {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <NativeBaseProvider theme={theme}>
-          <Navigation></Navigation>
+          <Root></Root>
         </NativeBaseProvider>
       </PersistGate>
     </Provider>

@@ -19,7 +19,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import GoogleImage from '../../../assets/images/google-logo.png';
 
 import {useDispatch, useSelector} from 'react-redux';
-import {loginUser} from '../../redux/reducers/loginReducer';
+import {loginUser} from '../../redux/reducers/LoginReducer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
@@ -28,6 +28,7 @@ const SigInScreen = pros => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = React.useState({});
+  const [show, setShow] = React.useState(false);
 
   const isShowPassword = () => {
     showPassword ? setShowPassword(false) : setShowPassword(true);
@@ -132,14 +133,17 @@ const SigInScreen = pros => {
             autoCapitalize="none"
             // value={password}
             InputRightElement={
-              <Pressable onPress={isShowPassword}>
-                <Icon
-                  as={<MaterialIcons name="access-time" />}
-                  size={5}
-                  mr="2"
-                  color="black"
-                />
-              </Pressable>
+              <Pressable onPress={() => setShow(!show)}>
+              <Icon
+                as={
+                  <MaterialIcons
+                    name={show ? 'visibility' : 'visibility-off'}
+                  />
+                }
+                size={5}
+                mr="2"
+                color="black"></Icon>
+            </Pressable>
             }
             variant="rounded"
             p={2}

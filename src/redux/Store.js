@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
-import loginReducer from "./reducers/loginReducer";
-import registerReducer from "./reducers/registerReducer";
+import loginReducer from "./reducers/LoginReducer";
+import registerReducer from "./reducers/RegisterReducer";
 import asyncStorage from "@react-native-async-storage/async-storage";
 import persistReducer from "redux-persist/es/persistReducer";
 import persistStore from "redux-persist/es/persistStore";
