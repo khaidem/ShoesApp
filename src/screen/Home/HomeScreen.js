@@ -19,7 +19,7 @@ const HomeScreen = () => {
   const types = [];
   return (
     <View style={{backgroundColor: COLOURS.bg}} flex={1} padding={5}>
-      <StatusBar backgroundColor={COLOURS.bg}></StatusBar>
+      <StatusBar  backgroundColor="transparent" />
 
       <HStack justifyContent={'space-around'}>
         {/* <Drawer></Drawer> */}

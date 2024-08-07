@@ -36,7 +36,7 @@ const Root = () => {
             name={'Onbaording'}
             component={OnbaordingScreen}></Stack.Screen>
         )}
-       <Stack.Screen name={'DrawerNavigation'} component={DrawerNavigation}></Stack.Screen>
+       <Stack.Screen name="DrawerNavigation" component={DrawerNavigation}></Stack.Screen>
 
        
       </Stack.Navigator>

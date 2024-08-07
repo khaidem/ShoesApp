@@ -3,8 +3,8 @@ import React from 'react';
 import HomeScreen from '../screen/Home/HomeScreen';
 
 import { COLOURS } from '../constant/Constant';
-import ProFileScreen from '../screen/Profile/ProfileScreen';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import TabNavigation from './TabNavigation';
+
 const MyDrawer = createDrawerNavigator();
 const DrawerNavigation = () => {
   return (
@@ -17,12 +17,8 @@ const DrawerNavigation = () => {
     color: COLOURS.white
   }
    }}>
-    
-   <MyDrawer.Screen name="Home" component={HomeScreen} options={{headerShown: false, drawerIcon: ()=>{
-     
-     <FontAwesome name="home" size={10} color='white' />
-   }}}></MyDrawer.Screen>
-   <MyDrawer.Screen name="Profile" component={ProFileScreen} options={{headerShown: false}}></MyDrawer.Screen>
+    <MyDrawer.Screen name='TabNavigator' component={TabNavigation} options={{headerShown: false}}></MyDrawer.Screen>
+   
 
 
    </MyDrawer.Navigator>
