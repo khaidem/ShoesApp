@@ -13,6 +13,7 @@ import {
     PURGE,
     REGISTER,
   } from 'redux-persist'
+import OnbaordingReducer from "./reducers/OnbaordingReducer";
 
 
 const persistConfig = {
@@ -25,7 +26,8 @@ const persistedReducerRegistere= persistReducer(persistConfig,registerReducer)
 export const store = configureStore({
     reducer: {
         auth: persistedReducerLogin,
-        register: persistedReducerRegistere
+        register: persistedReducerRegistere,
+        onbaording: OnbaordingReducer,
         
     },
     middleware: (getDefaultMiddleware) =>

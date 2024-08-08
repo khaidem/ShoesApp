@@ -1,6 +1,6 @@
 import {NavigationContainer, TabRouter} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import OnbaordingScreen from '../screen/onbaording/OnbaordingScreen';
 import SplashScreen from 'react-native-splash-screen';
@@ -10,11 +10,13 @@ import { StatusBar } from 'native-base';
 
 
 import DrawerNavigation from './DrawerNavigation';
+import SigInScreen from '../screen/SignIn/SiginScreen';
+import RegisterScreen from '../screen/registerScreen/RegisterScreen';
 
 const Stack = createNativeStackNavigator();
 
 const Root = () => {
-  const [FirstLaunch, setFirstLaunch] = React.useState(null);
+  const [FirstLaunch, setFirstLaunch] = useState(false);
 
   useEffect(() => {
     AsyncStorage.getItem('alreadyLaunched').then(value => {
@@ -31,11 +33,14 @@ const Root = () => {
     <NavigationContainer>
       <StatusBar backgroundColor={"#F8F9FA"}></StatusBar>
       <Stack.Navigator screenOptions={{headerShown: false}}>
-        {FirstLaunch && (
+        {!FirstLaunch && (
           <Stack.Screen
             name={'Onbaording'}
             component={OnbaordingScreen}></Stack.Screen>
-        )}
+         )}  
+      
+       <Stack.Screen name="SigIn" component={SigInScreen}></Stack.Screen>
+       <Stack.Screen name="Register" component={RegisterScreen}></Stack.Screen>
        <Stack.Screen name="DrawerNavigation" component={DrawerNavigation}></Stack.Screen>
 
        

@@ -13,7 +13,7 @@ import {DrawerActions, useNavigation} from '@react-navigation/native';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
-  const types = [];
+
   return (
     <View style={{backgroundColor: COLOURS.bg}} flex={1} padding={5}>
       <StatusBar backgroundColor={COLOURS.bg} barStyle="dark-content" />

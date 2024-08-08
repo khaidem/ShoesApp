@@ -1,32 +1,15 @@
-import {  useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {Button, Flex, Image, Text, View} from 'native-base';
 
 import React from 'react';
 import {ImageBackground, StyleSheet} from 'react-native';
 import Onboarding from 'react-native-onboarding-swiper';
+import {useDispatch} from 'react-redux';
+import OnbaordingReducer from '../../redux/reducers/OnbaordingReducer';
 
 
-const Next = (pros) => (
-  <Button
-    width={150}
-    // onPress={navigation.navigate('SigIn')}
-    height={10}
-    borderRadius={15}
-    right={5}
-    backgroundColor={'#5B9EE1'}>
-    Get Started
-  </Button>
-);
-const Done = () => (
-  <Button
-    width={150}
-    height={10}
-    borderRadius={15}
-    right={5}
-    backgroundColor={'#5B9EE1'}>
-    Next
-  </Button>
-);
+
+
 
 const Square = ({isLight, selected}) => {
   let backgroundColor;
@@ -48,15 +31,51 @@ const Square = ({isLight, selected}) => {
     />
   );
 };
-const skip =()=> {}
+const skip = () => {};
 
 const OnbaordingScreen = () => {
+  const dispatch= useDispatch();
   const navigation = useNavigation();
+
+  //For GetStarted Button
+  const Next = () => (
+    <View
+      style={{
+        marginRight: 22,
+      }}>
+      <Button
+        onPress={() =>{
+          // dispatch(OnbaordingReducer())
+          navigation.navigate('SigIn')
+        }}
+        width={150}
+        height={10}
+        borderRadius={15}
+        right={5}
+        backgroundColor={'#5B9EE1'}>
+        Get Started
+      </Button>
+    </View>
+  );
+//For Next Button
+  const Done = () => (
+    <Button
+    onPress={()=> navigation.navigate('SigIn')}
+      width={150}
+      height={10}
+      borderRadius={15}
+      right={5}
+      backgroundColor={'#5B9EE1'}>
+      Next
+    </Button>
+  );
+
+  // const handleNext
   return (
     <Onboarding
       bottomBarColor="#FFFFFF"
-      SkipButtonComponent={skip}
-      NextButtonComponent={  Next}
+      showSkip={false}
+      NextButtonComponent={Next}
       DoneButtonComponent={Done}
       DotComponent={Square}
       titleStyles={{

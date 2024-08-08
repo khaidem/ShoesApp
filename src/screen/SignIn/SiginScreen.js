@@ -69,7 +69,7 @@ const SigInScreen = pros => {
   };
   useEffect(()=> {
     if(user){
-      pros.navigation.navigate('TabNavigation')
+      pros.navigation.navigate('DrawerNavigation')
 
     }
   }, [user, pros])
