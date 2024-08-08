@@ -12,6 +12,9 @@ import {
 } from 'native-base';
 import React, {useState} from 'react';
 import {COLOURS} from '../constant/Constant';
+import Animated from 'react-native-reanimated';
+import {StyleSheet} from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const BrandTypes = () => {
   const [selectedBrand, setSelectedBrand] = useState('');
@@ -49,76 +52,63 @@ const BrandTypes = () => {
   ];
 
   return (
-    <View bottom={8}>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-      <HStack  space={4} alignItems="center" p={2}>
-        {imageData.map(brand => (
-          <Pressable key={brand.id} onPress={() => setSelectedBrand(brand)}>
-            <Center
-              bg={
-                selectedBrand?.name === brand.name ? 'blue.500' : 'white'
-              }
-              borderRadius="full"
-              p={2}>
-              <Image
-                source={brand.image}
-                alt={brand.name}
-                size='10'
-                resizeMode="contain"
-                style={{
-                  tintColor:
-                    selectedBrand?.name === brand.name ? 'white' : 'black',
-                }}></Image>
-            </Center>
-          </Pressable>
-        ))}
-      </HStack>
-      </ScrollView>
-     
-      {/* {selectedBrand && (
-        <VStack space={4} alignItems="center">
-          <Text fontSize="xl" fontWeight="bold">{selectedBrand.name}</Text>
-          <Image source={selectedBrand.image} alt='image'></Image>
-        </VStack>
-      )} */}
-      {/* <FlatList
-        showsHorizontalScrollIndicator={false}
-        data={imageData}
-        renderItem={({item}) => (
-          <Pressable key={item.name} onPress={() => setSelected(item)}>
-            <Box
-              width={70}
-              height={60}
-              bg={COLOURS.white}
-              borderRadius={50}
-              overflow="hidden"
-              justifyContent={'center'}
-              alignItems={'center'}
-              // shadow={5} // Adds elevation for iOS and Android
-              elevation={1}>
-              
-              <Image
-                source={item.image}
-                alt="Round Image"
-                style={{
-                  justifyContent: 'center',
-                  alignContent: 'center',
-                  width: 50,
-                  height: 30,
-                  borderRadius: 40,
-                  resizeMode: 'cover',
-                  
-                }}></Image>
-            </Box>
-          </Pressable>
+    <View style={styles.container}>
+    {imageData.map((brand) => {
+      const isSelected = selectedBrand?.id === brand.id;
+      return (
+        <TouchableOpacity key={brand.id} onPress={() => setSelectedBrand(brand)}>
           
-        )}
-        keyExtractor={item => item.id}
-        horizontal
-        // contentContainerStyle={styles.container}
-      /> */}
-    </View>
+          <View style={[styles.brandContainer, isSelected && styles.selected]}>
+            <Animated.Image
+            
+              source={brand.image}
+              style={[
+                height="20",
+                styles.image,
+                isSelected ? styles.selectedImage : styles.normalImage,
+              ]}
+            />
+            {isSelected && <Text style={styles.text}>{brand.name}</Text>}
+          </View>
+        </TouchableOpacity>
+      );
+    })}
+  </View>
   );
 };
 
 export default BrandTypes;
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    // paddingVertical: 5,
+  },
+  brandContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white', 
+    padding: 10,
+    bottom: 15,
+    borderRadius: 50, 
+  },
+  selected: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  image: {
+    borderRadius: 30,
+  },
+  normalImage: {
+    borderRadius: 30,
+  },
+  selectedImage: {
+    borderRadius: 30,
+  },
+  text: {
+    marginLeft: 10,
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+});

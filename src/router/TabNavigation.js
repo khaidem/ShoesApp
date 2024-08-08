@@ -26,6 +26,7 @@ const TabNavigation = () => {
   return (
   
     <Tab.Navigator  screenOptions={{headerShown: false}}>
+        
         <Tab.Screen  name="HomeScreen" component={HomeScreen} options={{
             title: 'Home',
             tabBarIcon: ({color, size})=> (

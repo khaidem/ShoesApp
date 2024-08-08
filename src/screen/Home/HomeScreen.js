@@ -1,4 +1,4 @@
-import {HStack, Pressable, StatusBar, Text, View} from 'native-base';
+import {HStack, Pressable, StatusBar, Text, View, } from 'native-base';
 import React from 'react';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -9,30 +9,29 @@ import CarouselSlider from '../../component/CarouselSlider';
 import BrandTypes from '../../component/BrandTypes';
 import ShoesCart from '../../component/ShoesCart';
 import SearchBar from '../../component/SearchBar';
-import {  DrawerActions, useNavigation } from '@react-navigation/native';
-
-
-
+import {DrawerActions, useNavigation} from '@react-navigation/native';
 
 const HomeScreen = () => {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   const types = [];
   return (
     <View style={{backgroundColor: COLOURS.bg}} flex={1} padding={5}>
-      <StatusBar  backgroundColor="transparent" />
-
+      <StatusBar backgroundColor={COLOURS.bg} barStyle="dark-content" />
       <HStack justifyContent={'space-around'}>
         {/* <Drawer></Drawer> */}
-        <Pressable onPress={()=>{navigation.dispatch(DrawerActions.openDrawer());}}>
-        <MaterialCommunityIcons
-          name="dots-grid"
-          size={25}
-          color="#900"></MaterialCommunityIcons>
+        <Pressable
+          onPress={() => {
+            navigation.dispatch(DrawerActions.openDrawer());
+          }}>
+          <MaterialCommunityIcons
+            name="dots-grid"
+            size={25}
+            color="#900"></MaterialCommunityIcons>
         </Pressable>
-      
 
         <HStack space={2} alignItems="center">
-          <Icons  style={{color: 'red'}} name="location-pin" size={25} />
+          <Icons style={{color: 'red'}} name="location-pin" size={25} />
+
           <Text fontSize={15}>Haobam Mark</Text>
         </HStack>
 
