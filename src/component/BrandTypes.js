@@ -1,20 +1,8 @@
-import {
-  Box,
-  Center,
-  FlatList,
-  HStack,
-  Image,
-  Pressable,
-  ScrollView,
-  Text,
-  View,
-  VStack,
-} from 'native-base';
+import {Text, View} from 'native-base';
 import React, {useState} from 'react';
-import {COLOURS} from '../constant/Constant';
 import Animated from 'react-native-reanimated';
 import {StyleSheet} from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const BrandTypes = () => {
   const [selectedBrand, setSelectedBrand] = useState('');
@@ -53,27 +41,28 @@ const BrandTypes = () => {
 
   return (
     <View style={styles.container}>
-    {imageData.map((brand) => {
-      const isSelected = selectedBrand?.id === brand.id;
-      return (
-        <TouchableOpacity key={brand.id} onPress={() => setSelectedBrand(brand)}>
-          
-          <View style={[styles.brandContainer, isSelected && styles.selected]}>
-            <Animated.Image
-            
-              source={brand.image}
-              style={[
-                height="20",
-                styles.image,
-                isSelected ? styles.selectedImage : styles.normalImage,
-              ]}
-            />
-            {isSelected && <Text style={styles.text}>{brand.name}</Text>}
-          </View>
-        </TouchableOpacity>
-      );
-    })}
-  </View>
+      {imageData.map(brand => {
+        const isSelected = selectedBrand?.id === brand.id;
+        return (
+          <TouchableOpacity
+            key={brand.id}
+            onPress={() => setSelectedBrand(brand)}>
+            <View
+              style={[styles.brandContainer, isSelected && styles.selected]}>
+              <Animated.Image
+                source={brand.image}
+                style={[
+                  (height = '20'),
+                  styles.image,
+                  isSelected ? styles.selectedImage : styles.normalImage,
+                ]}
+              />
+              {isSelected && <Text style={styles.text}>{brand.name}</Text>}
+            </View>
+          </TouchableOpacity>
+        );
+      })}
+    </View>
   );
 };
 
@@ -88,10 +77,10 @@ const styles = StyleSheet.create({
   brandContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'white', 
+    backgroundColor: 'white',
     padding: 10,
     bottom: 15,
-    borderRadius: 50, 
+    borderRadius: 50,
   },
   selected: {
     flexDirection: 'row',

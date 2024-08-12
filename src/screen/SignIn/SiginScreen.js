@@ -21,7 +21,7 @@ import GoogleImage from '../../../assets/images/google-logo.png';
 import {useDispatch, useSelector} from 'react-redux';
 import {loginUser} from '../../redux/reducers/LoginReducer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import CustomForm from '../../component/FormControl';
 
 const SigInScreen = pros => {
   const [username, setUsername] = useState('');
@@ -60,19 +60,15 @@ const SigInScreen = pros => {
   };
 
   // For loginButton
-  const submitLogin =async () => {
-    
-    
+  const submitLogin = async () => {
     dispatch(loginUser({username, password}));
-    await AsyncStorage.setItem('token', JSON.stringify({username, password}))
-    
+    await AsyncStorage.setItem('token', JSON.stringify({username, password}));
   };
-  useEffect(()=> {
-    if(user){
-      pros.navigation.navigate('DrawerNavigation')
-
+  useEffect(() => {
+    if (user) {
+      pros.navigation.navigate('DrawerNavigation');
     }
-  }, [user, pros])
+  }, [user, pros]);
 
   return (
     <View backgroundColor={'#F8F9FA'} flex={1}>
@@ -93,6 +89,9 @@ const SigInScreen = pros => {
             Welcome Back You've Been Missed!
           </Text>
         </Center>
+      
+          
+
         <FormControl isInvalid={'username' in errors}>
           <FormControl.Label
             _text={{
@@ -134,16 +133,16 @@ const SigInScreen = pros => {
             // value={password}
             InputRightElement={
               <Pressable onPress={() => setShow(!show)}>
-              <Icon
-                as={
-                  <MaterialIcons
-                    name={show ? 'visibility' : 'visibility-off'}
-                  />
-                }
-                size={5}
-                mr="2"
-                color="black"></Icon>
-            </Pressable>
+                <Icon
+                  as={
+                    <MaterialIcons
+                      name={show ? 'visibility' : 'visibility-off'}
+                    />
+                  }
+                  size={5}
+                  mr="2"
+                  color="black"></Icon>
+              </Pressable>
             }
             variant="rounded"
             p={2}
@@ -189,25 +188,19 @@ const SigInScreen = pros => {
             </Text>
           </HStack>
         </Button>
-
-       
-       
-      
-
-       
       </VStack>
-      <TouchableOpacity
-          style={{marginTop: "auto",}}
-          onPress={() => {
-            pros.navigation.navigate('Register');
-          }}>
-          <Text style={styles.formFooter}>
-            Don't have an account?{' '}
-            <Text size={10} color={'#1A2530'} fontFamily={'Poppins-Bold'}>
-              Sign up
-            </Text>
+      <Pressable
+        style={{marginTop: 'auto'}}
+        onPress={() => {
+          pros.navigation.navigate('Register');
+        }}>
+        <Text style={styles.formFooter}>
+          Don't have an account?{' '}
+          <Text size={10} color={'#1A2530'} fontFamily={'Poppins-Bold'}>
+            Sign up
           </Text>
-        </TouchableOpacity>
+        </Text>
+      </Pressable>
     </View>
   );
 };

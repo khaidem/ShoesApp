@@ -1,35 +1,38 @@
-import {Button, Image, View} from 'native-base';
-import React from 'react';
-import {useDispatch} from 'react-redux';
-import {logout} from '../../redux/reducers/LoginReducer';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useNavigation} from '@react-navigation/native';
+import {HStack, Image, Text, View, VStack} from 'native-base';
+import React, {useState} from 'react';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import CustomForm from '../../component/FormControl';
 
-
-const ProFileScreen = props => {
-  const dispatch = useDispatch();
-  const navigation = useNavigation();
+const ProFileScreen = () => {
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
   return (
-   
-  <View>
-    
-    <Button
-      onPress={e => {
-        dispatch(logout());
-        AsyncStorage.removeItem('token');
-        navigation.navigate('SigIn');
-      }}>
-      Logout
-    </Button>
-  </View>
-   
-    // <Image
-    //       // size={30}
-    //       // borderRadius={1}
-    //       source={require('../../../assets/item/Group1.png')}
-    //       alt="addidas"
-    //     />
-    
+    <View padding={10}>
+        <HStack justifyContent={'space-between'}>
+        <AntDesign name="left" size={20}  color="#900"  ></AntDesign>
+         <Text>Profile</Text>
+          <AntDesign name="edit" size={20}  color="blue"  ></AntDesign>
+        </HStack>
+      <VStack justifyContent={'center'} alignItems={'center'} top={10}>
+      
+      
+        <Image
+          alt="PhotoPerson"
+          source={require('../../../assets/images/photo1.png')} size={100}></Image>
+        <Text>Allision Becker</Text>
+        <CustomForm
+          placeholder={'Full Name'}
+          formLabel={'Full Name'}
+          setValue={setFullName}
+        />
+         <CustomForm
+         
+          placeholder={'Enter Email'}
+          formLabel={'Email'}
+          setValue={setEmail}
+        />
+      </VStack>
+    </View>
   );
 };
 

@@ -6,12 +6,12 @@ import OnbaordingScreen from '../screen/onbaording/OnbaordingScreen';
 import SplashScreen from 'react-native-splash-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { StatusBar } from 'native-base';
-
+import {StatusBar} from 'native-base';
 
 import DrawerNavigation from './DrawerNavigation';
 import SigInScreen from '../screen/SignIn/SiginScreen';
 import RegisterScreen from '../screen/registerScreen/RegisterScreen';
+import DetailsScreen from '../screen/Details/DetailsScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -31,19 +31,20 @@ const Root = () => {
   }, []);
   return (
     <NavigationContainer>
-      <StatusBar backgroundColor={"#F8F9FA"}></StatusBar>
+      <StatusBar barStyle="light" backgroundColor="black" />
       <Stack.Navigator screenOptions={{headerShown: false}}>
-        {!FirstLaunch && (
+        {FirstLaunch && (
           <Stack.Screen
             name={'Onbaording'}
             component={OnbaordingScreen}></Stack.Screen>
-         )}  
-      
-       <Stack.Screen name="SigIn" component={SigInScreen}></Stack.Screen>
-       <Stack.Screen name="Register" component={RegisterScreen}></Stack.Screen>
-       <Stack.Screen name="DrawerNavigation" component={DrawerNavigation}></Stack.Screen>
+        )}
 
-       
+        <Stack.Screen name="SigIn" component={SigInScreen}></Stack.Screen>
+        <Stack.Screen name="Register" component={RegisterScreen}></Stack.Screen>
+        <Stack.Screen name='Details' component={DetailsScreen}></Stack.Screen>
+        <Stack.Screen
+          name="DrawerNavigation"
+          component={DrawerNavigation}></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );

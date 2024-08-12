@@ -7,6 +7,7 @@ import ProFileScreen from "../screen/Profile/ProfileScreen";
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import HomeScreen from "../screen/Home/HomeScreen";
+import DetailsScreen from "../screen/Details/DetailsScreen";
 
 
 const Tab = createBottomTabNavigator();
@@ -40,6 +41,7 @@ const TabNavigation = () => {
                  <Ionicons name="person-outline" size={size} color={color} />
             )
         }}></Tab.Screen>
+       
     </Tab.Navigator>)
 
 }

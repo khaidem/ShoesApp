@@ -18,31 +18,7 @@ const DrawerNavigation = () => {
     <MyDrawer.Navigator
     drawerContent={(Props)=>
       <CustomDrawerContent {...Props}/>
-      // return (
-      //   <SafeAreaView>
-      //     <View style={{
-      //       height: '50%',
-      //       width: "100%",
-      //       justifyContent: "center",
-      //       alignItems: "center",
-            
-      //     }}>
-      //       <Image alt='phto' source={require('../../assets/images/photo1.png')} style={{marginBottom: 12, height: 100, width: 100, borderRadius: 50}}></Image>
-      //     <Text style={{
-      //       fontSize: 16,
-      //       color: 'white'
-            
-      //     }}>Alison</Text>
-      //     </View>
-      //     <DrawerItemList {...Props}/>
-      //     <DrawerItem icon={({color, size})=>{
-      //       <MaterialIcons name='logout' color="white"></MaterialIcons>
-      //     }}
-      //     label="SignOut"
-      //     labelStyle={COLOURS.white}
-      //     />
-      //   </SafeAreaView>
-      // )
+    
     }
       screenOptions={{
         drawerStyle: {
@@ -67,6 +43,7 @@ const DrawerNavigation = () => {
           <Ionicons name="person-outline" size={25} color={"white"} />
         )
         }}></MyDrawer.Screen>
+        
       
     </MyDrawer.Navigator>
   );

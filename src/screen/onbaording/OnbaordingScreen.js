@@ -4,12 +4,8 @@ import {Button, Flex, Image, Text, View} from 'native-base';
 import React from 'react';
 import {ImageBackground, StyleSheet} from 'react-native';
 import Onboarding from 'react-native-onboarding-swiper';
-import {useDispatch} from 'react-redux';
-import OnbaordingReducer from '../../redux/reducers/OnbaordingReducer';
-
-
-
-
+// import {useDispatch} from 'react-redux';
+// import OnbaordingReducer from '../../redux/reducers/OnbaordingReducer';
 
 const Square = ({isLight, selected}) => {
   let backgroundColor;
@@ -33,9 +29,9 @@ const Square = ({isLight, selected}) => {
 };
 const skip = () => {};
 
-const OnbaordingScreen = () => {
-  const dispatch= useDispatch();
-  const navigation = useNavigation();
+const OnbaordingScreen = ({navigation}) => {
+  // const dispatch= useDispatch();
+  // const navigation = useNavigation();
 
   //For GetStarted Button
   const Next = () => (
@@ -44,9 +40,9 @@ const OnbaordingScreen = () => {
         marginRight: 22,
       }}>
       <Button
-        onPress={() =>{
+        onPress={() => {
           // dispatch(OnbaordingReducer())
-          navigation.navigate('SigIn')
+          navigation.navigate('SigIn');
         }}
         width={150}
         height={10}
@@ -57,10 +53,10 @@ const OnbaordingScreen = () => {
       </Button>
     </View>
   );
-//For Next Button
+  //For Next Button
   const Done = () => (
     <Button
-    onPress={()=> navigation.navigate('SigIn')}
+      onPress={() => navigation.navigate('SigIn')}
       width={150}
       height={10}
       borderRadius={15}
@@ -77,7 +73,7 @@ const OnbaordingScreen = () => {
       showSkip={false}
       NextButtonComponent={Next}
       DoneButtonComponent={Done}
-      DotComponent={Square}
+      DotComponent={() => {}}
       titleStyles={{
         color: '#1A2530',
         fontSize: 40,

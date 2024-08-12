@@ -4,7 +4,8 @@ export const COLOURS = {
     textColor: '#1A2530',
     secondary: "#5B9EE1",
     drawerColor: "#2D3B48",
-    white: '#FFFFFF'
+    white: '#FFFFFF',
+  
 };
 
 export const FONTSIZE ={

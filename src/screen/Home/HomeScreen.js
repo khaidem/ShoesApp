@@ -11,12 +11,12 @@ import ShoesCart from '../../component/ShoesCart';
 import SearchBar from '../../component/SearchBar';
 import {DrawerActions, useNavigation} from '@react-navigation/native';
 
-const HomeScreen = () => {
-  const navigation = useNavigation();
+const HomeScreen = ({navigation}) => {
+  // const navigation = useNavigation();
 
   return (
     <View style={{backgroundColor: COLOURS.bg}} flex={1} padding={5}>
-      <StatusBar backgroundColor={COLOURS.bg} barStyle="dark-content" />
+      {/* <StatusBar backgroundColor='transparent' barStyle="dark-content"/> */}
       <HStack justifyContent={'space-around'}>
         {/* <Drawer></Drawer> */}
         <Pressable
@@ -48,7 +48,10 @@ const HomeScreen = () => {
         <Text style={{fontSize: FONTSIZE.Size16}}>Popular Shoes</Text>
         <Text style={{color: 'blue'}}>Sell all</Text>
       </HStack>
+      
       <ShoesCart />
+      
+     
       <HStack bottom={2} justifyContent={'space-between'}>
         <Text style={{fontSize: FONTSIZE.Size16}}>New Arrivals</Text>
         <Text style={{color: 'blue'}}>Sell all</Text>
