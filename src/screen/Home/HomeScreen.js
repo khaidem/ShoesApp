@@ -112,8 +112,8 @@ const HomeScreen = ({navigation}) => {
           position="relative">
           <VStack space={2}>
             <Image
-              source={{uri: `${item.image}`}}
-              alt={'hdh'}
+              source={{uri: `${item.thumbnail}`}}
+              alt={'shoesImage'}
               size={100}
               resizeMode="contain"
               alignSelf="center"
