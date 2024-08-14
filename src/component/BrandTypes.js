@@ -3,9 +3,11 @@ import React, {useState} from 'react';
 import Animated from 'react-native-reanimated';
 import {StyleSheet} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {useDispatch, useSelector} from 'react-redux';
 
 const BrandTypes = () => {
   const [selectedBrand, setSelectedBrand] = useState('');
+
   const imageData = [
     {
       id: 1,
@@ -71,32 +73,26 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-around',
-    // paddingVertical: 5,
+    backgroundColor: '#5DADE2', // Blue color similar to the image
+    borderRadius: 25, // Rounded corners
+    paddingVertical: 5,
+    paddingHorizontal: 15,
   },
-  brandContainer: {
-    alignItems: 'center',
+  imageContainer: {
+    width: 30,
+    height: 30,
+    backgroundColor: '#fff',
+    borderRadius: 15, // Make it circular
     justifyContent: 'center',
-    backgroundColor: 'white',
-    padding: 10,
-    bottom: 15,
-    borderRadius: 50,
-  },
-  selected: {
-    flexDirection: 'row',
     alignItems: 'center',
   },
   image: {
-    borderRadius: 30,
-  },
-  normalImage: {
-    borderRadius: 30,
-  },
-  selectedImage: {
-    borderRadius: 30,
+    width: 20,
+    height: 20,
   },
   text: {
     marginLeft: 10,
+    color: '#fff', // White text color
     fontSize: 16,
     fontWeight: 'bold',
   },

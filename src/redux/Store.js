@@ -1,9 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import loginReducer from "./reducers/LoginReducer";
+import loginReducer from "./reducers/LoginSlice";
 import registerReducer from "./reducers/RegisterReducer";
 import asyncStorage from "@react-native-async-storage/async-storage";
 import persistReducer from "redux-persist/es/persistReducer";
 import persistStore from "redux-persist/es/persistStore";
+
 import {
     
     FLUSH,
@@ -14,6 +15,8 @@ import {
     REGISTER,
   } from 'redux-persist'
 import OnbaordingReducer from "./reducers/OnbaordingReducer";
+import ProductReducer from "./reducers/ProductSlice";
+import CategoryReducer from "./reducers/CategorySlice";
 
 
 const persistConfig = {
@@ -25,9 +28,14 @@ const persistedReducerLogin= persistReducer(persistConfig,loginReducer)
 const persistedReducerRegistere= persistReducer(persistConfig,registerReducer)
 export const store = configureStore({
     reducer: {
+      onbaording: OnbaordingReducer,
         auth: persistedReducerLogin,
         register: persistedReducerRegistere,
-        onbaording: OnbaordingReducer,
+        categories: CategoryReducer,
+        product: ProductReducer,
+       
+
+
         
     },
     middleware: (getDefaultMiddleware) =>

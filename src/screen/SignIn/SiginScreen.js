@@ -19,7 +19,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import GoogleImage from '../../../assets/images/google-logo.png';
 
 import {useDispatch, useSelector} from 'react-redux';
-import {loginUser} from '../../redux/reducers/LoginReducer';
+import {loginUser} from '../../redux/reducers/LoginSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomForm from '../../component/FormControl';
 
