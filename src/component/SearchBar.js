@@ -4,7 +4,7 @@ import Icons from 'react-native-vector-icons/MaterialIcons';
 
 const SearchBar = () => {
   return (
-    <VStack  top={6} w="100%" space={10} alignSelf="center" height={'15%'}>
+    <VStack p={2} top={6} w="100%" space={10} alignSelf="center" height={'15%'}>
           <Input
             placeholder="Search"
             variant="filled"

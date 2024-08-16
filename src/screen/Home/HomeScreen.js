@@ -9,35 +9,38 @@ import {
   View,
   VStack,
 } from 'native-base';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icons from 'react-native-vector-icons/MaterialIcons';
 import {COLOURS, FONTSIZE} from '../../constant/Constant';
 
-import CarouselSlider from '../../component/CarouselSlider';
+import {SliderBox} from 'react-native-image-slider-box';
 
 import SearchBar from '../../component/SearchBar';
-import {DrawerActions, useNavigation} from '@react-navigation/native';
+import {DrawerActions} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchCategory} from '../../redux/reducers/CategorySlice';
-import {ActivityIndicator, StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 import {fetchProduct} from '../../redux/reducers/ProductSlice';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import axios from 'axios';
-import {PRODUCTURL} from '../../config/Urls';
 
 const HomeScreen = ({navigation}) => {
   // const navigation = useNavigation();
   const {loading, categoryList, error} = useSelector(state => state.categories);
   const {productList} = useSelector(state => state.product);
   // const [isLoading, setLoading] = useState(true);
+  const screenWidth = Dimensions.get('window').width;
+  const [activeIndex, setActiveIndex] = useState(0);
+
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchCategory());
     dispatch(fetchProduct());
 
+   
+   
     // fetch(productURl)
     //   .then(response => response.json())
     //   .then(json => setData(json.products))
@@ -45,14 +48,52 @@ const HomeScreen = ({navigation}) => {
     //   .finally(setLoading(false));
   }, []);
 
+  const rendrDotIndicator = () => {
+    return productList.map((dot, index) => {
+      if (activeIndex === index) {
+        return (
+          <View
+            style={{
+              backgroundColor: 'green',
+              height: 10,
+              width: 10,
+              borderRadius: 5,
+              marginHorizontal: 6,
+            }}></View>
+        );
+      } else {
+        return (
+          <View
+            key={index}
+            style={{
+              backgroundColor: 'white',
+              height: 10,
+              width: 10,
+              borderRadius: 5,
+              marginHorizontal: 6,
+            }}></View>
+        );
+      }
+    });
+  };
+
+  const handleScroll = event => {
+    const ScrollPosition = event.nativeEvent.contentOffset.x;
+    const index = ScrollPosition / screenWidth;
+    setActiveIndex(index);
+  };
+
+
+
   return (
-    <View style={{backgroundColor: COLOURS.bg}} flex={1} padding={5}>
+    <View style={{backgroundColor: COLOURS.bg}} flex={1} padding={2}>
       {/* <StatusBar backgroundColor='transparent' barStyle="dark-content"/> */}
       <HStack justifyContent={'space-around'}>
         <Pressable
           onPress={() => {
             navigation.dispatch(DrawerActions.openDrawer());
           }}>
+            
           <MaterialCommunityIcons
             name="dots-grid"
             size={25}
@@ -71,6 +112,7 @@ const HomeScreen = ({navigation}) => {
       <SearchBar />
 
       <FlatList
+      bottom={5}
         horizontal
         showsHorizontalScrollIndicator={false}
         data={categoryList}
@@ -94,7 +136,12 @@ const HomeScreen = ({navigation}) => {
         }}
       />
 
+<HStack p={2} bottom={12} justifyContent={'space-between'}>
+        <Text style={{fontFamily: 'bold',  fontWeight:500, fontSize: 18}}>Popular Mobile</Text>
+        <Text style={{color: 'blue'}}>Sell all</Text>
+      </HStack>
       <FlatList
+      bottom={10}
         horizontal
         showsHorizontalScrollIndicator={false}
         data={productList}
@@ -105,9 +152,9 @@ const HomeScreen = ({navigation}) => {
               width={160}
               bg="white"
               borderRadius={15}
-              shadow={3}
-              p={4}
-              m={2}
+              shadow={1}
+              p={3}
+              m={1}
               position="relative">
               <VStack space={2}>
                 <Image
@@ -146,11 +193,52 @@ const HomeScreen = ({navigation}) => {
           );
         }}></FlatList>
 
-      <HStack bottom={2} justifyContent={'space-between'}>
-        <Text style={{fontSize: FONTSIZE.Size16}}>New Arrivals</Text>
+      <HStack p={2} bottom={5} justifyContent={'space-between'}>
+        <Text style={{fontFamily: 'bold',  fontWeight:500, fontSize: 18}}>New Arrivals</Text>
         <Text style={{color: 'blue'}}>Sell all</Text>
       </HStack>
-    
+
+      <FlatList
+      bottom={2}
+        data={productList}
+        horizontal={true}
+        keyExtractor={item => item.id}
+        pagingEnabled={true}
+        onScroll={handleScroll}
+     
+        renderItem={({item}) => {
+          return (
+           <View style={styles.card}>
+
+            <HStack justifyContent={'space-between'}>
+              <VStack>
+              <Text style={styles.bestChoiceText}>{item.sku}</Text>
+              <Text style={styles.productName}>{item.brand}</Text>
+              <Text styles={styles.price}>{item.price}</Text>
+              </VStack>
+              <VStack>
+                 <Image
+               alt="she"
+               resizeMode='cover'
+               style={styles.productImage}
+               source={{uri: item.thumbnail}}
+             />
+              </VStack>
+            </HStack>
+
+            
+           
+            
+           </View>
+
+          
+            
+            
+          
+          );
+        }}></FlatList>
+
+      
     </View>
   );
 };
@@ -165,7 +253,7 @@ const styles = StyleSheet.create({
     borderRadius: 100, // Rounded corners
     paddingVertical: 5,
     paddingHorizontal: 15,
-
+margin: 2,
     height: 50,
   },
   imageContainer: {
@@ -189,19 +277,19 @@ const styles = StyleSheet.create({
   ///For Shoes Cart
 
   container1: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
     // height: 100,
   },
   card1: {
     backgroundColor: 'white',
-    borderRadius: 15,
-    padding: 10,
-    marginRight: 10,
-    width: 180, // Adjust width as needed
+    borderRadius: 5,
+    padding: 5,
+    marginRight: 5,
+    width: 20, // Adjust width as needed
 
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
+    // shadowColor: '#000',
+    // shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 1,
@@ -210,7 +298,8 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     borderRadius: 10,
-    marginBottom: 10,
+    marginRight: 10,
+    
   },
   title1: {
     fontSize: FONTSIZE.Size16,
@@ -223,5 +312,44 @@ const styles = StyleSheet.create({
     fontSize: FONTSIZE.Size14,
     color: '#666',
     alignSelf: 'flex-start',
+  },
+  /// For Slide
+  card: {
+    backgroundColor: 'white',
+    borderRadius: 30,
+    
+    
+    padding: 20,
+    
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 2,
+  bottom: 10,
+  justifyContent: 'space-around',
+  margin: 5,
+    width: 350,
+  },
+  bestChoiceText: {
+    color: '#50C878',
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  productName: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  price: {
+    fontSize: FONTSIZE.Size16,
+    color: '#555',
+    marginBottom: 10,
+  },
+  productImage: {
+    width: 100,
+    height: 100,
+    resizeMode: 'contain',
   },
 });
