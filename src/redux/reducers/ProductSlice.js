@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const initialState = {
   loading: false,
-  product: {},
+  productList: [],
   error: '',
 };
 
@@ -13,7 +13,8 @@ export const fetchProduct = createAsyncThunk(
     const response = await axios.get(
       'https://dummyjson.com/products/category/smartphones',
     );
-console.log('Product Status' ,response.status)
+
+    console.log('Product Status', response.status);
     return response.data.products;
   },
 );
@@ -28,7 +29,7 @@ const productSlice = createSlice({
     });
     builder.addCase(fetchProduct.fulfilled, (state, action) => {
       state.loading = false;
-      state.product = action.payload;
+      state.productList = action.payload;
     });
     builder.addCase(fetchProduct.rejected, (state, action) => {
       state.loading = false;

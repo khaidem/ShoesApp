@@ -14,3 +14,5 @@ export const FONTSIZE ={
     Size12: 12,
     Size14: 14
 }
+
+

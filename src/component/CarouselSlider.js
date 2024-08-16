@@ -1,12 +1,12 @@
 import React from 'react';
 import {SliderBox} from 'react-native-image-slider-box';
 
-const CarouselSlider = () => {
+const CarouselSlider = ({images}) => {
   
-    const images = [
-      require('../../assets/images/item/Frame.png'),
-      require('../../assets/images/item/Frame.png'),
-    ];
+    // const images = [
+    //   require('../../assets/images/item/Frame.png'),
+    //   require('../../assets/images/item/Frame.png'),
+    // ];
 
   return (
     <SliderBox

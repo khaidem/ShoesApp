@@ -1,12 +1,10 @@
 import {
   Box,
-  Button,
   Center,
   FlatList,
   HStack,
   Image,
   Pressable,
-  StatusBar,
   Text,
   View,
   VStack,
@@ -26,23 +24,25 @@ import {fetchCategory} from '../../redux/reducers/CategorySlice';
 import {ActivityIndicator, StyleSheet} from 'react-native';
 import {fetchProduct} from '../../redux/reducers/ProductSlice';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-
-const productURl = 'https://dummyjson.com/products/category/smartphones';
+import axios from 'axios';
+import {PRODUCTURL} from '../../config/Urls';
 
 const HomeScreen = ({navigation}) => {
   // const navigation = useNavigation();
   const {loading, categoryList, error} = useSelector(state => state.categories);
-  const [isLoading, setLoading] = useState(true);
-  const [data, setData] = useState([]);
+  const {productList} = useSelector(state => state.product);
+  // const [isLoading, setLoading] = useState(true);
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchCategory());
+    dispatch(fetchProduct());
 
-    fetch(productURl)
-      .then(response => response.json())
-      .then(json => setData(json.products))
-      .catch(error => console.log(error))
-      .finally(setLoading(false));
+    // fetch(productURl)
+    //   .then(response => response.json())
+    //   .then(json => setData(json.products))
+    //   .catch(error => console.log(error))
+    //   .finally(setLoading(false));
   }, []);
 
   return (
@@ -93,66 +93,64 @@ const HomeScreen = ({navigation}) => {
           );
         }}
       />
-      {isLoading ? (
-        <ActivityIndicator></ActivityIndicator>
-      ) : (
-        <FlatList
-        horizontal
-          data={data}
-          keyExtractor={({id}, index)=> id}
-          renderItem={({item}) => {
-            return (
-              <Box
-          width={160}
-          bg="white"
-          borderRadius={15}
-          shadow={3}
-          p={4}
-          m={2}
-          position="relative">
-          <VStack space={2}>
-            <Image
-              source={{uri: `${item.thumbnail}`}}
-              alt={'shoesImage'}
-              size={100}
-              resizeMode="contain"
-              alignSelf="center"
-              mb={3}
-            />
-            <Text fontSize="xs" color="blue.500" fontWeight="bold">
-              {item.title}
-            </Text>
-            <Text fontSize="md" fontWeight="bold">
-              {item.category}
-            </Text>
-            <Text fontSize="md" fontWeight="bold">
-              {item.price}
-            </Text>
-          </VStack>
 
-          <Center
-            borderTopLeftRadius={500}
-            borderTopRightRadius={300}
-            borderBottomLeftRadius={25}
-            borderBottomRightRadius={300}
-            position="absolute"
-            bottom={0}
-            right={0}
-            bg="blue.500"
-            borderRadius="full"
-            size={8}>
-            <MaterialIcons name="add" size={20} color="white" />
-          </Center>
-        </Box>
-            )
-          }}></FlatList>
-      )}
+      <FlatList
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        data={productList}
+        keyExtractor={item => item.id}
+        renderItem={({item}) => {
+          return (
+            <Box
+              width={160}
+              bg="white"
+              borderRadius={15}
+              shadow={3}
+              p={4}
+              m={2}
+              position="relative">
+              <VStack space={2}>
+                <Image
+                  source={{uri: `${item.thumbnail}`}}
+                  alt={'shoesImage'}
+                  size={100}
+                  resizeMode="contain"
+                  alignSelf="center"
+                  mb={3}
+                />
+                <Text fontSize="xs" color="blue.500" fontWeight="bold">
+                  {item.title}
+                </Text>
+                <Text fontSize="md" fontWeight="bold">
+                  {item.category}
+                </Text>
+                <Text fontSize="md" fontWeight="bold">
+                  {item.price}
+                </Text>
+              </VStack>
+
+              <Center
+                borderTopLeftRadius={500}
+                borderTopRightRadius={300}
+                borderBottomLeftRadius={25}
+                borderBottomRightRadius={300}
+                position="absolute"
+                bottom={0}
+                right={0}
+                bg="blue.500"
+                borderRadius="full"
+                size={8}>
+                <MaterialIcons name="add" size={20} color="white" />
+              </Center>
+            </Box>
+          );
+        }}></FlatList>
 
       <HStack bottom={2} justifyContent={'space-between'}>
         <Text style={{fontSize: FONTSIZE.Size16}}>New Arrivals</Text>
         <Text style={{color: 'blue'}}>Sell all</Text>
       </HStack>
-      <CarouselSlider />
+    
     </View>
   );
 };
@@ -192,7 +190,7 @@ const styles = StyleSheet.create({
 
   container1: {
     paddingHorizontal: 10,
-    height: 250,
+    // height: 100,
   },
   card1: {
     backgroundColor: 'white',
