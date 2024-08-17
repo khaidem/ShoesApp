@@ -1,10 +1,13 @@
 
+
 export const COLOURS = {
     bg: "#F8F9FA",
+    background: '#f6f6f6',
     textColor: '#1A2530',
     secondary: "#5B9EE1",
     drawerColor: "#2D3B48",
     white: '#FFFFFF',
+    dark: '#000000'
   
 };
 

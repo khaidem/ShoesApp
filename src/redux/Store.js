@@ -17,6 +17,7 @@ import {
 import OnbaordingReducer from "./reducers/OnbaordingReducer";
 import ProductReducer from "./reducers/ProductSlice";
 import CategoryReducer from "./reducers/CategorySlice";
+import SingleProductSlice from "./reducers/SingleProductSlice";
 
 
 const persistConfig = {
@@ -33,6 +34,7 @@ export const store = configureStore({
         register: persistedReducerRegistere,
         categories: CategoryReducer,
         product: ProductReducer,
+        SingleProduct: SingleProductSlice,
        
 
 

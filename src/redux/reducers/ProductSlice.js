@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
+import { PRODUCTURL } from '../../config/Urls';
 
 const initialState = {
   loading: false,
@@ -11,7 +12,7 @@ export const fetchProduct = createAsyncThunk(
   'product/fetchProduct',
   async () => {
     const response = await axios.get(
-      'https://dummyjson.com/products/category/smartphones',
+      PRODUCTURL,
     );
 
     console.log('Product Status', response.status);

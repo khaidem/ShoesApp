@@ -1,6 +1,7 @@
 import { Input, VStack } from 'native-base'
 import React from 'react'
 import Icons from 'react-native-vector-icons/MaterialIcons';
+import { COLOURS } from '../constant/Constant';
 
 const SearchBar = () => {
   return (
@@ -10,6 +11,7 @@ const SearchBar = () => {
             variant="filled"
             width={'100%'}
             height={"50%"}
+            backgroundColor={COLOURS.white}
           
             borderRadius="20"
             // py="1"

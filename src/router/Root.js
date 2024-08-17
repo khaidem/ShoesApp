@@ -31,7 +31,6 @@ const Root = () => {
   }, []);
   return (
     <NavigationContainer>
-      <StatusBar barStyle="light" backgroundColor="black" />
       <Stack.Navigator screenOptions={{headerShown: false}}>
         {FirstLaunch && (
           <Stack.Screen
@@ -41,7 +40,7 @@ const Root = () => {
 
         <Stack.Screen name="SigIn" component={SigInScreen}></Stack.Screen>
         <Stack.Screen name="Register" component={RegisterScreen}></Stack.Screen>
-        <Stack.Screen name='Details' component={DetailsScreen}></Stack.Screen>
+        <Stack.Screen name="Details" component={DetailsScreen}></Stack.Screen>
         <Stack.Screen
           name="DrawerNavigation"
           component={DrawerNavigation}></Stack.Screen>

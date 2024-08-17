@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
+import { CATAGORYURL } from '../../config/Urls';
 
 const initialState = {
   loading: false,
@@ -8,7 +9,7 @@ const initialState = {
 };
 
 export const fetchCategory = createAsyncThunk('categories/fetchCategoryList', async() => {
-    const response =await axios.get('https://dummyjson.com/products/categories');
+    const response =await axios.get(CATAGORYURL);
     console.log('Category Status Code', response.status)
     return response.data;
 

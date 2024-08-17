@@ -5,6 +5,7 @@ import {
   HStack,
   Image,
   Pressable,
+  StatusBar,
   Text,
   View,
   VStack,
@@ -18,29 +19,36 @@ import {COLOURS, FONTSIZE} from '../../constant/Constant';
 import {SliderBox} from 'react-native-image-slider-box';
 
 import SearchBar from '../../component/SearchBar';
-import {DrawerActions} from '@react-navigation/native';
+import {DrawerActions, useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchCategory} from '../../redux/reducers/CategorySlice';
-import {Dimensions, StyleSheet} from 'react-native';
+import {AppState, Dimensions, StyleSheet} from 'react-native';
 import {fetchProduct} from '../../redux/reducers/ProductSlice';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import ColorConstant from '../../constant/ColorConstant';
+import { fetchSingleProduct } from '../../redux/reducers/SingleProductSlice';
 
-const HomeScreen = ({navigation}) => {
-  // const navigation = useNavigation();
-  const {loading, categoryList, error} = useSelector(state => state.categories);
+const HomeScreen = () => {
+  const navigation = useNavigation();
+  const {loading : loading1, categoryList, error} = useSelector(state => state.categories);
   const {productList} = useSelector(state => state.product);
+
   // const [isLoading, setLoading] = useState(true);
   const screenWidth = Dimensions.get('window').width;
   const [activeIndex, setActiveIndex] = useState(0);
-
+  const bg =
+    AppState.mode === 'light'
+      ? ColorConstant.theme.light.background
+      : ColorConstant.theme.dark.background;
+  const content = AppState.mode === 'light' ? 'dark-content' : 'light-content';
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchCategory());
     dispatch(fetchProduct());
+    console.log("Product",productList)
+   
 
-   
-   
     // fetch(productURl)
     //   .then(response => response.json())
     //   .then(json => setData(json.products))
@@ -48,34 +56,7 @@ const HomeScreen = ({navigation}) => {
     //   .finally(setLoading(false));
   }, []);
 
-  const rendrDotIndicator = () => {
-    return productList.map((dot, index) => {
-      if (activeIndex === index) {
-        return (
-          <View
-            style={{
-              backgroundColor: 'green',
-              height: 10,
-              width: 10,
-              borderRadius: 5,
-              marginHorizontal: 6,
-            }}></View>
-        );
-      } else {
-        return (
-          <View
-            key={index}
-            style={{
-              backgroundColor: 'white',
-              height: 10,
-              width: 10,
-              borderRadius: 5,
-              marginHorizontal: 6,
-            }}></View>
-        );
-      }
-    });
-  };
+ 
 
   const handleScroll = event => {
     const ScrollPosition = event.nativeEvent.contentOffset.x;
@@ -83,21 +64,27 @@ const HomeScreen = ({navigation}) => {
     setActiveIndex(index);
   };
 
-
-
   return (
     <View style={{backgroundColor: COLOURS.bg}} flex={1} padding={2}>
-      {/* <StatusBar backgroundColor='transparent' barStyle="dark-content"/> */}
+      <StatusBar backgroundColor="transparent" barStyle="dark-content" />
       <HStack justifyContent={'space-around'}>
         <Pressable
           onPress={() => {
             navigation.dispatch(DrawerActions.openDrawer());
           }}>
-            
-          <MaterialCommunityIcons
-            name="dots-grid"
-            size={25}
-            color="#900"></MaterialCommunityIcons>
+          <Box
+            height={10}
+            width={50}
+            bg={'white'}
+            rounded={'full'}
+            //  shadow={1}
+            alignItems={'center'}
+            justifyContent={'center'}>
+            <MaterialCommunityIcons
+              name="dots-grid"
+              size={25}
+              color="#900"></MaterialCommunityIcons>
+          </Box>
         </Pressable>
 
         <HStack space={2} alignItems="center">
@@ -105,14 +92,29 @@ const HomeScreen = ({navigation}) => {
 
           <Text fontSize={15}>Haobam Mark</Text>
         </HStack>
-
-        <Icons name="shopping-bag" size={30}></Icons>
+        <Pressable
+          onPress={() => {
+            navigation.dispatch(DrawerActions.openDrawer());
+          }}>
+          <Box
+            height={10}
+            width={50}
+            bg={'white'}
+            rounded={'full'}
+            //  shadow={1}
+            alignItems={'center'}
+            justifyContent={'center'}>
+            <Icons name="shopping-bag" size={30}></Icons>
+          </Box>
+        </Pressable>
       </HStack>
 
       <SearchBar />
 
+      {/* For Branded */}
+
       <FlatList
-      bottom={5}
+        bottom={5}
         horizontal
         showsHorizontalScrollIndicator={false}
         data={categoryList}
@@ -136,109 +138,113 @@ const HomeScreen = ({navigation}) => {
         }}
       />
 
-<HStack p={2} bottom={12} justifyContent={'space-between'}>
-        <Text style={{fontFamily: 'bold',  fontWeight:500, fontSize: 18}}>Popular Mobile</Text>
+      <HStack p={2} bottom={12} justifyContent={'space-between'}>
+        <Text style={{fontFamily: 'bold', fontWeight: 500, fontSize: 18}}>
+          Popular Mobile
+        </Text>
         <Text style={{color: 'blue'}}>Sell all</Text>
       </HStack>
-      <FlatList
-      bottom={10}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        data={productList}
-        keyExtractor={item => item.id}
-        renderItem={({item}) => {
-          return (
-            <Box
-              width={160}
-              bg="white"
-              borderRadius={15}
-              shadow={1}
-              p={3}
-              m={1}
-              position="relative">
-              <VStack space={2}>
-                <Image
-                  source={{uri: `${item.thumbnail}`}}
-                  alt={'shoesImage'}
-                  size={100}
-                  resizeMode="contain"
-                  alignSelf="center"
-                  mb={3}
-                />
-                <Text fontSize="xs" color="blue.500" fontWeight="bold">
-                  {item.title}
-                </Text>
-                <Text fontSize="md" fontWeight="bold">
-                  {item.category}
-                </Text>
-                <Text fontSize="md" fontWeight="bold">
-                  {item.price}
-                </Text>
-              </VStack>
 
-              <Center
-                borderTopLeftRadius={500}
-                borderTopRightRadius={300}
-                borderBottomLeftRadius={25}
-                borderBottomRightRadius={300}
-                position="absolute"
-                bottom={0}
-                right={0}
-                bg="blue.500"
-                borderRadius="full"
-                size={8}>
-                <MaterialIcons name="add" size={20} color="white" />
-              </Center>
-            </Box>
-          );
-        }}></FlatList>
+      {/* For ShoesCart */}
+     
+        <FlatList
+          bottom={10}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          data={productList}
+          keyExtractor={item => item.id}
+          renderItem={({item}) => {
+            return (
+              <Pressable
+              onPress={() => {
+                navigation.navigate('Details', {
+                  itemId: item.id
+                });
+              }}
+              >
+                 <Box
+                width={160}
+                bg="white"
+                borderRadius={15}
+                // shadow={1}
+                p={3}
+                m={1}
+                position="relative">
+                <VStack space={2}>
+                  <Image
+                    source={{uri: `${item.thumbnail}`}}
+                    alt={'shoesImage'}
+                    size={100}
+                    resizeMode="cover"
+                    alignSelf="center"
+                    mb={3}
+                  />
+                  <Text fontSize="xs" color="blue.500" fontWeight="bold">
+                    {item.title}
+                  </Text>
+                  <Text fontSize="md" fontWeight="bold">
+                    {item.category}
+                  </Text>
+                  <Text fontSize="md" fontWeight="bold">
+                    {item.price}
+                  </Text>
+                </VStack>
+
+                <Center
+                  borderTopLeftRadius={500}
+                  borderTopRightRadius={300}
+                  borderBottomLeftRadius={25}
+                  borderBottomRightRadius={300}
+                  position="absolute"
+                  bottom={0}
+                  right={0}
+                  bg="blue.500"
+                  borderRadius="full"
+                  size={8}>
+                  <MaterialIcons name="add" size={20} color="white" />
+                </Center>
+              </Box>
+              </Pressable>
+             
+            );
+          }}></FlatList>
+    
 
       <HStack p={2} bottom={5} justifyContent={'space-between'}>
-        <Text style={{fontFamily: 'bold',  fontWeight:500, fontSize: 18}}>New Arrivals</Text>
+        <Text style={{fontFamily: 'bold', fontWeight: 500, fontSize: 18}}>
+          New Arrivals
+        </Text>
         <Text style={{color: 'blue'}}>Sell all</Text>
       </HStack>
 
       <FlatList
-      bottom={2}
+        bottom={2}
         data={productList}
         horizontal={true}
         keyExtractor={item => item.id}
         pagingEnabled={true}
         onScroll={handleScroll}
-     
         renderItem={({item}) => {
           return (
-           <View style={styles.card}>
-
-            <HStack justifyContent={'space-between'}>
-              <VStack>
-              <Text style={styles.bestChoiceText}>{item.sku}</Text>
-              <Text style={styles.productName}>{item.brand}</Text>
-              <Text styles={styles.price}>{item.price}</Text>
-              </VStack>
-              <VStack>
-                 <Image
-               alt="she"
-               resizeMode='cover'
-               style={styles.productImage}
-               source={{uri: item.thumbnail}}
-             />
-              </VStack>
-            </HStack>
-
-            
-           
-            
-           </View>
-
-          
-            
-            
-          
+            <View style={styles.card}>
+              <HStack justifyContent={'space-between'}>
+                <VStack>
+                  <Text style={styles.bestChoiceText}>{item.sku}</Text>
+                  <Text style={styles.productName}>{item.brand}</Text>
+                  <Text styles={styles.price}>{item.price}</Text>
+                </VStack>
+                <VStack>
+                  <Image
+                    alt="she"
+                    resizeMode="cover"
+                    style={styles.productImage}
+                    source={{uri: item.thumbnail}}
+                  />
+                </VStack>
+              </HStack>
+            </View>
           );
         }}></FlatList>
-
-      
     </View>
   );
 };
@@ -253,7 +259,7 @@ const styles = StyleSheet.create({
     borderRadius: 100, // Rounded corners
     paddingVertical: 5,
     paddingHorizontal: 15,
-margin: 2,
+    margin: 2,
     height: 50,
   },
   imageContainer: {
@@ -274,6 +280,7 @@ margin: 2,
     fontSize: 16,
     fontWeight: 'bold',
   },
+
   ///For Shoes Cart
 
   container1: {
@@ -282,7 +289,7 @@ margin: 2,
   },
   card1: {
     backgroundColor: 'white',
-    borderRadius: 5,
+    borderRadius: 2,
     padding: 5,
     marginRight: 5,
     width: 20, // Adjust width as needed
@@ -290,16 +297,15 @@ margin: 2,
     alignItems: 'center',
     // shadowColor: '#000',
     // shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 1,
+    // shadowOpacity: 0.2,
+    shadowRadius: 1,
+    // elevation: 1,
   },
   image1: {
     width: 150,
     height: 150,
     borderRadius: 10,
     marginRight: 10,
-    
   },
   title1: {
     fontSize: FONTSIZE.Size16,
@@ -313,22 +319,21 @@ margin: 2,
     color: '#666',
     alignSelf: 'flex-start',
   },
-  /// For Slide
+  /// For Slider
   card: {
     backgroundColor: 'white',
-    borderRadius: 30,
-    
-    
+    borderRadius: 20,
+
     padding: 20,
-    
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 2,
-  bottom: 10,
-  justifyContent: 'space-around',
-  margin: 5,
+
+    // shadowColor: '#000',
+    // shadowOffset: { width: 0, height: 0 },
+    // shadowOpacity: 0.1,
+    shadowRadius: 1,
+    // elevation: 1,
+    bottom: 10,
+    justifyContent: 'space-around',
+    margin: 5,
     width: 350,
   },
   bestChoiceText: {
@@ -350,6 +355,6 @@ margin: 2,
   productImage: {
     width: 100,
     height: 100,
-    resizeMode: 'contain',
+    resizeMode: 'cover',
   },
 });
