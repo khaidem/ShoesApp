@@ -26,7 +26,7 @@ import {AppState, Dimensions, StyleSheet} from 'react-native';
 import {fetchProduct} from '../../redux/reducers/ProductSlice';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import ColorConstant from '../../constant/ColorConstant';
-import { fetchSingleProduct } from '../../redux/reducers/SingleProductSlice';
+import { fetchSingleProduct } from '../../redux/reducers/SingleProductReducer';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -36,17 +36,12 @@ const HomeScreen = () => {
   // const [isLoading, setLoading] = useState(true);
   const screenWidth = Dimensions.get('window').width;
   const [activeIndex, setActiveIndex] = useState(0);
-  const bg =
-    AppState.mode === 'light'
-      ? ColorConstant.theme.light.background
-      : ColorConstant.theme.dark.background;
-  const content = AppState.mode === 'light' ? 'dark-content' : 'light-content';
-
+  
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchCategory());
     dispatch(fetchProduct());
-    console.log("Product",productList)
+   
    
 
     // fetch(productURl)
@@ -65,7 +60,7 @@ const HomeScreen = () => {
   };
 
   return (
-    <View style={{backgroundColor: COLOURS.bg}} flex={1} padding={2}>
+    <View style={{backgroundColor: COLOURS.bg}} flex={1} padding={3}>
       <StatusBar backgroundColor="transparent" barStyle="dark-content" />
       <HStack justifyContent={'space-around'}>
         <Pressable
