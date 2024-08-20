@@ -18,6 +18,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchSingleProduct} from '../../redux/reducers/SingleProductReducer';
 import axios from 'axios';
+import FastImage from 'react-native-fast-image';
 
 const DetailsScreen = ({route}) => {
   const data = [
@@ -39,11 +40,13 @@ const DetailsScreen = ({route}) => {
 
     console.log('ItemId', itemId);
   }, []);
-if(loading){
-  return <HStack flex={1} space={2} justifyContent="center" alignContent="center">
-  <Spinner  size="lg">Loading</Spinner>
-</HStack>
-}
+  if (loading) {
+    return (
+      <HStack flex={1} space={2} justifyContent="center" alignContent="center">
+        <Spinner size="lg">Loading</Spinner>
+      </HStack>
+    );
+  }
   return (
     <View style={styles.container}>
       <HStack padding={2} justifyContent={'space-between'}>
@@ -76,21 +79,33 @@ if(loading){
         </Box>
       </HStack>
 
-      <FlatList
-        data={SingleProduct.images}
-        horizontal
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({item}) => {
-          return (
-            <View style={styles.header}>
-              <Image
-                height={200}
-                width={100}
-                alt=""
-                source={{uri: item}}></Image>
-            </View>
-          );
-        }}></FlatList>
+      {/* // For Item Image Show */}
+      <HStack justifyContent={'space-around'}>
+        <Pressable style={{top: 10,left: 40}}>
+          <AntDesign name="left" size={20} color="black"></AntDesign>
+        </Pressable>
+
+        <FlatList
+          data={SingleProduct.images}
+          horizontal
+          keyExtractor={item => item.id}
+          renderItem={({item}) => {
+            return (
+              <View style={styles.header}>
+                <FastImage
+                 resizeMode={FastImage.resizeMode.contain}
+                  style={{height: 120, width: 100}}
+                  source={{uri: item}}></FastImage>
+
+              
+              </View>
+            );
+          }}></FlatList>
+          <Pressable style={{top: 10,right: 40}}>
+          <AntDesign name="right" size={20} color="black"></AntDesign>
+          </Pressable>
+      
+      </HStack>
 
       <View style={styles.menu}>
         <VStack>
@@ -111,6 +126,8 @@ if(loading){
             <Text fontSize={25} fontFamily={'body'}>
               Gallery
             </Text>
+
+            {/* //For Gallery Image  */}
             <FlatList
               horizontal
               keyExtractor={item => item.id}
@@ -118,26 +135,40 @@ if(loading){
               data={SingleProduct.images}
               renderItem={({item}) => (
                 <Box mr={2} bg={COLOURS.bg} borderRadius={10}>
-                  <Image
+                  <FastImage
+                   resizeMode={FastImage.resizeMode.contain}
+                    style={{height: 50, width: 50, padding: 10}}
+                    source={{uri: item}}></FastImage>
+                  {/* <Image
                     source={{uri: item}}
                     alt="shoes"
                     height={20}
-                    width={60}></Image>
+                    width={60}></Image> */}
                 </Box>
               )}></FlatList>
           </VStack>
         </VStack>
         <HStack top={5} justifyContent={'space-between'}>
           <Text fontSize={25} fontFamily={'body'}>
-          Dimensions
+            Dimensions
           </Text>
-          
         </HStack>
         <HStack top={5} justifyContent={'space-between'}>
-          
-          <Text fontSize={FONTSIZE.Size14} fontFamily={'body'}>{"Width :"+SingleProduct.dimensions?.width}</Text>
-          <Text fontSize={FONTSIZE.Size14} fontFamily={'body'}>{"Height :"+ SingleProduct.dimensions?.height}</Text>
-          <Text fontSize={FONTSIZE.Size14} fontFamily={'body'}>{"Depth :"+ SingleProduct.dimensions?.depth}</Text>
+          <Text fontSize={FONTSIZE.Size16} fontFamily={'body'}>
+            <Text fontSize={20} fontFamily={'body'}>
+              {'Width :' + SingleProduct.dimensions?.width}
+            </Text>
+          </Text>
+          <Text fontSize={FONTSIZE.Size16} fontFamily={'body'}>
+            <Text fontSize={20} fontFamily={'body'}>
+              {'Height :' + SingleProduct.dimensions?.height}
+            </Text>
+          </Text>
+          <Text fontSize={FONTSIZE.Size16} fontFamily={'body'}>
+            <Text fontSize={20} fontFamily={'body'}>
+              {'Depth :' + SingleProduct.dimensions?.depth}
+            </Text>
+          </Text>
           {/* <FlatList
             horizontal
             data={sizes}
@@ -164,7 +195,7 @@ if(loading){
         </HStack>
         <HStack justifyContent={'space-between'} top={10}>
           <VStack>
-            <Text fontSize={14} fontFamily={'body'}>
+            <Text fontSize={FONTSIZE.Size16} fontFamily={'body'}>
               Price
             </Text>
             <Text fontSize={25} fontFamily={'body'}>

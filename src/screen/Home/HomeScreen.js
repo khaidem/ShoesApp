@@ -5,6 +5,7 @@ import {
   HStack,
   Image,
   Pressable,
+  Spinner,
   StatusBar,
   Text,
   View,
@@ -27,6 +28,7 @@ import {fetchProduct} from '../../redux/reducers/ProductSlice';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import ColorConstant from '../../constant/ColorConstant';
 import { fetchSingleProduct } from '../../redux/reducers/SingleProductReducer';
+import FastImage from 'react-native-fast-image';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -58,6 +60,7 @@ const HomeScreen = () => {
     const index = ScrollPosition / screenWidth;
     setActiveIndex(index);
   };
+  
 
   return (
     <View style={{backgroundColor: COLOURS.bg}} flex={1} padding={3}>
@@ -166,6 +169,11 @@ const HomeScreen = () => {
                 m={1}
                 position="relative">
                 <VStack space={2}>
+                  {/* <FastImage
+                  style={{height: 120, width: 100 }} 
+                  
+                  source={{uri: `${item.thumbnail}`}}
+                  ></FastImage> */}
                   <Image
                     source={{uri: `${item.thumbnail}`}}
                     alt={'shoesImage'}
@@ -229,12 +237,17 @@ const HomeScreen = () => {
                   <Text styles={styles.price}>{item.price}</Text>
                 </VStack>
                 <VStack>
-                  <Image
+
+                  <FastImage
+                  style={styles.productImage}
+                  source={{uri: item.thumbnail}}
+                  ></FastImage>
+                  {/* <Image
                     alt="she"
                     resizeMode="cover"
                     style={styles.productImage}
                     source={{uri: item.thumbnail}}
-                  />
+                  /> */}
                 </VStack>
               </HStack>
             </View>
