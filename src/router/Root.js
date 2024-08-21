@@ -12,6 +12,7 @@ import DrawerNavigation from './DrawerNavigation';
 import SigInScreen from '../screen/SignIn/SiginScreen';
 import RegisterScreen from '../screen/registerScreen/RegisterScreen';
 import DetailsScreen from '../screen/Details/DetailsScreen';
+import FavouriteScreen from '../screen/Favourite/FavouriteScreen';
 
 const Stack = createNativeStackNavigator();
 

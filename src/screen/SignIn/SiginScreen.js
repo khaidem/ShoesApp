@@ -155,14 +155,7 @@ const SigInScreen = pros => {
             </FormControl.ErrorMessage>
           ) : null}
         </FormControl>
-        <Button
-          borderRadius={50}
-          bg={'#5B9EE1'}
-          height={54}
-          fontFamily={'Poppins-Light'}
-          onPress={() => validateForm()}>
-          {loading ? 'loading..' : 'SigIN'}
-        </Button>
+       
         {error && <Text style={{color: 'red'}}>{error}</Text>}
 
         {/* {error && Toast.show({

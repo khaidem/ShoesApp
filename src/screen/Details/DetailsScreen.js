@@ -3,7 +3,7 @@ import {
   Button,
   FlatList,
   HStack,
-  Image,
+ 
   Spinner,
   Text,
   View,
@@ -17,7 +17,7 @@ import Icons from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchSingleProduct} from '../../redux/reducers/SingleProductReducer';
-import axios from 'axios';
+
 import FastImage from 'react-native-fast-image';
 
 const DetailsScreen = ({route}) => {
@@ -56,7 +56,7 @@ const DetailsScreen = ({route}) => {
           }}>
           <Box
             bg={COLOURS.white}
-            p={4}
+            p={2}
             shadow={2}
             borderRadius={20}
             mx={2}
@@ -70,7 +70,7 @@ const DetailsScreen = ({route}) => {
         </Text>
         <Box
           bg={COLOURS.white}
-          p={4}
+          p={2}
           shadow={2}
           borderRadius={20}
           mx={2}
@@ -82,7 +82,7 @@ const DetailsScreen = ({route}) => {
       {/* // For Item Image Show */}
       <HStack justifyContent={'space-around'}>
         <Pressable style={{top: 10,left: 40}}>
-          <AntDesign name="left" size={20} color="black"></AntDesign>
+          {/* <AntDesign name="left" size={20} color="black"></AntDesign> */}
         </Pressable>
 
         <FlatList
@@ -102,7 +102,7 @@ const DetailsScreen = ({route}) => {
             );
           }}></FlatList>
           <Pressable style={{top: 10,right: 40}}>
-          <AntDesign name="right" size={20} color="black"></AntDesign>
+          {/* <AntDesign name="right" size={20} color="black"></AntDesign> */}
           </Pressable>
       
       </HStack>
@@ -137,7 +137,7 @@ const DetailsScreen = ({route}) => {
                 <Box mr={2} bg={COLOURS.bg} borderRadius={10}>
                   <FastImage
                    resizeMode={FastImage.resizeMode.contain}
-                    style={{height: 50, width: 50, padding: 10}}
+                    style={{height: 100, width: 50, padding: 10}}
                     source={{uri: item}}></FastImage>
                   {/* <Image
                     source={{uri: item}}
@@ -203,6 +203,7 @@ const DetailsScreen = ({route}) => {
             </Text>
           </VStack>
           <Button
+          // onPress={()=> navigation.navigate('Favourite')}
             bg={COLOURS.secondary}
             width={120}
             height={50}

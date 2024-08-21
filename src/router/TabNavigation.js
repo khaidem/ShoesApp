@@ -8,6 +8,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import HomeScreen from "../screen/Home/HomeScreen";
 import DetailsScreen from "../screen/Details/DetailsScreen";
+import FavouriteScreen from "../screen/Favourite/FavouriteScreen";
 
 
 const Tab = createBottomTabNavigator();
@@ -27,6 +28,7 @@ const TabNavigation = () => {
   return (
   
     <Tab.Navigator  screenOptions={{headerShown: false}}>
+         
         
         <Tab.Screen  name="HomeScreen" component={HomeScreen} options={{
             title: 'Home',
