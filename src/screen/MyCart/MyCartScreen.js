@@ -54,7 +54,7 @@ const MyCartScreen = ({navigation}) => {
           }}>
           <Box
             bg={COLOURS.white}
-            p={2}
+            p={3}
             shadow={2}
             borderRadius={20}
             mx={2}
@@ -62,7 +62,7 @@ const MyCartScreen = ({navigation}) => {
             <AntDesign name="left" size={20} color="black"></AntDesign>
           </Box>
         </Pressable>
-        <Text fontSize={20} fontFamily={'body'}>
+        <Text  top={2} fontSize={20} fontFamily={'body'} fontWeight={'bold'}>
           {'MY Cart'}
         </Text>
         <Text></Text>
@@ -78,7 +78,7 @@ const MyCartScreen = ({navigation}) => {
               p={2}
               bg={COLOURS.white}
               borderRadius={15}
-              shadow={2}
+              // shadow={2}
               flexDirection="row"
               alignItems="center"
               justifyContent="space-between">

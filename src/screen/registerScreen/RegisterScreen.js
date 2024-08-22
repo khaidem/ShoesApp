@@ -20,6 +20,7 @@ import {StackActions} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {registerUser} from '../../redux/reducers/RegisterReducer';
 import { COLOURS } from '../../constant/Constant';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const RegisterScreen = props => {
   const [show, setShow] = React.useState(false);
@@ -29,7 +30,10 @@ const RegisterScreen = props => {
   const [errors, setErrors] = React.useState({});
   const dispatch = useDispatch();
   const {loading, error, user} = useSelector(state => state.register);
-
+  const [showPassword, setShowPassword] = useState(false);
+  const isShowPassword = () => {
+    showPassword ? setShowPassword(false) : setShowPassword(true);
+  };
   //Validation
   const validateForm = () => {
     let success = true;
@@ -61,15 +65,16 @@ const RegisterScreen = props => {
   };
   useEffect(()=> {
     if(user){
-      props.navigation.navigate('TabNavigation')
+      props.navigation.navigate('DrawerNavigation')
 
     }
   }, [user,props])
 
   return (
     <View style={{backgroundColor: COLOURS.bg}} flex={1}>
-     
-      <VStack mx={6} space={5}>
+      
+     <KeyboardAwareScrollView>
+     <VStack mx={6} space={5}>
         <Center mt={20}>
           <Text
             fontSize={'28px'}
@@ -145,12 +150,13 @@ const RegisterScreen = props => {
           <Input
             fontFamily={'Poppins-Light'}
             autoCapitalize="none"
+            type={showPassword ? 'text': 'password'}
             InputRightElement={
-              <Pressable onPress={() => setShow(!show)}>
+              <Pressable onPress={isShowPassword}>
                 <Icon
                   as={
                     <MaterialIcons
-                      name={show ? 'visibility' : 'visibility-off'}
+                      name={showPassword ? 'visibility' : 'visibility-off'}
                     />
                   }
                   size={5}
@@ -174,13 +180,13 @@ const RegisterScreen = props => {
           bg={'#5B9EE1'}
           height={54}
           onPress={() => validateForm()}>
-          {loading ? 'Loading' : 'SigUp'}
+          {loading ? 'Please wait ...' : 'SigUp'}
 
         </Button>
         
         {error && <Text style={{color: 'red'}}>{error}</Text>}
 
-        <Button
+        {/* <Button
           borderRadius={50}
           bg={'#FFFFFF'}
           _text={{
@@ -198,11 +204,13 @@ const RegisterScreen = props => {
               Sign In with Google
             </Text>
           </HStack>
-        </Button>
+        </Button> */}
 
       
       </VStack>
-      <Pressable
+     
+     </KeyboardAwareScrollView>
+     <Pressable
           style={{marginTop: 'auto'}}
           onPress={() => {
             props.navigation.dispatch(StackActions.replace('SigIn'));
@@ -214,19 +222,20 @@ const RegisterScreen = props => {
             </Text>
           </Text>
         </Pressable>
+     
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   formFooter: {
-    fontSize: 12,
+      fontSize: 12,
     fontWeight: '400',
-    color: '707B81',
+    color: '#707B81',
     textAlign: 'center',
     letterSpacing: 0.15,
     bottom: 10,
-    fontFamily: 'Poppins-Light',
+    fontFamily: 'body',
   },
 });
 

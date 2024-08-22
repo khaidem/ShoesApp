@@ -5,8 +5,12 @@ import {
 } from '@react-navigation/drawer';
 import {Image, Text, View} from 'native-base';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../redux/reducers/LoginSlice';
 
 function CustomDrawerContent(props) {
+  const state = useSelector((state)=> state);
+  const dispatch =useDispatch()
   return (
     <View style={{flex: 1}}>
       <DrawerContentScrollView {...props}>
@@ -42,7 +46,12 @@ function CustomDrawerContent(props) {
       </DrawerContentScrollView>
       <View>
         <DrawerItem
-        onPress={()=>{}}
+        onPress={()=>{
+          dispatch(logout())
+              props.navigation.replace('SigIn')
+            
+          
+        }}
           icon={() => 
             <MaterialIcons name="logout" size={25} color={"white"} />
           }

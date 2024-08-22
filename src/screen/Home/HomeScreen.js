@@ -23,7 +23,7 @@ import SearchBar from '../../component/SearchBar';
 import {DrawerActions, useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchCategory} from '../../redux/reducers/CategorySlice';
-import {AppState, Dimensions, StyleSheet} from 'react-native';
+import {ActivityIndicator, AppState, Dimensions, StyleSheet} from 'react-native';
 import {fetchProduct} from '../../redux/reducers/ProductSlice';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import ColorConstant from '../../constant/ColorConstant';
@@ -33,16 +33,16 @@ import FastImage from 'react-native-fast-image';
 const HomeScreen = () => {
   const navigation = useNavigation();
   const {loading : loading1, categoryList, error} = useSelector(state => state.categories);
-  const {productList} = useSelector(state => state.product);
+  const {loading2,productList, skip, limit, total} = useSelector(state => state.product);
 
-  // const [isLoading, setLoading] = useState(true);
   const screenWidth = Dimensions.get('window').width;
   const [activeIndex, setActiveIndex] = useState(0);
   
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchCategory());
-    dispatch(fetchProduct());
+    dispatch(fetchProduct({skip: 0, limit}));
+    
    
    
 
@@ -53,6 +53,7 @@ const HomeScreen = () => {
     //   .finally(setLoading(false));
   }, []);
 
+  
  
 
   const handleScroll = event => {
@@ -63,6 +64,8 @@ const HomeScreen = () => {
   
 
   return (
+    
+    
     <View style={{backgroundColor: COLOURS.bg}} flex={1} padding={3}>
       <StatusBar backgroundColor="transparent" barStyle="dark-content" />
       <HStack justifyContent={'space-around'}>
@@ -364,5 +367,10 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     resizeMode: 'cover',
+  },
+  loadingContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
   },
 });

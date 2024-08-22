@@ -21,11 +21,7 @@ import {fetchSingleProduct} from '../../redux/reducers/SingleProductReducer';
 import FastImage from 'react-native-fast-image';
 
 const DetailsScreen = ({route}) => {
-  const data = [
-    {id: '1', src: require('../../../assets/images/Gallery/gallery1.png')},
-    {id: '2', src: require('../../../assets/images/Gallery/gallery2.png')},
-    {id: '3', src: require('../../../assets/images/Gallery/gallery3.png')},
-  ];
+
 
   const sizes = [38, 39, 40, 41, 42, 43];
   const [selectedSize, setSelectedSize] = useState(null);
@@ -137,7 +133,7 @@ const DetailsScreen = ({route}) => {
                 <Box mr={2} bg={COLOURS.bg} borderRadius={10}>
                   <FastImage
                    resizeMode={FastImage.resizeMode.contain}
-                    style={{height: 100, width: 50, padding: 10}}
+                    style={{height: 50, width: 50, padding: 10}}
                     source={{uri: item}}></FastImage>
                   {/* <Image
                     source={{uri: item}}
@@ -153,8 +149,8 @@ const DetailsScreen = ({route}) => {
             Dimensions
           </Text>
         </HStack>
-        <HStack top={5} justifyContent={'space-between'}>
-          <Text fontSize={FONTSIZE.Size16} fontFamily={'body'}>
+        <VStack top={5}>
+        <Text fontSize={FONTSIZE.Size16} fontFamily={'body'}>
             <Text fontSize={20} fontFamily={'body'}>
               {'Width :' + SingleProduct.dimensions?.width}
             </Text>
@@ -169,6 +165,12 @@ const DetailsScreen = ({route}) => {
               {'Depth :' + SingleProduct.dimensions?.depth}
             </Text>
           </Text>
+        </VStack>
+        <HStack top={5} justifyContent={'space-between'}>
+         
+         
+         
+      
           {/* <FlatList
             horizontal
             data={sizes}

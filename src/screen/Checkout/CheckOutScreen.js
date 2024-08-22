@@ -18,7 +18,7 @@ const CheckOutScreen = ({navigation}) => {
           }}>
           <Box
             bg={COLOURS.white}
-            p={2}
+            p={3}
             shadow={2}
             borderRadius={20}
             mx={2}

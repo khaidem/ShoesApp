@@ -5,14 +5,17 @@ import { PRODUCTURL } from '../../config/Urls';
 const initialState = {
   loading: false,
   productList: [],
+  skip: 0,
+  limit: 5,
+  total: 0,
   error: '',
 };
 
 export const fetchProduct = createAsyncThunk(
   'product/fetchProduct',
-  async () => {
+  async ({skip,limit}) => {
     const response = await axios.get(
-      PRODUCTURL,
+     `https://dummyjson.com/products/category/smartphones?limit=${limit}&skip=${skip}&select=title,price,description,thumbnail,images,dimensions,category`
     );
 
     console.log('Product Status', response.status);
@@ -30,7 +33,12 @@ const productSlice = createSlice({
     });
     builder.addCase(fetchProduct.fulfilled, (state, action) => {
       state.loading = false;
-      state.productList = action.payload;
+     
+    state.productList.push(...action.payload.response.products)
+    state.productList.total= parseInt(action.payload.response.total)
+    state.productList.skip = parseInt(action.payload.query.skip)+1;
+      console.log("ProductSlice reducer", action.payload)
+      
     });
     builder.addCase(fetchProduct.rejected, (state, action) => {
       state.loading = false;
@@ -38,5 +46,10 @@ const productSlice = createSlice({
     });
   },
 });
-
+export const paginationType = type => state=> {
+  const return_items= state.productList;
+  const pagination_data = {
+    skip: return_items
+  } 
+}
 export default productSlice.reducer;

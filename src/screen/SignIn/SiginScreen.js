@@ -22,13 +22,15 @@ import {useDispatch, useSelector} from 'react-redux';
 import {loginUser} from '../../redux/reducers/LoginSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomForm from '../../component/FormControl';
+import { COLOURS } from '../../constant/Constant';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const SigInScreen = pros => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = React.useState({});
-  const [show, setShow] = React.useState(false);
+  
 
   const isShowPassword = () => {
     showPassword ? setShowPassword(false) : setShowPassword(true);
@@ -71,31 +73,32 @@ const SigInScreen = pros => {
   }, [user, pros]);
 
   return (
-    <View backgroundColor={'#F8F9FA'} flex={1}>
-      <VStack mx={6} space={5}>
-        <Center mt={20}>
+    <View style={styles.container}>
+      <KeyboardAwareScrollView>
+      <Center mt={20}>
           <Text
             fontSize={'28px'}
-            fontWeight={'500'}
-            fontFamily={'Poppins-Bold'}
+          
+            fontFamily={'body'}
+            fontWeight={'bold'}
             color={'#1A2530'}>
             Hello Again !
           </Text>
           <Text
             fontWeight={'400'}
-            fontFamily={'Poppins-Light'}
+            fontFamily={'body'}
             fontSize={'16px'}
             color={'#707B81'}>
             Welcome Back You've Been Missed!
           </Text>
         </Center>
-      
-          
 
+        {/* //For Form */}
+        <View style={styles.form}>
         <FormControl isInvalid={'username' in errors}>
           <FormControl.Label
             _text={{
-              fontFamily: 'Poppins-Bold',
+              fontFamily: 'body',
               fontWeight: 500,
               fontSize: 16,
               color: '#1A2530',
@@ -103,12 +106,15 @@ const SigInScreen = pros => {
             Username
           </FormControl.Label>
           <Input
+          
             variant="rounded"
             autoCapitalize="none"
             // value={username}
+            backgroundColor={COLOURS.white}
+            
             p={2}
             placeholder="Username"
-            fontFamily={'Poppins-Light'}
+            fontFamily={'body'}
             onChangeText={username => setUsername(username)}
           />
           {'username' in errors ? (
@@ -120,7 +126,7 @@ const SigInScreen = pros => {
         <FormControl isInvalid={'password' in errors}>
           <FormControl.Label
             _text={{
-              fontFamily: 'Poppins-Bold',
+              fontFamily: 'body',
               fontWeight: 500,
               fontSize: 16,
               color: '#1A2530',
@@ -128,15 +134,17 @@ const SigInScreen = pros => {
             Password
           </FormControl.Label>
           <Input
-            fontFamily={'Poppins-Light'}
+            fontFamily={'body'}
             autoCapitalize="none"
+            backgroundColor={COLOURS.white}
             // value={password}
+            type={showPassword? 'text': 'password'}
             InputRightElement={
-              <Pressable onPress={() => setShow(!show)}>
+              <Pressable onPress={isShowPassword}>
                 <Icon
                   as={
                     <MaterialIcons
-                      name={show ? 'visibility' : 'visibility-off'}
+                      name={showPassword ? 'visibility' : 'visibility-off'}
                     />
                   }
                   size={5}
@@ -155,35 +163,34 @@ const SigInScreen = pros => {
             </FormControl.ErrorMessage>
           ) : null}
         </FormControl>
+        <Button
+        top={3}
+          borderRadius={50}
+          bg={COLOURS.secondary}
+          height={54}
+          onPress={() => validateForm()}>
+          {loading ? 'Please wait...' : 'SigIn'}
+
+        </Button>
+        </View>
+          
+
+        
        
-        {error && <Text style={{color: 'red'}}>{error}</Text>}
+       
+        {error && <Text style={{left: 30, color: 'red'}}>{error}</Text>}
 
         {/* {error && Toast.show({
           text: 'error'
         })} */}
+      </KeyboardAwareScrollView>
+     
+       
 
-        <Button
-          borderRadius={50}
-          bg={'#FFFFFF'}
-          _text={{
-            color: '#1A2530',
-          }}
-          height={54}
-          onPress={() => console.log('hello world')}>
-          <HStack space={2}>
-            <Image
-              style={{borderRadius: 20, height: 20, width: 20}}
-              source={GoogleImage}
-              alt={'avatar'}></Image>
-            <Text color={'#1A2530'} fontFamily={'Poppins-Bold'}>
-              {' '}
-              Sign In with Google
-            </Text>
-          </HStack>
-        </Button>
-      </VStack>
+       
+      
       <Pressable
-        style={{marginTop: 'auto'}}
+        // style={{marginTop: 'auto'}}
         onPress={() => {
           pros.navigation.navigate('Register');
         }}>
@@ -199,14 +206,28 @@ const SigInScreen = pros => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+    flexShrink: 1, 
+   
+    backgroundColor: COLOURS.background
+    
+  },
+  form: {
+    marginBottom: 24,
+    paddingHorizontal: 24,
+    flexGrow: 1,
+    flexShrink: 1,
+    flexBasis: 0,
+  },
   formFooter: {
     fontSize: 12,
     fontWeight: '400',
     color: '#707B81',
     textAlign: 'center',
     letterSpacing: 0.15,
-    bottom: 10,
-    fontFamily: 'Poppins-Light',
+    // bottom: 10,
+    fontFamily: 'body',
   },
 });
 

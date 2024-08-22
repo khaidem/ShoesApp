@@ -12,12 +12,11 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import CustomDrawerContent from './CustomDrawer';
-import {SafeAreaView} from 'react-native';
-import {Image, Text, View} from 'native-base';
+
 import FavouriteScreen from '../screen/Favourite/FavouriteScreen';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MyCartScreen from '../screen/MyCart/MyCartScreen';
-import CheckOutScreen from '../screen/Checkout/CheckOutScreen';
+import NotificationScreen from '../screen/Notification/NotificationScreen';
 
 const MyDrawer = createDrawerNavigator();
 const DrawerNavigation = () => {
@@ -70,12 +69,12 @@ const DrawerNavigation = () => {
           ),
         }}></MyDrawer.Screen>
          <MyDrawer.Screen
-        name="CheckOutScreen"
-        component={CheckOutScreen}
+        name="Notification"
+        component={NotificationScreen}
         options={{
           headerShown: false,
           drawerIcon: () => (
-            <Ionicons name="person-outline" size={25} color={'white'} />
+            <MaterialIcons name="notifications-active" size={25} color={'white'} />
           ),
         }}></MyDrawer.Screen>
     </MyDrawer.Navigator>
