@@ -11,7 +11,7 @@ const CheckOutScreen = ({navigation}) => {
   const cancelRef = React.useRef(null);
   return (
     <View style={styles.container}>
-       <HStack justifyContent={'space-between'} p={2}>
+      <HStack justifyContent={'space-between'} p={2}>
         <Pressable
           onPress={() => {
             navigation.goBack();
@@ -21,12 +21,13 @@ const CheckOutScreen = ({navigation}) => {
             p={3}
             shadow={2}
             borderRadius={20}
-            mx={2}
-            mt={2}>
+            // mx={2}
+            // mt={2}
+            >
             <AntDesign name="left" size={20} color="black"></AntDesign>
           </Box>
         </Pressable>
-        <Text fontSize={20} fontFamily={'body'}>
+        <Text  top={2} fontSize={20} fontFamily={'body'} fontWeight={'bold'}>
           {'CheckOut'}
         </Text>
         <Text></Text>
@@ -139,16 +140,16 @@ const CheckOutScreen = ({navigation}) => {
         <AlertDialog.Content>
         <AlertDialog.CloseButton/>
         
-        <AlertDialog.Body >
+        <AlertDialog.Body style={{height: '100%'}}>
           <VStack alignItems={'center'}>
           <Image alt='Celebrate' source={require('../../../assets/images/celebrate.png')}></Image>
           <Text >Your Payment is Sucessful</Text>
           <Button
           onPress={()=> navigation.navigate('Home')}
-          top={3}
+          top={2}
           borderRadius={30}
           bg={'#5B9EE1'}
-          height={"20%"}
+          // height={"23%"}
           width={"100%"}
           _text={{fontSize: FONTSIZE.Size16 ,fontFamily: 'body'}}
           fontFamily={'body'}
@@ -234,7 +235,7 @@ const styles = StyleSheet.create({
   },
   summary: {
     backgroundColor: '#fff',
-    top: 70,
+    // top: 70,
     borderRadius: 15,
     padding: 20,
     shadowColor: '#000',

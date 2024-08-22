@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
-import { PRODUCTURL } from '../../config/Urls';
+import {PRODUCTURL} from '../../config/Urls';
 
 const initialState = {
   loading: false,
@@ -13,9 +13,9 @@ const initialState = {
 
 export const fetchProduct = createAsyncThunk(
   'product/fetchProduct',
-  async ({skip,limit}) => {
+  async ({skip, limit}) => {
     const response = await axios.get(
-     `https://dummyjson.com/products/category/smartphones?limit=${limit}&skip=${skip}&select=title,price,description,thumbnail,images,dimensions,category`
+      `https://dummyjson.com/products/category/smartphones?limit=${limit}&skip=${skip}&select=title,price,description,thumbnail,images,dimensions,category,sku,brand`,
     );
 
     console.log('Product Status', response.status);
@@ -33,12 +33,9 @@ const productSlice = createSlice({
     });
     builder.addCase(fetchProduct.fulfilled, (state, action) => {
       state.loading = false;
-     
-    state.productList.push(...action.payload.response.products)
-    state.productList.total= parseInt(action.payload.response.total)
-    state.productList.skip = parseInt(action.payload.query.skip)+1;
-      console.log("ProductSlice reducer", action.payload)
-      
+
+      state.productList = action.payload;
+      console.log('ProductSlice reducer', action.payload);
     });
     builder.addCase(fetchProduct.rejected, (state, action) => {
       state.loading = false;
@@ -46,10 +43,10 @@ const productSlice = createSlice({
     });
   },
 });
-export const paginationType = type => state=> {
-  const return_items= state.productList;
+export const paginationType = type => state => {
+  const return_items = state.productList;
   const pagination_data = {
-    skip: return_items
-  } 
-}
+    skip: return_items,
+  };
+};
 export default productSlice.reducer;

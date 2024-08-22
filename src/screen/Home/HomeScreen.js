@@ -192,7 +192,7 @@ const HomeScreen = () => {
                     {item.category}
                   </Text>
                   <Text fontSize="md" fontWeight="bold">
-                    {item.price}
+                    Rs{item.price}
                   </Text>
                 </VStack>
 
@@ -237,7 +237,7 @@ const HomeScreen = () => {
                 <VStack>
                   <Text style={styles.bestChoiceText}>{item.sku}</Text>
                   <Text style={styles.productName}>{item.brand}</Text>
-                  <Text styles={styles.price}>{item.price}</Text>
+                  <Text styles={styles.price}>Rs{item.price}</Text>
                 </VStack>
                 <VStack>
 

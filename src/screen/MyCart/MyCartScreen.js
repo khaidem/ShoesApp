@@ -57,8 +57,9 @@ const MyCartScreen = ({navigation}) => {
             p={3}
             shadow={2}
             borderRadius={20}
-            mx={2}
-            mt={2}>
+            // mx={2}
+            // mt={2}
+            >
             <AntDesign name="left" size={20} color="black"></AntDesign>
           </Box>
         </Pressable>
@@ -69,13 +70,14 @@ const MyCartScreen = ({navigation}) => {
       </HStack>
       <View style={styles.container}>
       <FlatList
+       ItemSeparatorComponent={() => <View style={{height: 10}} />}
         data={data}
         keyExtractor={item => item.id}
         renderItem={({item}) => (
           
-          <HStack justifyContent={'space-between'} p={5}>
+          <HStack justifyContent={'space-between'} >
             <Box
-              p={2}
+              padding={1}
               bg={COLOURS.white}
               borderRadius={15}
               // shadow={2}
@@ -84,40 +86,41 @@ const MyCartScreen = ({navigation}) => {
               justifyContent="space-between">
               <Image source={require('../../../assets/images/item/group2.png')} alt="nike" size="md"></Image>
             </Box>
-            <VStack right={10}>
-              <Text fontSize={20} fontWeight={'bold'} fontFamily={'body'}>
+            <VStack right={10} space={2}>
+              <Text fontSize={15} fontWeight={'bold'} fontFamily={'body'}>
                 {item.tittle}
               </Text>
-              <Text fontSize={20} fontFamily={'body'}>
+              <Text fontSize={12} fontFamily={'body'}>
                 6.77
               </Text>
-              <HStack alignItems={'center'} space={2}>
+              <HStack  space={2}>
                 <Button
                   // borderWidth={1}
                   bg={COLOURS.white}
-                  shadow={1}
+                  p={1}
                   alignItems={'center'}
                   justifyContent={'center'}
                   borderRadius={30}>
-                  <AntDesign name="minus" size={10}></AntDesign>
+                  <AntDesign name="minus" size={10}color="black" ></AntDesign>
                 </Button>
 
                 <Text>1</Text>
                 <Button
-                  // shadow={1}
+                  p={1}
                   alignItems={'center'}
                   justifyContent={'center'}
-                  borderRadius={50}>
+                  borderRadius={50}
+                  >
                   <MaterialIcons
                     name="add"
-                    size={13}
+                    size={10}
                     color="white"></MaterialIcons>
                 </Button>
               </HStack>
             </VStack>
             <VStack justifyContent={'space-between'}>
               <Text>L</Text>
-              <AntDesign name="delete" size={20} color="black"></AntDesign>
+              <AntDesign name="delete" size={15} color="black"></AntDesign>
             </VStack>
           </HStack>
          
@@ -168,7 +171,7 @@ const MyCartScreen = ({navigation}) => {
 };
 const styles = StyleSheet.create({
   container: {
-  
+  padding: 10
    
   },
   menu: {
