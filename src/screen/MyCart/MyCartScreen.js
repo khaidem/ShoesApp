@@ -37,13 +37,13 @@ const MyCartScreen = ({navigation}) => {
       Price: 6.77,
       SubTotal: '2345',
     },
-    {
-      id: 4,
-      image: require('../../../assets/images/item/group2.png'),
-      tittle: 'NikeClub Max',
-      Price: 6.77,
-      SubTotal: '2345',
-    },
+    // {
+    //   id: 4,
+    //   image: require('../../../assets/images/item/group2.png'),
+    //   tittle: 'NikeClub Max',
+    //   Price: 6.77,
+    //   SubTotal: '2345',
+    // },
   ];
   return (
     <View >
@@ -67,11 +67,12 @@ const MyCartScreen = ({navigation}) => {
         </Text>
         <Text></Text>
       </HStack>
+      <View style={styles.container}>
       <FlatList
         data={data}
         keyExtractor={item => item.id}
         renderItem={({item}) => (
-          <View style={styles.container}>
+          
           <HStack justifyContent={'space-between'} p={5}>
             <Box
               p={2}
@@ -120,35 +121,37 @@ const MyCartScreen = ({navigation}) => {
             </VStack>
           </HStack>
          
-        </View> 
+      
 
         )}></FlatList>
+      </View>
+     
         <View style={styles.menu}>
         <VStack top={1}>
         <HStack justifyContent={'space-between'}>
-            <Text fontFamily={'body'} fontSize={20} >SubTotal</Text>
+            <Text fontFamily={'body'} fontSize={15} >SubTotal</Text>
             <Text>{''}</Text>
             <Text fontFamily={'body'} fontSize={20}>₹ 39993</Text>
           </HStack>
           <HStack justifyContent={'space-between'}>
-            <Text fontFamily={'body'} fontSize={20}>Shopping</Text>
+            <Text fontFamily={'body'} fontSize={15}>Shopping</Text>
             <Text>{''}</Text>
             <Text fontFamily={'body'} fontSize={20}>₹ 39</Text>
           </HStack>
           <VStack top={4}>
           <View  style={{borderWidth:0.3, borderStyle:'dashed', borderRadius:1,borderColor:'black'}}></View>
           <HStack justifyContent={'space-between'}>
-            <Text fontFamily={'body'} fontSize={20}>Total Cost</Text>
+            <Text fontFamily={'body'} fontSize={15} fontWeight={'bold'}>Total Cost</Text>
             <Text>{''}</Text>
             <Text fontFamily={'body'} fontSize={20}>₹ 39</Text>
           </HStack>
           <HStack></HStack>
           <Button
-          
+          onPress={()=> navigation.navigate('Checkout')}
           top={3}
           borderRadius={30}
           bg={'#5B9EE1'}
-          height={"40%"}
+          height={"37%"}
           _text={{fontSize: FONTSIZE.Size16 ,fontFamily: 'body'}}
           fontFamily={'body'}
           >
@@ -165,14 +168,14 @@ const MyCartScreen = ({navigation}) => {
 };
 const styles = StyleSheet.create({
   container: {
-    // flex: 10,
-    // top: 10,
+  
+   
   },
   menu: {
-    // top: 50,
+    top: 130,
     // flex: 1,
-    height: 500,
-    padding: 15,
+    // height: ,
+    padding: 20,
     backgroundColor: 'white',
     overflow: 'hidden',
     borderTopRightRadius: 28,

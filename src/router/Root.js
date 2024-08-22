@@ -13,6 +13,7 @@ import SigInScreen from '../screen/SignIn/SiginScreen';
 import RegisterScreen from '../screen/registerScreen/RegisterScreen';
 import DetailsScreen from '../screen/Details/DetailsScreen';
 import FavouriteScreen from '../screen/Favourite/FavouriteScreen';
+import CheckOutScreen from '../screen/Checkout/CheckOutScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -45,6 +46,8 @@ const Root = () => {
         <Stack.Screen
           name="DrawerNavigation"
           component={DrawerNavigation}></Stack.Screen>
+          
+          <Stack.Screen name='Checkout' component={CheckOutScreen}></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );
