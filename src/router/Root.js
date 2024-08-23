@@ -14,6 +14,7 @@ import RegisterScreen from '../screen/registerScreen/RegisterScreen';
 import DetailsScreen from '../screen/Details/DetailsScreen';
 import FavouriteScreen from '../screen/Favourite/FavouriteScreen';
 import CheckOutScreen from '../screen/Checkout/CheckOutScreen';
+import ProductDetailsScreen from '../screen/ProductDetails/ProductDetailsScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -48,6 +49,7 @@ const Root = () => {
           component={DrawerNavigation}></Stack.Screen>
           
           <Stack.Screen name='Checkout' component={CheckOutScreen}></Stack.Screen>
+          <Stack.Screen name='ProductDetails' component={ProductDetailsScreen}></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -18,6 +18,7 @@ import OnbaordingReducer from "./reducers/OnbaordingReducer";
 import ProductReducer from "./reducers/ProductSlice";
 import CategoryReducer from "./reducers/CategorySlice";
 import SingleProductReducer from "./reducers/SingleProductReducer";
+import ProductDetailsReducer from "./reducers/ProductDetailsReducer";
 
 
 
@@ -37,6 +38,7 @@ export const store = configureStore({
         categories: CategoryReducer,
         product: ProductReducer,
         SingleProduct: SingleProductReducer,
+        ProductDetails: ProductDetailsReducer
        
 
 

@@ -5,4 +5,5 @@ export const LOGIN = getApiUrl('/auth/login');
 export const Register = getApiUrl('/user/add');
 export const PRODUCTURL= getApiUrl('/products/category/smartphones?');
 export const CATAGORYURL = getApiUrl('/products/categories');
+export const PRODUCTDETAILURL = getApiUrl('/products/category/')
 

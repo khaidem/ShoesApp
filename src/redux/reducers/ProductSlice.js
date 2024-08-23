@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
-import {PRODUCTURL} from '../../config/Urls';
+
 
 const initialState = {
   loading: false,
@@ -35,7 +35,7 @@ const productSlice = createSlice({
       state.loading = false;
 
       state.productList = action.payload;
-      console.log('ProductSlice reducer', action.payload);
+      // console.log('ProductSlice reducer', action.payload);
     });
     builder.addCase(fetchProduct.rejected, (state, action) => {
       state.loading = false;

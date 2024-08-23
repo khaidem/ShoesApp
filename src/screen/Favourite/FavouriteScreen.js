@@ -7,7 +7,7 @@ import ShoesCart from '../../component/ShoesCart';
 
 const FavouriteScreen = ({navigation}) => {
   return (
-    <VStack p={2} flex={1} bg={COLOURS.bg}>
+    <VStack background={COLOURS.secondary} p={2} flex={1} bg={COLOURS.bg}>
       <HStack justifyContent={"space-between"}>
       <Pressable
           onPress={() => {
@@ -34,7 +34,7 @@ const FavouriteScreen = ({navigation}) => {
           borderRadius={20}
           mx={2}
           mt={2}>
-          <AntDesign name="hearto" size={20}></AntDesign>
+          <AntDesign name="hearto" size={20}color="black"></AntDesign>
         </Box>
       </HStack>
       <ShoesCart/>

@@ -34,7 +34,7 @@ const DetailsScreen = ({route}) => {
   useEffect(() => {
     dispath(fetchSingleProduct(itemId));
 
-    console.log('ItemId', itemId);
+    console.log('ItemId', SingleProduct);
   }, []);
   if (loading) {
     return (
@@ -71,7 +71,7 @@ const DetailsScreen = ({route}) => {
           borderRadius={20}
           mx={2}
           mt={2}>
-          <Icons name="shopping-bag" size={20}></Icons>
+          <Icons name="shopping-bag" size={20} color="black"></Icons>
         </Box>
       </HStack>
 
@@ -89,8 +89,8 @@ const DetailsScreen = ({route}) => {
             return (
               <View style={styles.header}>
                 <FastImage
-                 resizeMode={FastImage.resizeMode.contain}
-                  style={{height: 120, width: 100}}
+                 resizeMode={FastImage.resizeMode.cover}
+                  style={{height: 170, width: 100}}
                   source={{uri: item}}></FastImage>
 
               
@@ -105,7 +105,7 @@ const DetailsScreen = ({route}) => {
 
       <View style={styles.menu}>
         <VStack>
-          <Text fontSize={20} fontFamily={'body'} color={COLOURS.secondary}>
+          <Text fontSize={20} fontFamily={'body'} color={COLOURS.secondary} fontWeight={'bold'}>
             BEST SELLER
           </Text>
           <Text fontFamily={'body'} fontSize={25}>
@@ -114,12 +114,12 @@ const DetailsScreen = ({route}) => {
           {/* <Text fontSize={25} fontFamily={'body'}>
             {"Rating" +SingleProduct.rating}
           </Text> */}
-          <Text fontSize={FONTSIZE.Size16} fontFamily={'body'}>
+          <Text fontSize={FONTSIZE.Size16} fontFamily={'body'} color={'gray.500'}>
             {SingleProduct?.description}
           </Text>
 
           <VStack top={1}>
-            <Text fontSize={25} fontFamily={'body'}>
+            <Text fontSize={20} fontFamily={'body'}>
               Gallery
             </Text>
 
@@ -133,7 +133,7 @@ const DetailsScreen = ({route}) => {
                 <Box mr={2} bg={COLOURS.bg} borderRadius={10}>
                   <FastImage
                    resizeMode={FastImage.resizeMode.contain}
-                    style={{height: 50, width: 50, padding: 10}}
+                    style={{padding:20}}
                     source={{uri: item}}></FastImage>
                   {/* <Image
                     source={{uri: item}}
@@ -145,23 +145,23 @@ const DetailsScreen = ({route}) => {
           </VStack>
         </VStack>
         <HStack top={5} justifyContent={'space-between'}>
-          <Text fontSize={25} fontFamily={'body'}>
+          <Text fontSize={20} fontFamily={'body'}>
             Dimensions
           </Text>
         </HStack>
         <VStack top={5}>
         <Text fontSize={FONTSIZE.Size16} fontFamily={'body'}>
-            <Text fontSize={20} fontFamily={'body'}>
+            <Text fontSize={15} fontFamily={'body'}>
               {'Width :' + SingleProduct.dimensions?.width}
             </Text>
           </Text>
           <Text fontSize={FONTSIZE.Size16} fontFamily={'body'}>
-            <Text fontSize={20} fontFamily={'body'}>
+            <Text fontSize={15} fontFamily={'body'}>
               {'Height :' + SingleProduct.dimensions?.height}
             </Text>
           </Text>
           <Text fontSize={FONTSIZE.Size16} fontFamily={'body'}>
-            <Text fontSize={20} fontFamily={'body'}>
+            <Text fontSize={15} fontFamily={'body'}>
               {'Depth :' + SingleProduct.dimensions?.depth}
             </Text>
           </Text>
@@ -205,7 +205,7 @@ const DetailsScreen = ({route}) => {
             </Text>
           </VStack>
           <Button
-          // onPress={()=> navigation.navigate('Favourite')}
+          onPress={()=> navigation.navigate('MyCart')}
             bg={COLOURS.secondary}
             width={120}
             height={50}

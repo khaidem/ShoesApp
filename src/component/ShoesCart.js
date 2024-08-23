@@ -60,11 +60,11 @@ const ShoesCart = () => {
             width={160}
             bg="white"
             borderRadius={15}
-            shadow={3}
-            p={4}
-            m={2}
+            // shadow={3}
+            p={3}
+            m={1}
             position="relative">
-            <VStack space={2}>
+            <VStack >
               <Box width={5} height={5} bg={COLOURS.bg}>
                 <AntDesign name="hearto" size={20}></AntDesign>
               </Box>

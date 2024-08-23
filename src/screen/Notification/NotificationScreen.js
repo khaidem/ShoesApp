@@ -4,6 +4,7 @@ import {
   FlatList,
   HStack,
   Image,
+  ScrollView,
   Text,
   View,
   VStack,
@@ -20,7 +21,7 @@ const NotificationScreen = ({navigation}) => {
     {
       id: 1,
       image: require('../../../assets/images/item/group2.png'),
-      tittle: 'We have new ',
+      tittle: 'We have new offer',
       Price: "Rs 7",
       SubTotal: '2345',
       min: 29
@@ -28,7 +29,23 @@ const NotificationScreen = ({navigation}) => {
     {
       id: 2,
       image: require('../../../assets/images/item/group2.png'),
-      tittle: 'We have new',
+      tittle: 'We have new offer',
+      Price: "Rs 5",
+      SubTotal: '2345',
+      min: 6
+    },
+    {
+      id: 3,
+      image: require('../../../assets/images/item/group2.png'),
+      tittle: 'We have new offer',
+      Price: "Rs 5",
+      SubTotal: '2345',
+      min: 6
+    },
+    {
+      id: 4,
+      image: require('../../../assets/images/item/group2.png'),
+      tittle: 'We have new offer',
       Price: "Rs 5",
       SubTotal: '2345',
       min: 6
@@ -39,7 +56,7 @@ const NotificationScreen = ({navigation}) => {
     {
         id: 1,
         image: require('../../../assets/images/item/group2.png'),
-        tittle: 'We have new',
+        tittle: 'We have new offer',
         Price: "Rs 6.77",
         min: 10
         
@@ -48,16 +65,40 @@ const NotificationScreen = ({navigation}) => {
       {
         id: 2,
         image: require('../../../assets/images/item/group2.png'),
-        tittle: 'We have new',
+        tittle: 'We have new offer',
+        Price: "Rs 70",
+        SubTotal: '2345',
+        min: 29
+      },
+      {
+        id: 3,
+        image: require('../../../assets/images/item/group2.png'),
+        tittle: 'We have new offer',
+        Price: "Rs 70",
+        SubTotal: '2345',
+        min: 29
+      },
+      {
+        id: 4,
+        image: require('../../../assets/images/item/group2.png'),
+        tittle: 'We have new offer',
+        Price: "Rs 70",
+        SubTotal: '2345',
+        min: 29
+      },
+      {
+        id: 5,
+        image: require('../../../assets/images/item/group2.png'),
+        tittle: 'We have new offer',
         Price: "Rs 70",
         SubTotal: '2345',
         min: 29
       },
   ]
   return (
-    <View p={2}>
-      <VStack>
-        <HStack justifyContent={'space-between'}>
+    <ScrollView>
+       <View >
+       <HStack justifyContent={'space-between'}p={2}>
           <Pressable
             onPress={() => {
               navigation.goBack();
@@ -83,21 +124,25 @@ const NotificationScreen = ({navigation}) => {
             ClearALL
           </Text>
         </HStack>
+      <VStack p={5}>
+       
 
         {/* For Today */}
-        <HStack p={3}>
-          <Text fontSize={20} fontWeight={'bold'} fontFamily={'body'}>
+        <HStack>
+          <Text  fontSize={20} fontWeight={'bold'} fontFamily={'body'}>
             Today
           </Text>
         </HStack>
         <View>
           <FlatList
+          
             data={data}
             keyExtractor={item => item.id}
             renderItem={({item}) => (
-              <HStack justifyContent={'space-between'} p={5}>
+              <HStack justifyContent={'space-between'} p={1}>
                 <Box
-                  p={2}
+                
+                  // p={1}
                   bg={COLOURS.white}
                   borderRadius={15}
                 //   shadow={2}
@@ -111,31 +156,31 @@ const NotificationScreen = ({navigation}) => {
                 </Box>
                 <VStack right={5}>
                   <VStack>
-                    <Text fontSize={20} fontWeight={'bold'} fontFamily={'body'}>
+                    <Text fontSize={15} fontWeight={'bold'} fontFamily={'body'}>
                       {item.tittle}
                     </Text>
                   </VStack>
 
-                  <Text fontSize={18} fontFamily={'body'}>
+                  <Text fontSize={15} fontFamily={'body'}>
                     {item.Price}
                   </Text>
                 </VStack>
                 <VStack justifyContent={'space-between'}>
-                  <Text>{item.min}minus</Text>
-                  <Box
+                  <Text>{item.min}min</Text>
+                  {/* <Box
                     width="16px"
                     height="16px"
                     borderRadius="8px"
                     backgroundColor="teal.400"
                     borderWidth={1}
                     borderColor="coolGray.300"
-                  />
+                  /> */}
                 </VStack>
               </HStack>
             )}></FlatList>
 
             {/* For  YesterDay */}
-          <HStack p={3}>
+          <HStack>
             <Text fontSize={20} fontWeight={'bold'} fontFamily={'body'}>
               YesterDay
             </Text>
@@ -145,9 +190,10 @@ const NotificationScreen = ({navigation}) => {
         keyExtractor={item => item.id}
         renderItem={({item}) => (
           
-          <HStack justifyContent={'space-between'} p={5}>
+          <HStack justifyContent={'space-between'} p={1}>
             <Box
-              p={2}
+            
+              // p={2}
               bg={COLOURS.white}
               borderRadius={15}
             //   shadow={2}
@@ -158,26 +204,26 @@ const NotificationScreen = ({navigation}) => {
             </Box>
             <VStack right={5}>
                 <VStack>
-                <Text fontSize={20} fontWeight={'bold'} fontFamily={'body'}>
+                <Text fontSize={15} fontWeight={'bold'} fontFamily={'body'}>
                 {item.tittle}
               </Text>
                 </VStack>
             
-              <Text fontSize={18} fontFamily={'body'}>
+              <Text fontSize={15} fontFamily={'body'}>
                 {item.Price}
               </Text>
               
             </VStack>
             <VStack justifyContent={'space-between'}>
-              <Text>{item.min} minus</Text>
-              <Box
+              <Text>{item.min} min</Text>
+              {/* <Box
                   width="16px"
                   height="16px"
                   borderRadius="8px"
                   backgroundColor="teal.400"
                   borderWidth={1}
                   borderColor="coolGray.300"
-                />
+                /> */}
             </VStack>
           </HStack>
          
@@ -187,6 +233,8 @@ const NotificationScreen = ({navigation}) => {
         </View>
       </VStack>
     </View>
+    </ScrollView>
+   
   );
 };
 
