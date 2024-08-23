@@ -20,18 +20,11 @@ import Icons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {COLOURS, FONTSIZE} from '../../constant/Constant';
 
-
-
 import SearchBar from '../../component/SearchBar';
 import {DrawerActions, useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchCategory} from '../../redux/reducers/CategorySlice';
-import {
-  ActivityIndicator,
-  AppState,
-  Dimensions,
-  StyleSheet,
-} from 'react-native';
+import {ActivityIndicator, Dimensions, StyleSheet} from 'react-native';
 import {fetchProduct} from '../../redux/reducers/ProductSlice';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import ColorConstant from '../../constant/ColorConstant';
@@ -40,36 +33,42 @@ import FastImage from 'react-native-fast-image';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
-  const {
-    loading: loading1,
-    categoryList,
-    error,
-  } = useSelector(state => state.categories);
-  const {loading2, productList, skip, limit, total} = useSelector(
-    state => state.product,
+  const {loading: loading1, categoryList} = useSelector(
+    state => state.categories,
   );
+  const {
+    loading: loading2,
+    productList,
+    limit,
+    skip,
+    hasMore,
+  } = useSelector(state => state.product);
 
   const screenWidth = Dimensions.get('window').width;
-  const [activeIndex, setActiveIndex] = useState(0);
+
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchCategory());
-    dispatch(fetchProduct({skip: 0, limit}));
+    dispatch(fetchProduct({skip, limit}));
 
-    // fetch(productURl)
-    //   .then(response => response.json())
-    //   .then(json => setData(json.products))
-    //   .catch(error => console.log(error))
-    //   .finally(setLoading(false));
+   
   }, []);
-
-  const handleScroll = event => {
-    const ScrollPosition = event.nativeEvent.contentOffset.x;
-    const index = ScrollPosition / screenWidth;
-    setActiveIndex(index);
+  const handleLoadMore = () => {
+    if (!loading2 && hasMore) {
+      dispatch(fetchProduct({skip, limit}));
+    }
   };
-  if(loading1){
+  const renderFooter = () => {
+    if (!loading2) return null;
+    return (
+      <View style={{paddingVertical: 20}}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  };
+
+  if (loading1) {
     return (
       <HStack flex={1} space={2} justifyContent="center" alignContent="center">
         <Spinner size="lg">Loading</Spinner>
@@ -134,28 +133,26 @@ const HomeScreen = () => {
             keyExtractor={item => item.slug}
             renderItem={({item}) => {
               return (
-                <Pressable onPress={()=>{
-                  navigation.navigate('ProductDetails', {
-                    slug: item.slug
-                  })
-                }}>
-
-                   <View style={styles.container}>
-                  <View style={styles.imageContainer}>
-                    
-                    <Image
-                    source={{
-                      uri: 'https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/1.png',
-                    }} // Replace with your image URL
-                    style={styles.image}
-                    resizeMode="contain"
-                    alt="image"
-                  />
+                <Pressable
+                  onPress={() => {
+                    navigation.navigate('ProductDetails', {
+                      slug: item.slug,
+                    });
+                  }}>
+                  <View style={styles.container}>
+                    <View style={styles.imageContainer}>
+                      <Image
+                        source={{
+                          uri: 'https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/1.png',
+                        }} // Replace with your image URL
+                        style={styles.image}
+                        resizeMode="contain"
+                        alt="image"
+                      />
+                    </View>
+                    <Text style={styles.text}>{item.name}</Text>
                   </View>
-                  <Text style={styles.text}>{item.name}</Text>
-                </View>
                 </Pressable>
-               
               );
             }}
           />
@@ -173,7 +170,10 @@ const HomeScreen = () => {
             horizontal
             showsHorizontalScrollIndicator={false}
             data={productList}
-            keyExtractor={item => item.id}
+            onEndReached={handleLoadMore}
+            onEndReachedThreshold={0.5}
+            ListFooterComponent={renderFooter}
+            keyExtractor={(item, index) => String(index)}
             renderItem={({item}) => {
               return (
                 <Pressable
@@ -240,10 +240,13 @@ const HomeScreen = () => {
           <FlatList
             // bottom={2}
             data={productList}
+            // onEndReached={handleLoadMore}
+            // onEndReachedThreshold={0.5}
+            // ListFooterComponent={renderFooter}
             horizontal={true}
             keyExtractor={item => item.id}
             pagingEnabled={true}
-            onScroll={handleScroll}
+            // onScroll={handleScroll}
             renderItem={({item}) => {
               return (
                 <View style={styles.card}>

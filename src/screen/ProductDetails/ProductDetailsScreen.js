@@ -3,12 +3,12 @@ import React, {useEffect, useState} from 'react';
 
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchProductDetails} from '../../redux/reducers/ProductDetailsReducer';
-import {Pressable} from 'react-native';
+import {ActivityIndicator, Pressable} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {COLOURS} from '../../constant/Constant';
 import { useNavigation } from '@react-navigation/native';
-import ShoesCart from '../../component/ShoesCart';
+
 import FastImage from 'react-native-fast-image';
 
 const ProductDetailsScreen = ({route}) => {
@@ -27,11 +27,19 @@ const ProductDetailsScreen = ({route}) => {
     onClose
   } = useDisclose();
 
+
+
   useEffect(() => {
     dispath(fetchProductDetails(slug));
     console.log('Route', slug);
     console.log('ProductDetails', ProductDetails);
+  
   }, []);
+
+  
+    
+  
+
   if(loading){
     return (
       <HStack flex={1} space={2} justifyContent="center" alignContent="center">
@@ -39,6 +47,7 @@ const ProductDetailsScreen = ({route}) => {
       </HStack>
     );
   }
+  
   return (
 
     <View p={2}>
@@ -151,7 +160,7 @@ const ProductDetailsScreen = ({route}) => {
      
       <FlatList
         numColumns={2}
-        margin={2}
+        // margin={2}
       data={ProductDetails}
       keyExtractor={item=> item.id}
       renderItem={({item})=>{
@@ -184,13 +193,13 @@ const ProductDetailsScreen = ({route}) => {
               <Text fontSize="md" fontWeight="bold">
                 {item.title}
               </Text>
-              <HStack space={2} marginTop="2" justifyContent={'space-between'}>
+             
               <Text fontSize="md" fontWeight="bold">
-                {item.price}
+                Rs {item.price}
               </Text>
              
                
-              </HStack>
+            
              
             </VStack>
 
@@ -200,7 +209,6 @@ const ProductDetailsScreen = ({route}) => {
         )
       }}
       ></FlatList>
-    
      
       
     </View>
