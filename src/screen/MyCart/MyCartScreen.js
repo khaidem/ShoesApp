@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Divider,
   FlatList,
   HStack,
   Image,
@@ -8,45 +9,49 @@ import {
   View,
   VStack,
 } from 'native-base';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {COLOURS, FONTSIZE} from '../../constant/Constant';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {Pressable, StyleSheet} from 'react-native';
+import {Alert, Pressable, StyleSheet} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const MyCartScreen = ({navigation}) => {
-  const data = [
-    {
-      id: 1,
-      image: require('../../../assets/images/item/group2.png'),
-      tittle: 'NikeClub Max',
-      Price: 6.77,
-      SubTotal: '2345',
-    },
-    {
-      id: 2,
-      image: require('../../../assets/images/item/group2.png'),
-      tittle: 'NikeClub Max',
-      Price: 6.77,
-      SubTotal: '2345',
-    },
-    {
-      id: 3,
-      image: require('../../../assets/images/item/group2.png'),
-      tittle: 'NikeClub Max',
-      Price: 6.77,
-      SubTotal: '2345',
-    },
-    // {
-    //   id: 4,
-    //   image: require('../../../assets/images/item/group2.png'),
-    //   tittle: 'NikeClub Max',
-    //   Price: 6.77,
-    //   SubTotal: '2345',
-    // },
-  ];
+  const [counter, setCounter] = useState(0);
+  const incrementCounter = () => {
+    setCounter(counter + 1);
+  };
+         
+  const decrementCounter = () => {
+   if (counter !== 0) {
+       setCounter(counter - 1);
+    }
+  };
+const [productList, setProduct]=useState([]);
+  useEffect(()=>{
+    getObject()
+  })
+
+  const getObject = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('cart'); // Retrieve object using the key
+      const retrievedProduct = jsonValue != null ? JSON.parse(jsonValue) : null; // Parse JSON string to object
+      // console.log('Retrieved product:', retrievedProduct);
+      setProduct(retrievedProduct);
+      // if (retrievedProduct) {
+      // Alert.alert('Retrieved Product', `Title: ${retrievedProduct.title}, Price: $${retrievedProduct.price}`);
+      // } else {
+      //   Alert.alert('No Product Found');
+      // }
+    } catch (e) {
+      console.error('Error retrieving object:', e);
+    }
+  };
+  if( productList.length <0){
+    return <Text>No Cart Found</Text>
+  }
   return (
-    <View >
+    <View flex={5}>
       <HStack justifyContent={'space-between'} p={2}>
         <Pressable
           onPress={() => {
@@ -68,14 +73,16 @@ const MyCartScreen = ({navigation}) => {
         </Text>
         <Text></Text>
       </HStack>
-      <View style={styles.container}>
-      <FlatList
+      <Text></Text>
+    
+     <FlatList
+     
        ItemSeparatorComponent={() => <View style={{height: 10}} />}
-        data={data}
+        data={productList}
         keyExtractor={item => item.id}
         renderItem={({item}) => (
-          
-          <HStack justifyContent={'space-between'} >
+          <HStack p={2} >
+           
             <Box
               padding={1}
               bg={COLOURS.white}
@@ -84,53 +91,63 @@ const MyCartScreen = ({navigation}) => {
               flexDirection="row"
               alignItems="center"
               justifyContent="space-between">
-              <Image source={require('../../../assets/images/item/group2.png')} alt="nike" size="md"></Image>
+              <Image source={{uri: item.thumbnail}} alt="nike" size="md"></Image>
             </Box>
-            <VStack right={10} space={2}>
+            <VStack flex={1} >
+              <VStack left={3}>
               <Text fontSize={15} fontWeight={'bold'} fontFamily={'body'}>
-                {item.tittle}
+                {item.title}
               </Text>
-              <Text fontSize={12} fontFamily={'body'}>
-                6.77
+              <Text fontSize={15} fontFamily={'body'}>
+              ₹ {item.price}
               </Text>
               <HStack  space={2}>
                 <Button
+                onPress={decrementCounter}
                   // borderWidth={1}
                   bg={COLOURS.white}
-                  p={1}
+                  p={2}
                   alignItems={'center'}
                   justifyContent={'center'}
                   borderRadius={30}>
-                  <AntDesign name="minus" size={10}color="black" ></AntDesign>
+                  <AntDesign name="minus" size={18}color="black" ></AntDesign>
                 </Button>
 
-                <Text>1</Text>
+                <Text>{counter}</Text>
                 <Button
-                  p={1}
+                onPress={incrementCounter}
+                  p={2}
                   alignItems={'center'}
                   justifyContent={'center'}
                   borderRadius={50}
                   >
                   <MaterialIcons
                     name="add"
-                    size={10}
+                    size={18}
                     color="white"></MaterialIcons>
                 </Button>
               </HStack>
+              </VStack>
+            
+             
             </VStack>
-            <VStack justifyContent={'space-between'}>
-              <Text>L</Text>
-              <AntDesign name="delete" size={15} color="black"></AntDesign>
-            </VStack>
+          
+              
+              <AntDesign name="delete" size={18} color="black"></AntDesign>
+      
+        
           </HStack>
+        
          
       
 
         )}></FlatList>
-      </View>
+
+ 
      
-        <View style={styles.menu}>
-        <VStack top={1}>
+        {/* /// For Menu */}
+          <View style={styles.menu}>
+        <VStack >
         <HStack justifyContent={'space-between'}>
             <Text fontFamily={'body'} fontSize={15} >SubTotal</Text>
             <Text>{''}</Text>
@@ -154,8 +171,8 @@ const MyCartScreen = ({navigation}) => {
           top={3}
           borderRadius={30}
           bg={'#5B9EE1'}
-          height={"37%"}
-          _text={{fontSize: FONTSIZE.Size16 ,fontFamily: 'body'}}
+          height={"40%"}
+          _text={{fontSize: FONTSIZE.Size14 ,fontFamily: 'body'}}
           fontFamily={'body'}
           >
          CheckOut
@@ -166,24 +183,29 @@ const MyCartScreen = ({navigation}) => {
         </VStack>
 
         </View>
-    </View>
+     </View>
+      
+      
+     
+      
+  
   );
 };
 const styles = StyleSheet.create({
   container: {
-  padding: 10
+  // padding: 10
    
   },
   menu: {
-    top: 130,
-    // flex: 1,
+  
+    flex: -1,
     // height: ,
     padding: 20,
     backgroundColor: 'white',
     overflow: 'hidden',
     borderTopRightRadius: 28,
     borderTopLeftRadius: 28,
-    overflow: 'hidden',
+    // overflow: 'hidden',
   },
 });
 export default MyCartScreen;

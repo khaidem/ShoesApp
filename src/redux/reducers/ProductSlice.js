@@ -17,7 +17,6 @@ export const fetchProduct = createAsyncThunk(
   async ({skip, limit}) => {
     try{
       const response = await axios.get(
-        // 'https://dummyjson.com/products'
         `https://dummyjson.com/products?limit=${limit}&skip=${skip}&select=title,price,description,thumbnail,images,dimensions,category,sku,brand`,
       );
       console.log('Product Status', response.status);

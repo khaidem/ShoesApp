@@ -14,7 +14,7 @@ import FastImage from 'react-native-fast-image';
 const ProductDetailsScreen = ({route}) => {
   const {slug} = route.params;
   const dispath = useDispatch();
-  const { loading,ProductDetails} = useSelector(state => state.ProductDetails);
+  const { loading,ProductDetails, limit,skip,hasMore} = useSelector(state => state.ProductDetails);
   const navigation = useNavigation();
   const genders = ['Men', 'Women', 'Unisex'];
   const [selectedGender, setSelectedGender] = useState('Men');
@@ -27,30 +27,41 @@ const ProductDetailsScreen = ({route}) => {
     onClose
   } = useDisclose();
 
-
+// const {loading , ProductDetails, limit,skip,hasMore}= useSelector(state => state.products)
 
   useEffect(() => {
-    dispath(fetchProductDetails(slug));
-    console.log('Route', slug);
-    console.log('ProductDetails', ProductDetails);
+    dispath(fetchProductDetails({skip, limit}));
+   
   
   }, []);
-
+  const handleLoadMore = ()=> {
+    if(!loading && hasMore){
+      dispath(fetchProductDetails({skip,limit}));
+    }
+  }
+const renderFooter = ()=> {
+  if(!loading) return null;
+  return (
+    <View style={{paddingVertical: 20}}>
+    <ActivityIndicator size="large" color="#0000ff" />
+  </View>
+  )
+}
   
     
   
 
-  if(loading){
-    return (
-      <HStack flex={1} space={2} justifyContent="center" alignContent="center">
-        <Spinner size="lg">Loading</Spinner>
-      </HStack>
-    );
-  }
+  // if(loading){
+  //   return (
+  //     <HStack flex={1} space={2} justifyContent="center" alignContent="center">
+  //       <Spinner size="lg">Loading</Spinner>
+  //     </HStack>
+  //   );
+  // }
   
   return (
 
-    <View p={2}>
+    <View mb={6} p={2}>
        <StatusBar backgroundColor="transparent" barStyle="light" />
       <HStack justifyContent={'space-between'} >
         <Pressable
@@ -159,13 +170,17 @@ const ProductDetailsScreen = ({route}) => {
       </Actionsheet>
      
       <FlatList
+      mt={5}
         numColumns={2}
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={renderFooter}
         // margin={2}
       data={ProductDetails}
       keyExtractor={item=> item.id}
       renderItem={({item})=>{
         return(
-           <ScrollView>
+        
           <Box
           
             width={160}
@@ -205,7 +220,7 @@ const ProductDetailsScreen = ({route}) => {
 
            
           </Box>
-          </ScrollView>
+     
         )
       }}
       ></FlatList>

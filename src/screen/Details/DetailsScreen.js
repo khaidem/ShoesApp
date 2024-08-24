@@ -3,14 +3,13 @@ import {
   Button,
   FlatList,
   HStack,
- 
   Spinner,
   Text,
   View,
   VStack,
 } from 'native-base';
 import React, {useEffect, useState} from 'react';
-import {Pressable, StyleSheet} from 'react-native';
+import {Alert, Pressable, StyleSheet} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {COLOURS, FONTSIZE} from '../../constant/Constant';
 import Icons from 'react-native-vector-icons/MaterialIcons';
@@ -19,10 +18,9 @@ import {useDispatch, useSelector} from 'react-redux';
 import {fetchSingleProduct} from '../../redux/reducers/SingleProductReducer';
 
 import FastImage from 'react-native-fast-image';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DetailsScreen = ({route}) => {
-
-
   const sizes = [38, 39, 40, 41, 42, 43];
   const [selectedSize, setSelectedSize] = useState(null);
   const navigation = useNavigation();
@@ -34,7 +32,7 @@ const DetailsScreen = ({route}) => {
   useEffect(() => {
     dispath(fetchSingleProduct(itemId));
 
-    console.log('ItemId', SingleProduct);
+    console.log('ItemId', itemId);
   }, []);
   if (loading) {
     return (
@@ -61,7 +59,11 @@ const DetailsScreen = ({route}) => {
           </Box>
         </Pressable>
 
-        <Text fontSize={20} fontFamily={'body'}>
+        <Text
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          fontSize={15}
+          fontFamily={'body'}>
           {SingleProduct?.title}
         </Text>
         <Box
@@ -74,38 +76,35 @@ const DetailsScreen = ({route}) => {
           <Icons name="shopping-bag" size={20} color="black"></Icons>
         </Box>
       </HStack>
-
-      {/* // For Item Image Show */}
-      <HStack justifyContent={'space-around'}>
-        <Pressable style={{top: 10,left: 40}}>
-          {/* <AntDesign name="left" size={20} color="black"></AntDesign> */}
-        </Pressable>
-
+      <HStack alignItems={'center'}>
+        {/* /// For Image  */}
         <FlatList
           data={SingleProduct.images}
           horizontal
-          keyExtractor={item => item.id}
-          renderItem={({item}) => {
+          keyExtractor={(item, index) => {
+            return index.toString();
+          }}
+          renderItem={({item, index}) => {
             return (
-              <View style={styles.header}>
+              <View key={index.toString()} style={styles.header}>
                 <FastImage
-                 resizeMode={FastImage.resizeMode.cover}
-                  style={{height: 170, width: 100}}
+                  resizeMode={FastImage.resizeMode.cover}
+                  style={{width: 200, height: 200, justifyContent: 'center'}}
                   source={{uri: item}}></FastImage>
-
-              
               </View>
             );
           }}></FlatList>
-          <Pressable style={{top: 10,right: 40}}>
-          {/* <AntDesign name="right" size={20} color="black"></AntDesign> */}
-          </Pressable>
-      
       </HStack>
+
+      {/* // For Item Image Show */}
 
       <View style={styles.menu}>
         <VStack>
-          <Text fontSize={20} fontFamily={'body'} color={COLOURS.secondary} fontWeight={'bold'}>
+          <Text
+            fontSize={20}
+            fontFamily={'body'}
+            color={COLOURS.secondary}
+            fontWeight={'bold'}>
             BEST SELLER
           </Text>
           <Text fontFamily={'body'} fontSize={25}>
@@ -114,7 +113,10 @@ const DetailsScreen = ({route}) => {
           {/* <Text fontSize={25} fontFamily={'body'}>
             {"Rating" +SingleProduct.rating}
           </Text> */}
-          <Text fontSize={FONTSIZE.Size16} fontFamily={'body'} color={'gray.500'}>
+          <Text
+            fontSize={FONTSIZE.Size16}
+            fontFamily={'body'}
+            color={'gray.500'}>
             {SingleProduct?.description}
           </Text>
 
@@ -129,11 +131,15 @@ const DetailsScreen = ({route}) => {
               keyExtractor={item => item.id}
               showsHorizontalScrollIndicator={false}
               data={SingleProduct.images}
-              renderItem={({item}) => (
-                <Box mr={2} bg={COLOURS.bg} borderRadius={10}>
+              renderItem={({item, index}) => (
+                <Box
+                  key={index.toString()}
+                  mr={2}
+                  bg={COLOURS.bg}
+                  borderRadius={10}>
                   <FastImage
-                   resizeMode={FastImage.resizeMode.contain}
-                    style={{padding:20}}
+                    resizeMode={FastImage.resizeMode.contain}
+                    style={{padding: 40, justifyContent: 'center'}}
                     source={{uri: item}}></FastImage>
                   {/* <Image
                     source={{uri: item}}
@@ -150,7 +156,7 @@ const DetailsScreen = ({route}) => {
           </Text>
         </HStack>
         <VStack top={5}>
-        <Text fontSize={FONTSIZE.Size16} fontFamily={'body'}>
+          <Text fontSize={FONTSIZE.Size16} fontFamily={'body'}>
             <Text fontSize={15} fontFamily={'body'}>
               {'Width :' + SingleProduct.dimensions?.width}
             </Text>
@@ -167,10 +173,6 @@ const DetailsScreen = ({route}) => {
           </Text>
         </VStack>
         <HStack top={5} justifyContent={'space-between'}>
-         
-         
-         
-      
           {/* <FlatList
             horizontal
             data={sizes}
@@ -205,7 +207,20 @@ const DetailsScreen = ({route}) => {
             </Text>
           </VStack>
           <Button
-          onPress={()=> navigation.navigate('MyCart')}
+            onPress={async () => {
+              try {
+                let cartList = [];
+                const data = await AsyncStorage.getItem('cart');
+                cartList = await JSON.parse(data) || [];
+                cartList.push(SingleProduct)
+                const jsonValue = JSON.stringify(cartList);
+                await AsyncStorage.setItem('cart', jsonValue);
+                Alert.alert('Success', 'Product Save Successfully');
+              } catch (error) {
+                console.log(error);
+              }
+              navigation.navigate('MyCart');
+            }}
             bg={COLOURS.secondary}
             width={120}
             height={50}

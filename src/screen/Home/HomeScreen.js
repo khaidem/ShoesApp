@@ -30,6 +30,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import ColorConstant from '../../constant/ColorConstant';
 import {fetchSingleProduct} from '../../redux/reducers/SingleProductReducer';
 import FastImage from 'react-native-fast-image';
+import { Rating } from 'react-native-ratings';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -44,15 +45,10 @@ const HomeScreen = () => {
     hasMore,
   } = useSelector(state => state.product);
 
-  const screenWidth = Dimensions.get('window').width;
-
-
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchCategory());
     dispatch(fetchProduct({skip, limit}));
-
-   
   }, []);
   const handleLoadMore = () => {
     if (!loading2 && hasMore) {
@@ -78,123 +74,125 @@ const HomeScreen = () => {
 
   return (
     <ScrollView>
-      <View style={{backgroundColor: COLOURS.bg}} flex={1} padding={4}>
+      <HStack justifyContent={'space-around'} mt={2} style={{backgroundColor: COLOURS.background}}>
+          <Pressable
+            onPress={() => {
+              navigation.dispatch(DrawerActions.openDrawer());
+            }}>
+            <Box
+              height={10}
+              width={50}
+              bg={'white'}
+              rounded={'full'}
+              //  shadow={1}
+              alignItems={'center'}
+              justifyContent={'center'}>
+              <MaterialCommunityIcons
+                name="dots-grid"
+                size={25}
+                color="#900"></MaterialCommunityIcons>
+            </Box>
+          </Pressable>
+
+          <HStack space={2} alignItems="center">
+            <Icons style={{color: 'red'}} name="location-pin" size={25} />
+
+            <Text fontSize={15}>Haobam Mark</Text>
+          </HStack>
+          <Pressable
+            onPress={() => {
+              navigation.dispatch(DrawerActions.openDrawer());
+            }}>
+            <Box
+              height={10}
+              width={50}
+              bg={'white'}
+              rounded={'full'}
+              //  shadow={1}
+              alignItems={'center'}
+              justifyContent={'center'}>
+              <Ionicons name="bag" size={30} color="black"></Ionicons>
+            </Box>
+          </Pressable>
+        </HStack>
+      <VStack style={{backgroundColor: COLOURS.background}}  padding={4}>
         <StatusBar backgroundColor="transparent" barStyle="light" />
-        <VStack>
-          <HStack justifyContent={'space-around'}>
-            <Pressable
-              onPress={() => {
-                navigation.dispatch(DrawerActions.openDrawer());
-              }}>
-              <Box
-                height={10}
-                width={50}
-                bg={'white'}
-                rounded={'full'}
-                //  shadow={1}
-                alignItems={'center'}
-                justifyContent={'center'}>
-                <MaterialCommunityIcons
-                  name="dots-grid"
-                  size={25}
-                  color="#900"></MaterialCommunityIcons>
-              </Box>
-            </Pressable>
 
-            <HStack space={2} alignItems="center">
-              <Icons style={{color: 'red'}} name="location-pin" size={25} />
+        
+        <SearchBar />
+        {/* For Branded */}
 
-              <Text fontSize={15}>Haobam Mark</Text>
-            </HStack>
-            <Pressable
-              onPress={() => {
-                navigation.dispatch(DrawerActions.openDrawer());
-              }}>
-              <Box
-                height={10}
-                width={50}
-                bg={'white'}
-                rounded={'full'}
-                //  shadow={1}
-                alignItems={'center'}
-                justifyContent={'center'}>
-                <Ionicons name="bag" size={30} color="black"></Ionicons>
-              </Box>
-            </Pressable>
-          </HStack>
-          <SearchBar />
-          {/* For Branded */}
-
-          <FlatList
-            bottom={5}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            data={categoryList}
-            keyExtractor={item => item.slug}
-            renderItem={({item}) => {
-              return (
-                <Pressable
-                  onPress={() => {
-                    navigation.navigate('ProductDetails', {
-                      slug: item.slug,
-                    });
-                  }}>
-                  <View style={styles.container}>
-                    <View style={styles.imageContainer}>
-                      <Image
-                        source={{
-                          uri: 'https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/1.png',
-                        }} // Replace with your image URL
-                        style={styles.image}
-                        resizeMode="contain"
-                        alt="image"
-                      />
-                    </View>
-                    <Text style={styles.text}>{item.name}</Text>
+        <FlatList
+          mt={2}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          data={categoryList}
+          keyExtractor={item => item.slug}
+          renderItem={({item}) => {
+            return (
+              <Pressable
+                onPress={() => {
+                  navigation.navigate('ProductDetails', {
+                    slug: item.slug,
+                  });
+                }}>
+                <View style={styles.container}>
+                  <View style={styles.imageContainer}>
+                    <Image
+                      source={{
+                        uri: 'https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/1.png',
+                      }} // Replace with your image URL
+                      style={styles.image}
+                      resizeMode="contain"
+                      alt="image"
+                    />
                   </View>
-                </Pressable>
-              );
-            }}
-          />
+                  <Text style={styles.text}>{item.name}</Text>
+                </View>
+              </Pressable>
+            );
+          }}
+        />
 
-          <HStack p={2} justifyContent={'space-between'}>
-            <Text style={{fontFamily: 'bold', fontWeight: 500, fontSize: 18}}>
-              Popular Mobile
-            </Text>
-            <Text style={{color: 'blue'}}>Sell all</Text>
-          </HStack>
-          {/* For ShoesCart */}
+        <HStack p={2} justifyContent={'space-between'}>
+          <Text style={{fontFamily: 'body', fontWeight: 'bold'}}>
+            Popular Mobile
+          </Text>
+          <Text style={{fontFamily: 'body', color: 'blue'}}>See all</Text>
+        </HStack>
+        {/* For ShoesCart */}
 
-          <FlatList
-            // bottom={10}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            data={productList}
-            onEndReached={handleLoadMore}
-            onEndReachedThreshold={0.5}
-            ListFooterComponent={renderFooter}
-            keyExtractor={(item, index) => String(index)}
-            renderItem={({item}) => {
-              return (
-                <Pressable
-                  onPress={() => {
-                    navigation.navigate('Details', {
-                      itemId: item.id,
-                    });
-                  }}>
-                  <Box
-                    width={160}
-                    bg="white"
-                    borderRadius={15}
-                    // shadow={1}
-                    p={3}
-                    m={1}
-                    position="relative">
-                    <VStack space={2}>
-                      <FastImage
-                        style={{height: 120, width: 100}}
-                        source={{uri: `${item.thumbnail}`}}></FastImage>
-                      {/* <Image
+        <FlatList
+          // bottom={10}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          data={productList}
+          onEndReached={handleLoadMore}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={renderFooter}
+          keyExtractor={(item, index) => String(index)}
+          renderItem={({item, index}) => {
+            return (
+              <Pressable
+                key={index.toString()}
+                onPress={() => {
+                  navigation.navigate('Details', {
+                    itemId: item.id,
+                  });
+                }}>
+                <Box
+                  width={160}
+                  bg="white"
+                  borderRadius={15}
+                  // shadow={1}
+                  p={3}
+                  m={1}
+                  position="relative">
+                  <VStack space={2} alignItems={'flex-start'}>
+                    <FastImage
+                      style={{height: 120, width: 100}}
+                      source={{uri: `${item.thumbnail}`}}></FastImage>
+                    {/* <Image
                       source={{uri: `${item.thumbnail}`}}
                       alt={'shoesImage'}
                       size={100}
@@ -202,77 +200,116 @@ const HomeScreen = () => {
                       alignSelf="center"
                       mb={3}
                     /> */}
-                      <Text fontSize="xs" color="blue.500" fontWeight="bold">
-                        {item.title}
-                      </Text>
-                      <Text fontSize="md" fontWeight="bold">
-                        {item.category}
-                      </Text>
-                      <Text fontSize="md" fontWeight="bold">
-                        Rs{item.price}
-                      </Text>
-                    </VStack>
+                    <Text
+                      fontFamily={'body'}
+                      ellipsizeMode="tail"
+                      numberOfLines={1}
+                      fontSize="15"
+                      color="blue.500"
+                      fontWeight="bold">
+                      {item.title}
+                    </Text>
+                    <Rating
+                     type='custom'
+                    //  ratingImage={WATER_IMAGE}
+                     ratingColor='yellow'
+                    //  ratingBackgroundColor='#c8c7c8'
+                     ratingCount={item.rating}
+                     imageSize={15}
+                     onFinishRating={this.ratingCompleted}
+                     style={{  }}
+                    ></Rating>
+                    <Text
+                      numberOfLines={1} // Limit the text to one line
+                      ellipsizeMode="tail"
+                      fontSize="md"
+                      fontWeight="bold">
+                      {item.description}
+                    </Text>
+                    <Text fontSize="md" fontWeight="bold">
+                      ₹{item.price}
+                    </Text>
+                  
+                  </VStack>
 
-                    <Center
-                      borderTopLeftRadius={500}
-                      borderTopRightRadius={300}
-                      borderBottomLeftRadius={25}
-                      borderBottomRightRadius={300}
-                      position="absolute"
-                      bottom={0}
-                      right={0}
-                      bg="blue.500"
-                      borderRadius="full"
-                      size={8}>
-                      <MaterialIcons name="add" size={20} color="white" />
-                    </Center>
-                  </Box>
-                </Pressable>
-              );
-            }}></FlatList>
+                  <Center
+                    borderTopLeftRadius={500}
+                    borderTopRightRadius={300}
+                    borderBottomLeftRadius={25}
+                    borderBottomRightRadius={300}
+                    position="absolute"
+                    bottom={0}
+                    right={0}
+                    bg="blue.500"
+                    borderRadius="full"
+                    size={8}>
+                    <MaterialIcons name="add" size={20} color="white" />
+                  </Center>
+                </Box>
+              </Pressable>
+            );
+          }}></FlatList>
 
-          <HStack p={2} justifyContent={'space-between'}>
-            <Text style={{fontFamily: 'bold', fontWeight: 500, fontSize: 18}}>
-              New Arrivals
-            </Text>
-            <Text style={{color: 'blue'}}>Sell all</Text>
-          </HStack>
-          <FlatList
-            // bottom={2}
-            data={productList}
-            // onEndReached={handleLoadMore}
-            // onEndReachedThreshold={0.5}
-            // ListFooterComponent={renderFooter}
-            horizontal={true}
-            keyExtractor={item => item.id}
-            pagingEnabled={true}
-            // onScroll={handleScroll}
-            renderItem={({item}) => {
-              return (
-                <View style={styles.card}>
-                  <HStack justifyContent={'space-between'}>
-                    <VStack>
-                      <Text style={styles.bestChoiceText}>{item.sku}</Text>
-                      <Text style={styles.productName}>{item.brand}</Text>
-                      <Text styles={styles.price}>Rs{item.price}</Text>
-                    </VStack>
-                    <VStack>
-                      <FastImage
-                        style={styles.productImage}
-                        source={{uri: item.thumbnail}}></FastImage>
-                      {/* <Image
+        <HStack p={2} justifyContent={'space-between'}>
+          <Text style={{fontFamily: 'body', fontWeight: 'bold'}}>
+            New Arrivals
+          </Text>
+          <Text style={{color: 'blue'}}>See all</Text>
+        </HStack>
+        <FlatList
+          // bottom={2}
+          data={productList}
+          // onEndReached={handleLoadMore}
+          // onEndReachedThreshold={0.5}
+          // ListFooterComponent={renderFooter}
+          horizontal={true}
+          keyExtractor={item => item.id}
+          pagingEnabled={true}
+          // onScroll={handleScroll}
+          renderItem={({item, index}) => {
+            return (
+              <View key={index.toString()} style={styles.card}>
+                <HStack justifyContent={'space-between'}>
+                  <VStack alignItems={'flex-start'}>
+                    <Text style={styles.bestChoiceText}>{item.title}</Text>
+                    <Rating
+                     type='custom'
+                    //  ratingImage={WATER_IMAGE}
+                     ratingColor='yellow'
+                    //  ratingBackgroundColor='#c8c7c8'
+                     ratingCount={item.rating}
+                     imageSize={15}
+                     onFinishRating={this.ratingCompleted}
+                     style={{  }}
+                    ></Rating>
+                    <Text
+                      fontFamily={'body'}
+                      ellipsizeMode="tail"
+                      numberOfLines={1}
+                 
+                      // fontWeight="bold"
+                      >
+                      {item.description}</Text>
+                    
+                    <Text styles={styles.price}>₹{item.price}</Text>
+                    
+                  </VStack>
+                  <VStack>
+                    <FastImage
+                      style={styles.productImage}
+                      source={{uri: item.thumbnail}}></FastImage>
+                    {/* <Image
               alt="she"
               resizeMode="cover"
               style={styles.productImage}
               source={{uri: item.thumbnail}}
             /> */}
-                    </VStack>
-                  </HStack>
-                </View>
-              );
-            }}></FlatList>
-        </VStack>
-      </View>
+                  </VStack>
+                </HStack>
+              </View>
+            );
+          }}></FlatList>
+      </VStack>
     </ScrollView>
   );
 };
@@ -288,7 +325,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 15,
     margin: 2,
-    height: 50,
+    height: 35,
   },
   imageContainer: {
     width: 30,
@@ -300,7 +337,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: 20,
-    height: 20,
+    height: 18,
   },
   text: {
     marginLeft: 10,
@@ -352,7 +389,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 20,
 
-    padding: 30,
+    padding: 20,
 
     // shadowColor: '#000',
     // shadowOffset: { width: 0, height: 0 },
@@ -366,19 +403,24 @@ const styles = StyleSheet.create({
   },
   bestChoiceText: {
     color: '#50C878',
-    fontSize: 20,
+    fontSize: 15,
     fontWeight: 'bold',
     marginBottom: 5,
+    ellipsizeMode: 'tail',
+    numberOfLines: 1,
   },
   productName: {
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 5,
+    ellipsizeMode: 'tail',
+    numberOfLines: 1,
   },
   price: {
-    fontSize: FONTSIZE.Size16,
-    color: '#555',
+    fontSize: 18,
+    // color: '#555',
     marginBottom: 10,
+    fontWeight: 'bold'
   },
   productImage: {
     width: 100,
