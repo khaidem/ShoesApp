@@ -27,16 +27,13 @@ import {fetchCategory} from '../../redux/reducers/CategorySlice';
 import {ActivityIndicator, Dimensions, StyleSheet} from 'react-native';
 import {fetchProduct} from '../../redux/reducers/ProductSlice';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import ColorConstant from '../../constant/ColorConstant';
-import {fetchSingleProduct} from '../../redux/reducers/SingleProductReducer';
+
 import FastImage from 'react-native-fast-image';
-import { Rating } from 'react-native-ratings';
+import {Rating} from 'react-native-ratings';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
-  const {loading: loading1, categoryList} = useSelector(
-    state => state.categories,
-  );
+  const {categoryList} = useSelector(state => state.categories);
   const {
     loading: loading2,
     productList,
@@ -64,7 +61,7 @@ const HomeScreen = () => {
     );
   };
 
-  if (loading1) {
+  if (loading2) {
     return (
       <HStack flex={1} space={2} justifyContent="center" alignContent="center">
         <Spinner size="lg">Loading</Spinner>
@@ -73,95 +70,81 @@ const HomeScreen = () => {
   }
 
   return (
-    <ScrollView>
-      <HStack justifyContent={'space-around'} mt={2} style={{backgroundColor: COLOURS.background}}>
-          <Pressable
-            onPress={() => {
-              navigation.dispatch(DrawerActions.openDrawer());
-            }}>
-            <Box
-              height={10}
-              width={50}
-              bg={'white'}
-              rounded={'full'}
-              //  shadow={1}
-              alignItems={'center'}
-              justifyContent={'center'}>
-              <MaterialCommunityIcons
-                name="dots-grid"
-                size={25}
-                color="#900"></MaterialCommunityIcons>
-            </Box>
-          </Pressable>
-
-          <HStack space={2} alignItems="center">
-            <Icons style={{color: 'red'}} name="location-pin" size={25} />
-
-            <Text fontSize={15}>Haobam Mark</Text>
-          </HStack>
-          <Pressable
-            onPress={() => {
-              navigation.dispatch(DrawerActions.openDrawer());
-            }}>
-            <Box
-              height={10}
-              width={50}
-              bg={'white'}
-              rounded={'full'}
-              //  shadow={1}
-              alignItems={'center'}
-              justifyContent={'center'}>
-              <Ionicons name="bag" size={30} color="black"></Ionicons>
-            </Box>
-          </Pressable>
-        </HStack>
-      <VStack style={{backgroundColor: COLOURS.background}}  padding={4}>
-        <StatusBar backgroundColor="transparent" barStyle="light" />
-
-        
-        <SearchBar />
-        {/* For Branded */}
-
-        <FlatList
-          mt={2}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          data={categoryList}
-          keyExtractor={item => item.slug}
-          renderItem={({item}) => {
-            return (
-              <Pressable
-                onPress={() => {
-                  navigation.navigate('ProductDetails', {
-                    slug: item.slug,
-                  });
-                }}>
-                <View style={styles.container}>
-                  <View style={styles.imageContainer}>
-                    <Image
-                      source={{
-                        uri: 'https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/1.png',
-                      }} // Replace with your image URL
-                      style={styles.image}
-                      resizeMode="contain"
-                      alt="image"
-                    />
-                  </View>
-                  <Text style={styles.text}>{item.name}</Text>
+    <View style={styles.conatiner}>
+      <View style={styles.header}>
+        <Pressable
+          onPress={() => {
+            navigation.dispatch(DrawerActions.openDrawer());
+          }}>
+          <Box
+            height={10}
+            width={50}
+            bg={'white'}
+            rounded={'full'}
+            //  shadow={1}
+            alignItems={'center'}
+            justifyContent={'center'}>
+            <MaterialCommunityIcons
+              name="dots-grid"
+              size={25}
+              color="#900"></MaterialCommunityIcons>
+          </Box>
+        </Pressable>
+        <Text fontSize={15}>Haobam Mark</Text>
+        <Pressable
+          onPress={() => {
+            navigation.dispatch(DrawerActions.openDrawer());
+          }}>
+          <Box
+            height={10}
+            width={50}
+            bg={'white'}
+            rounded={'full'}
+            //  shadow={1}
+            alignItems={'center'}
+            justifyContent={'center'}>
+            <Ionicons name="bag" size={30} color="black"></Ionicons>
+          </Box>
+        </Pressable>
+      </View>
+      <SearchBar />
+      <FlatList
+        mt={2}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        data={categoryList}
+        keyExtractor={item => item.slug}
+        renderItem={({item}) => {
+          return (
+            <Pressable
+              onPress={() => {
+                navigation.navigate('ProductDetails', {
+                  slug: item.slug,
+                });
+              }}>
+              <View style={styles.categories}>
+                <View style={styles.imageContainer}>
+                  <Image
+                    source={{
+                      uri: 'https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/1.png',
+                    }} // Replace with your image URL
+                    style={styles.image}
+                    resizeMode="contain"
+                    alt="image"
+                  />
                 </View>
-              </Pressable>
-            );
-          }}
-        />
-
-        <HStack p={2} justifyContent={'space-between'}>
-          <Text style={{fontFamily: 'body', fontWeight: 'bold'}}>
+                <Text style={styles.text}>{item.name}</Text>
+              </View>
+            </Pressable>
+          );
+        }}
+      />
+   <HStack bottom={5} justifyContent={'space-between'}>
+          <Text style={styles.styleText}>
             Popular Mobile
           </Text>
           <Text style={{fontFamily: 'body', color: 'blue'}}>See all</Text>
         </HStack>
-        {/* For ShoesCart */}
-
         <FlatList
           // bottom={10}
           horizontal
@@ -249,9 +232,8 @@ const HomeScreen = () => {
               </Pressable>
             );
           }}></FlatList>
-
-        <HStack p={2} justifyContent={'space-between'}>
-          <Text style={{fontFamily: 'body', fontWeight: 'bold'}}>
+           <HStack bottom={5}  justifyContent={'space-between'}>
+          <Text style={styles.styleText}>
             New Arrivals
           </Text>
           <Text style={{color: 'blue'}}>See all</Text>
@@ -259,9 +241,9 @@ const HomeScreen = () => {
         <FlatList
           // bottom={2}
           data={productList}
-          // onEndReached={handleLoadMore}
-          // onEndReachedThreshold={0.5}
-          // ListFooterComponent={renderFooter}
+          onEndReached={handleLoadMore}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={renderFooter}
           horizontal={true}
           keyExtractor={item => item.id}
           pagingEnabled={true}
@@ -269,7 +251,7 @@ const HomeScreen = () => {
           renderItem={({item, index}) => {
             return (
               <View key={index.toString()} style={styles.card}>
-                <HStack justifyContent={'space-between'}>
+                <HStack>
                   <VStack alignItems={'flex-start'}>
                     <Text style={styles.bestChoiceText}>{item.title}</Text>
                     <Rating
@@ -288,44 +270,61 @@ const HomeScreen = () => {
                       numberOfLines={1}
                  
                       // fontWeight="bold"
-                      >
-                      {item.description}</Text>
+                      ><Text fontWeight={'bold'}>Brand Name : </Text>
+                       {item.brand}</Text>
                     
                     <Text styles={styles.price}>₹{item.price}</Text>
                     
                   </VStack>
-                  <VStack>
+                  
                     <FastImage
                       style={styles.productImage}
                       source={{uri: item.thumbnail}}></FastImage>
-                    {/* <Image
-              alt="she"
-              resizeMode="cover"
-              style={styles.productImage}
-              source={{uri: item.thumbnail}}
-            /> */}
-                  </VStack>
+                   
+                  
                 </HStack>
               </View>
             );
           }}></FlatList>
-      </VStack>
-    </ScrollView>
+
+    </View>
   );
 };
 
 export default HomeScreen;
 
 const styles = StyleSheet.create({
-  container: {
+  conatiner: {
+    flex: 1,
+    padding: 5,
+    backgroundColor: COLOURS.background,
+  },
+  header: {
+    marginTop: 3,
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    alignItems: 'center',
+    // backgroundColor: '#5DADE2', // Blue color similar to the image
+    borderRadius: 100, // Rounded corners
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    // margin: 2,
+    height: 35,
+  },
+  categories: {
+    marginTop: 5,
+
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#5DADE2', // Blue color similar to the image
     borderRadius: 100, // Rounded corners
     paddingVertical: 5,
     paddingHorizontal: 15,
-    margin: 2,
+    // margin: 2,
     height: 35,
+  },
+  styleText: {
+    fontFamily: 'body', fontWeight: 'bold', color:'black' , fontSize: 15
   },
   imageContainer: {
     width: 30,
@@ -420,12 +419,14 @@ const styles = StyleSheet.create({
     fontSize: 18,
     // color: '#555',
     marginBottom: 10,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   productImage: {
-    width: 100,
-    height: 100,
+  justifyContent: 'center',
+  alignItems: 'center',
     resizeMode: 'cover',
+    width: 100,
+    height: 100
   },
   loadingContainer: {
     justifyContent: 'center',

@@ -3,6 +3,7 @@ import {
   Button,
   FlatList,
   HStack,
+  ScrollView,
   Spinner,
   Text,
   View,
@@ -21,8 +22,6 @@ import FastImage from 'react-native-fast-image';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DetailsScreen = ({route}) => {
-  const sizes = [38, 39, 40, 41, 42, 43];
-  const [selectedSize, setSelectedSize] = useState(null);
   const navigation = useNavigation();
 
   const {itemId} = route.params;
@@ -59,6 +58,7 @@ const DetailsScreen = ({route}) => {
           </Box>
         </Pressable>
 
+        <HStack alignItems="center">
         <Text
           ellipsizeMode="tail"
           numberOfLines={1}
@@ -66,6 +66,9 @@ const DetailsScreen = ({route}) => {
           fontFamily={'body'}>
           {SingleProduct?.title}
         </Text>
+        </HStack>
+
+      
         <Box
           bg={COLOURS.white}
           p={2}
@@ -76,8 +79,9 @@ const DetailsScreen = ({route}) => {
           <Icons name="shopping-bag" size={20} color="black"></Icons>
         </Box>
       </HStack>
-      <HStack alignItems={'center'}>
-        {/* /// For Image  */}
+
+      {/* /// For Image  */}
+      <View flex={15}>
         <FlatList
           data={SingleProduct.images}
           horizontal
@@ -94,20 +98,19 @@ const DetailsScreen = ({route}) => {
               </View>
             );
           }}></FlatList>
-      </HStack>
+      </View>
 
       {/* // For Item Image Show */}
-
-      <View style={styles.menu}>
-        <VStack>
+      <ScrollView>
+        <View style={styles.menu}>
           <Text
-            fontSize={20}
+            fontSize={15}
             fontFamily={'body'}
             color={COLOURS.secondary}
             fontWeight={'bold'}>
             BEST SELLER
           </Text>
-          <Text fontFamily={'body'} fontSize={25}>
+          <Text fontFamily={'body'} fontSize={18} fontWeight={'bold'}>
             {SingleProduct?.title}
           </Text>
           {/* <Text fontSize={25} fontFamily={'body'}>
@@ -120,115 +123,88 @@ const DetailsScreen = ({route}) => {
             {SingleProduct?.description}
           </Text>
 
-          <VStack top={1}>
-            <Text fontSize={20} fontFamily={'body'}>
-              Gallery
-            </Text>
+          <Text fontSize={15} fontFamily={'body'} fontWeight={'bold'}>
+            Gallery
+          </Text>
 
-            {/* //For Gallery Image  */}
-            <FlatList
-              horizontal
-              keyExtractor={item => item.id}
-              showsHorizontalScrollIndicator={false}
-              data={SingleProduct.images}
-              renderItem={({item, index}) => (
-                <Box
-                  key={index.toString()}
-                  mr={2}
-                  bg={COLOURS.bg}
-                  borderRadius={10}>
-                  <FastImage
-                    resizeMode={FastImage.resizeMode.contain}
-                    style={{padding: 40, justifyContent: 'center'}}
-                    source={{uri: item}}></FastImage>
-                  {/* <Image
+          {/* //For Gallery Image  */}
+          <FlatList
+            horizontal
+            keyExtractor={item => item.id}
+            showsHorizontalScrollIndicator={false}
+            data={SingleProduct.images}
+            renderItem={({item, index}) => (
+              <Box
+                key={index.toString()}
+                mr={2}
+                bg={COLOURS.bg}
+                borderRadius={10}>
+                <FastImage
+                  resizeMode={FastImage.resizeMode.contain}
+                  style={{padding: 25, justifyContent: 'center'}}
+                  source={{uri: item}}></FastImage>
+                {/* <Image
                     source={{uri: item}}
                     alt="shoes"
                     height={20}
                     width={60}></Image> */}
-                </Box>
-              )}></FlatList>
-          </VStack>
-        </VStack>
-        <HStack top={5} justifyContent={'space-between'}>
-          <Text fontSize={20} fontFamily={'body'}>
+              </Box>
+            )}></FlatList>
+
+          {/* </VStack> */}
+
+          <Text fontSize={15} fontFamily={'body'} fontWeight={'bold'}>
             Dimensions
           </Text>
-        </HStack>
-        <VStack top={5}>
+
           <Text fontSize={FONTSIZE.Size16} fontFamily={'body'}>
-            <Text fontSize={15} fontFamily={'body'}>
+            <Text fontSize={13} fontFamily={'body'}>
               {'Width :' + SingleProduct.dimensions?.width}
             </Text>
           </Text>
           <Text fontSize={FONTSIZE.Size16} fontFamily={'body'}>
-            <Text fontSize={15} fontFamily={'body'}>
+            <Text fontSize={13} fontFamily={'body'}>
               {'Height :' + SingleProduct.dimensions?.height}
             </Text>
           </Text>
           <Text fontSize={FONTSIZE.Size16} fontFamily={'body'}>
-            <Text fontSize={15} fontFamily={'body'}>
+            <Text fontSize={13} fontFamily={'body'}>
               {'Depth :' + SingleProduct.dimensions?.depth}
             </Text>
           </Text>
-        </VStack>
-        <HStack top={5} justifyContent={'space-between'}>
-          {/* <FlatList
-            horizontal
-            data={sizes}
-            keyExtractor={item => item.toString()}
-            renderItem={({item}) => {
-              // const isSelected = item == selectedSize;
-              return (
-                <Pressable onPress={() => setSelectedSize(item)}>
-                  <Box
-                    bg={isSelected ? 'blue.500' : 'gray.100'}
-                    borderRadius={'full'}
-                    p={4}
-                    mr={3}
-                    alignItems={'center'}
-                    justifyContent={'center'}
-                    shadow={isSelected ? 3 : 0}>
-                    <Text color={isSelected ? 'white' : 'gray.500'}>
-                      {item}
-                    </Text>
-                  </Box>
-                </Pressable>
-              );
-            }}></FlatList> */}
-        </HStack>
-        <HStack justifyContent={'space-between'} top={10}>
-          <VStack>
-            <Text fontSize={FONTSIZE.Size16} fontFamily={'body'}>
-              Price
-            </Text>
+
+          <Text fontSize={FONTSIZE.Size16} fontFamily={'body'}>
+            Price
+          </Text>
+          <HStack justifyContent={'space-between'}>
             <Text fontSize={25} fontFamily={'body'}>
               {'₹' + SingleProduct?.price}
             </Text>
-          </VStack>
-          <Button
-            onPress={async () => {
-              try {
-                let cartList = [];
-                const data = await AsyncStorage.getItem('cart');
-                cartList = await JSON.parse(data) || [];
-                cartList.push(SingleProduct)
-                const jsonValue = JSON.stringify(cartList);
-                await AsyncStorage.setItem('cart', jsonValue);
-                Alert.alert('Success', 'Product Save Successfully');
-              } catch (error) {
-                console.log(error);
-              }
-              navigation.navigate('MyCart');
-            }}
-            bg={COLOURS.secondary}
-            width={120}
-            height={50}
-            borderRadius={25}>
-            Add To Cart
-          </Button>
-        </HStack>
-      </View>
+
+            <Button
+              onPress={async () => {
+                try {
+                  let cartList = [];
+                  const data = await AsyncStorage.getItem('cart');
+                  cartList = (await JSON.parse(data)) || [];
+                  cartList.push(SingleProduct);
+                  const jsonValue = JSON.stringify(cartList);
+                  await AsyncStorage.setItem('cart', jsonValue);
+                  Alert.alert('Success', 'Product Save Successfully');
+                } catch (error) {
+                  console.log(error);
+                }
+                navigation.navigate('MyCart');
+              }}
+              bg={COLOURS.secondary}
+              width={120}
+              height={50}
+              borderRadius={25}>
+              Add To Cart
+            </Button>
+          </HStack>
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -237,18 +213,27 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    left: 50,
+    // left: 50,
+    width: 300,
+    
     justifyContent: 'center',
     alignItems: 'center',
   },
   menu: {
-    flex: 20,
+    flex: 1,
+
     padding: 15,
     backgroundColor: 'white',
     overflow: 'hidden',
     borderTopRightRadius: 28,
     borderTopLeftRadius: 28,
     overflow: 'hidden',
+  },
+  footer: {
+    height: 50, // Fixed height for footer
+    backgroundColor: 'lightcoral',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 export default DetailsScreen;
