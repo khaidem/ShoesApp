@@ -5,6 +5,7 @@ import {
   FlatList,
   HStack,
   Image,
+  ScrollView,
   Text,
   View,
   VStack,
@@ -18,6 +19,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const MyCartScreen = ({navigation}) => {
   const [productList, setProduct] = useState([]);
+  const [counter, setCounter] = useState(1);
 
   useEffect(() => {
     getObject();
@@ -26,26 +28,34 @@ const MyCartScreen = ({navigation}) => {
   const getObject = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem('cart');
-      Data = JSON.parse(jsonValue);
+      retrievedProduct = JSON.parse(jsonValue);
       // const retrievedProduct = jsonValue != null ? JSON.parse(jsonValue) : null;
       // console.log('Retrieved product:', retrievedProduct);
-      setProduct(Data);
-      console.log("add new",Data)
+      setProduct(retrievedProduct);
+   
     } catch (e) {
       console.error('Error retrieving object:', e);
     }
   };
+  const incrementCounter = () => {
+    setCounter(counter + 1);
+  };
+  const decrementCounter = () => {
+    if (counter !== 0) {
+        setCounter(counter - 1);
+     }
+   };
   const handleIncrease = id => {
     let items = [...productList];
     let quantity = items.map((value, key) => {
       if (value.id === id) {
-        qty = +value.minimumOrderQuantity + 1;
+        qty =+ value.minimumOrderQuantity + 1;
         return {...value, minimumOrderQuantity: qty};
       } else {
         return value;
       }
     });
-    console.log(quantity);
+    console.log("Change",quantity);
     return setProduct(quantity);
   };
   const handleDecrease = id => {
@@ -74,7 +84,7 @@ const MyCartScreen = ({navigation}) => {
   //   return <Text>No Cart Found</Text>
   // }
   return (
-    <View flex={5}>
+    <View style={styles.container}>
       <HStack justifyContent={'space-between'} p={2}>
         <Pressable
           onPress={() => {
@@ -103,7 +113,8 @@ const MyCartScreen = ({navigation}) => {
         data={productList}
         keyExtractor={item => item.id}
         renderItem={({item, index}) => (
-          <HStack p={2}>
+         
+            <HStack key={index.toString()} mx={5}>
             <Box
               padding={1}
               bg={COLOURS.white}
@@ -127,7 +138,7 @@ const MyCartScreen = ({navigation}) => {
                 </Text>
                 <HStack space={2}>
                   <Button
-                    onPress={() => handleDecrease(item.id)}
+                    onPress={() => decrementCounter()}
                     // borderWidth={1}
                     bg={COLOURS.white}
                     p={2}
@@ -159,11 +170,13 @@ const MyCartScreen = ({navigation}) => {
               <AntDesign name="delete" size={18} color="black"></AntDesign>
             </Pressable>
           </HStack>
+          
+          
         )}></FlatList>
 
       {/* /// For Menu */}
       <View style={styles.menu}>
-        <VStack>
+        <VStack pb={2}>
           <HStack justifyContent={'space-between'}>
             <Text fontFamily={'body'} fontSize={15}>
               SubTotal
@@ -205,10 +218,10 @@ const MyCartScreen = ({navigation}) => {
                 AsyncStorage.removeItem('cart');
                 navigation.navigate('Checkout');
               }}
-              top={3}
+            
               borderRadius={30}
               bg={'#5B9EE1'}
-              height={'40%'}
+              // height={'40%'}
               _text={{fontSize: FONTSIZE.Size14, fontFamily: 'body'}}
               fontFamily={'body'}>
               CheckOut
@@ -221,11 +234,15 @@ const MyCartScreen = ({navigation}) => {
 };
 const styles = StyleSheet.create({
   container: {
-    // padding: 10
+    flex: 1
   },
   menu: {
-    flex: -1,
-    // height: ,
+    bottom:25,
+    marginVertical: 2,
+    left: 0,
+    right: 0,
+    position: 'absolute',
+ 
     padding: 20,
     backgroundColor: 'white',
     overflow: 'hidden',

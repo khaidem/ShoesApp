@@ -1,8 +1,10 @@
 import {
   Box,
+  Card,
   Center,
   FlatList,
   HStack,
+  Icon,
   Image,
   Pressable,
   ScrollView,
@@ -11,11 +13,11 @@ import {
   Text,
   View,
   VStack,
+  CardItem
 } from 'native-base';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, } from 'react';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Icons from 'react-native-vector-icons/MaterialIcons';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {COLOURS, FONTSIZE} from '../../constant/Constant';
@@ -72,6 +74,39 @@ const HomeScreen = () => {
   return (
     <View style={styles.conatiner}>
       <View style={styles.header}>
+        {/* // For header   */}
+        <Box
+          height={10}
+          width={50}
+          bg={'white'}
+          rounded={'full'}
+          //  shadow={1}
+          alignItems={'center'}
+          justifyContent={'center'}>
+          <Pressable
+            onPress={() => {
+              navigation.dispatch(DrawerActions.openDrawer());
+            }}>
+            <Icon
+              size={6}
+              color={'black'}
+              as={
+                <MaterialCommunityIcons name="dots-grid"></MaterialCommunityIcons>
+              }
+            />
+          </Pressable>
+        </Box>
+        <HStack>
+          <Icon
+            size={5}
+            color={'#900'}
+            as={<Ionicons name="location"></Ionicons>}
+          />
+          <Text alignItems={'center'} fontSize={15}>
+            Haobam Mark
+          </Text>
+        </HStack>
+
         <Pressable
           onPress={() => {
             navigation.dispatch(DrawerActions.openDrawer());
@@ -84,69 +119,61 @@ const HomeScreen = () => {
             //  shadow={1}
             alignItems={'center'}
             justifyContent={'center'}>
-            <MaterialCommunityIcons
-              name="dots-grid"
-              size={25}
-              color="#900"></MaterialCommunityIcons>
-          </Box>
-        </Pressable>
-        <Text fontSize={15}>Haobam Mark</Text>
-        <Pressable
-          onPress={() => {
-            navigation.dispatch(DrawerActions.openDrawer());
-          }}>
-          <Box
-            height={10}
-            width={50}
-            bg={'white'}
-            rounded={'full'}
-            //  shadow={1}
-            alignItems={'center'}
-            justifyContent={'center'}>
-            <Ionicons name="bag" size={30} color="black"></Ionicons>
+            <Icon
+              size={6}
+              color={'black'}
+              as={<Ionicons name="bag" color="black"></Ionicons>}
+            />
           </Box>
         </Pressable>
       </View>
       <SearchBar />
-      <FlatList
-        mt={2}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        data={categoryList}
-        keyExtractor={item => item.slug}
-        renderItem={({item}) => {
-          return (
-            <Pressable
-              onPress={() => {
-                navigation.navigate('ProductDetails', {
-                  slug: item.slug,
-                });
-              }}>
-              <View style={styles.categories}>
-                <View style={styles.imageContainer}>
-                  <Image
-                    source={{
-                      uri: 'https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/1.png',
-                    }} // Replace with your image URL
-                    style={styles.image}
-                    resizeMode="contain"
-                    alt="image"
-                  />
+
+      <View>
+        <FlatList
+          mt={2}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          data={categoryList}
+          keyExtractor={item => item.slug}
+          renderItem={({item}) => {
+            return (
+              <Pressable
+                onPress={() => {
+                  navigation.navigate('ProductDetails', {
+                    slug: item.slug,
+                  });
+                }}>
+                <View style={styles.categories}>
+                  <View style={styles.imageContainer}>
+                    <FastImage
+                      style={{
+                        height: 30,
+                        width: 25,
+                      }}
+                      source={{
+                        uri: 'https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/1.png',
+                      }}
+                    />
+                  </View>
+                  <Text style={{marginLeft: 5}}>{item.name}</Text>
                 </View>
-                <Text style={styles.text}>{item.name}</Text>
-              </View>
-            </Pressable>
-          );
-        }}
-      />
-   <HStack bottom={5} justifyContent={'space-between'}>
-          <Text style={styles.styleText}>
-            Popular Mobile
-          </Text>
+              </Pressable>
+            );
+          }}
+        />
+      </View>
+
+
+      {/* /// For Popular */}
+
+      <View>
+        <HStack mt={5} justifyContent={'space-between'}>
+          <Text style={styles.styleText}>Popular Mobile</Text>
           <Text style={{fontFamily: 'body', color: 'blue'}}>See all</Text>
         </HStack>
         <FlatList
-          // bottom={10}
+           mt={5}
           horizontal
           showsHorizontalScrollIndicator={false}
           data={productList}
@@ -193,26 +220,23 @@ const HomeScreen = () => {
                       {item.title}
                     </Text>
                     <Rating
-                     type='custom'
-                    //  ratingImage={WATER_IMAGE}
-                     ratingColor='yellow'
-                    //  ratingBackgroundColor='#c8c7c8'
-                     ratingCount={item.rating}
-                     imageSize={15}
-                     onFinishRating={this.ratingCompleted}
-                     style={{  }}
-                    ></Rating>
+                      type="custom"
+                      //  ratingImage={WATER_IMAGE}
+                      ratingColor="yellow"
+                      //  ratingBackgroundColor='#c8c7c8'
+                      ratingCount={item.rating}
+                      imageSize={15}
+                      onFinishRating={this.ratingCompleted}
+                      style={{}}></Rating>
                     <Text
                       numberOfLines={1} // Limit the text to one line
                       ellipsizeMode="tail"
-                      fontSize="md"
-                      fontWeight="bold">
+                      fontSize="sm">
                       {item.description}
                     </Text>
                     <Text fontSize="md" fontWeight="bold">
                       ₹{item.price}
                     </Text>
-                  
                   </VStack>
 
                   <Center
@@ -232,62 +256,73 @@ const HomeScreen = () => {
               </Pressable>
             );
           }}></FlatList>
-           <HStack bottom={5}  justifyContent={'space-between'}>
-          <Text style={styles.styleText}>
-            New Arrivals
-          </Text>
-          <Text style={{color: 'blue'}}>See all</Text>
+          {/* //For New Arrivals */}
+
+          
+        <HStack mt={5} justifyContent={'space-between'}>
+          <Text style={styles.styleText}>New Arrivals</Text>
+          <Text style={{color: 'blue', fontSize: 15}}>See all</Text>
         </HStack>
+        </View>
+        <View>
         <FlatList
-          // bottom={2}
+          mt={5}
           data={productList}
           onEndReached={handleLoadMore}
           onEndReachedThreshold={0.5}
           ListFooterComponent={renderFooter}
+          showsVerticalScrollIndicator={false}
           horizontal={true}
           keyExtractor={item => item.id}
           pagingEnabled={true}
           // onScroll={handleScroll}
           renderItem={({item, index}) => {
             return (
+
+             
               <View key={index.toString()} style={styles.card}>
-                <HStack>
-                  <VStack alignItems={'flex-start'}>
+                <HStack alignItems={'start'}>
+                  <VStack >
                     <Text style={styles.bestChoiceText}>{item.title}</Text>
                     <Rating
-                     type='custom'
-                    //  ratingImage={WATER_IMAGE}
-                     ratingColor='yellow'
-                    //  ratingBackgroundColor='#c8c7c8'
-                     ratingCount={item.rating}
-                     imageSize={15}
-                     onFinishRating={this.ratingCompleted}
-                     style={{  }}
-                    ></Rating>
+                      type="custom"
+                      //  ratingImage={WATER_IMAGE}
+                      ratingColor="yellow"
+                      //  ratingBackgroundColor='#c8c7c8'
+                      ratingCount={item.rating}
+                      imageSize={20}
+                      onFinishRating={this.ratingCompleted}
+                      style={{alignItems: 'flex-start'}}></Rating>
+
+                   
+
+                 
+                    <HStack justifyContent={'space-between'}>
                     <Text
                       fontFamily={'body'}
                       ellipsizeMode="tail"
                       numberOfLines={1}
-                 
+
                       // fontWeight="bold"
-                      ><Text fontWeight={'bold'}>Brand Name : </Text>
-                       {item.brand}</Text>
-                    
-                    <Text styles={styles.price}>₹{item.price}</Text>
-                    
-                  </VStack>
-                  
+                    >
+                      <Text fontWeight={'bold'}>Brand Name : </Text>
+                      {item.brand}
+                    </Text>
                     <FastImage
-                      style={styles.productImage}
-                      source={{uri: item.thumbnail}}></FastImage>
-                   
-                  
+                    style={{width: 100,
+                      height: 70,}}
+                    source={{uri: item.thumbnail}}></FastImage>
+                    </HStack>
+                    <Text styles={styles.price}>₹{item.price}</Text>
+                  </VStack>
+
+               
                 </HStack>
               </View>
             );
           }}></FlatList>
-
-    </View>
+      </View>
+     </View>
   );
 };
 
@@ -296,35 +331,40 @@ export default HomeScreen;
 const styles = StyleSheet.create({
   conatiner: {
     flex: 1,
-    padding: 5,
+    padding: 15,
     backgroundColor: COLOURS.background,
   },
   header: {
     marginTop: 3,
+
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
     // backgroundColor: '#5DADE2', // Blue color similar to the image
     borderRadius: 100, // Rounded corners
-    paddingVertical: 5,
-    paddingHorizontal: 15,
+    // paddingVertical: 5,
+    // paddingHorizontal: 15,
     // margin: 2,
     height: 35,
   },
   categories: {
     marginTop: 5,
-
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#5DADE2', // Blue color similar to the image
     borderRadius: 100, // Rounded corners
-    paddingVertical: 5,
+    paddingVertical: 8,
+
     paddingHorizontal: 15,
     // margin: 2,
-    height: 35,
+    height: 40,
   },
+
   styleText: {
-    fontFamily: 'body', fontWeight: 'bold', color:'black' , fontSize: 15
+    fontFamily: 'body',
+    fontWeight: 'bold',
+    color: 'black',
+    fontSize: 15,
   },
   imageContainer: {
     width: 30,
@@ -334,59 +374,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  image: {
-    width: 20,
-    height: 18,
-  },
-  text: {
-    marginLeft: 10,
-    color: '#fff', // White text color
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
 
-  ///For Shoes Cart
-
-  container1: {
-    paddingHorizontal: 15,
-    // height: 100,
-  },
-  card1: {
-    backgroundColor: 'white',
-    borderRadius: 2,
-    padding: 5,
-    marginRight: 5,
-    width: 20, // Adjust width as needed
-
-    alignItems: 'center',
-    // shadowColor: '#000',
-    // shadowOffset: {width: 0, height: 2},
-    // shadowOpacity: 0.2,
-    shadowRadius: 1,
-    // elevation: 1,
-  },
-  image1: {
-    width: 150,
-    // height: 150,
-    borderRadius: 10,
-    marginRight: 10,
-  },
-  title1: {
-    fontSize: FONTSIZE.Size16,
-    fontWeight: 'bold',
-    color: COLOURS.secondary,
-
-    alignSelf: 'flex-start',
-  },
-  subtitle1: {
-    fontSize: FONTSIZE.Size14,
-    color: '#666',
-    alignSelf: 'flex-start',
-  },
   /// For Slider
   card: {
     backgroundColor: 'white',
     borderRadius: 20,
+    alignItems:'start',
 
     padding: 20,
 
@@ -402,35 +395,25 @@ const styles = StyleSheet.create({
   },
   bestChoiceText: {
     color: '#50C878',
-    fontSize: 15,
-    fontWeight: 'bold',
-    marginBottom: 5,
-    ellipsizeMode: 'tail',
-    numberOfLines: 1,
-  },
-  productName: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 5,
-    ellipsizeMode: 'tail',
-    numberOfLines: 1,
-  },
-  price: {
     fontSize: 18,
-    // color: '#555',
-    marginBottom: 10,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    ellipsizeMode: 'tail',
+    numberOfLines: 1,
+  },
+
+  price: {
+    fontSize: 20,
+
+    // marginBottom: 10,
     fontWeight: 'bold',
   },
   productImage: {
-  justifyContent: 'center',
-  alignItems: 'center',
+    // justifyContent: 'center',
+    // alignItems: 'center',
     resizeMode: 'cover',
     width: 100,
-    height: 100
-  },
-  loadingContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 10,
+    height: 100,
+   padding: 19
   },
 });

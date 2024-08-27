@@ -11,6 +11,8 @@ import {
   HStack,
   Toast,
   useToast,
+  ScrollView,
+  Alert,
 } from 'native-base';
 
 import React, {useEffect, useState} from 'react';
@@ -22,14 +24,14 @@ import {useDispatch, useSelector} from 'react-redux';
 import {loginUser} from '../../redux/reducers/LoginSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomForm from '../../component/FormControl';
-import { COLOURS } from '../../constant/Constant';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { COLOURS, FONTSIZE } from '../../constant/Constant';
 
 const SigInScreen = pros => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = React.useState({});
+  
   
 
   const isShowPassword = () => {
@@ -64,7 +66,8 @@ const SigInScreen = pros => {
   // For loginButton
   const submitLogin = async () => {
     dispatch(loginUser({username, password}));
-    await AsyncStorage.setItem('token', JSON.stringify({username, password}));
+  
+    // await AsyncStorage.setItem('token', JSON.stringify({username, password}));
   };
   useEffect(() => {
     if (user) {
@@ -73,155 +76,167 @@ const SigInScreen = pros => {
   }, [user, pros]);
 
   return (
-    <View style={styles.container}>
-      <KeyboardAwareScrollView>
-      <Center mt={20}>
-          <Text
-            fontSize={'28px'}
-          
-            fontFamily={'body'}
-            fontWeight={'bold'}
-            color={'#1A2530'}>
-            Hello Again !
-          </Text>
-          <Text
-            fontWeight={'400'}
-            fontFamily={'body'}
-            fontSize={'16px'}
-            color={'#707B81'}>
-            Welcome Back You've Been Missed!
-          </Text>
-        </Center>
-
-        {/* //For Form */}
-        <View style={styles.form}>
-        <FormControl isInvalid={'username' in errors}>
-          <FormControl.Label
-            _text={{
-              fontFamily: 'body',
-              fontWeight: 500,
-              fontSize: 16,
-              color: '#1A2530',
-            }}>
-            Username
-          </FormControl.Label>
-          <Input
-          
-            variant="rounded"
-            autoCapitalize="none"
-            // value={username}
-            backgroundColor={COLOURS.white}
-            
-            p={2}
-            placeholder="Username"
-            fontFamily={'body'}
-            onChangeText={username => setUsername(username)}
-          />
-          {'username' in errors ? (
-            <FormControl.ErrorMessage>
-              {errors.username}
-            </FormControl.ErrorMessage>
-          ) : null}
-        </FormControl>
-        <FormControl isInvalid={'password' in errors}>
-          <FormControl.Label
-            _text={{
-              fontFamily: 'body',
-              fontWeight: 500,
-              fontSize: 16,
-              color: '#1A2530',
-            }}>
-            Password
-          </FormControl.Label>
-          <Input
-            fontFamily={'body'}
-            autoCapitalize="none"
-            backgroundColor={COLOURS.white}
-            // value={password}
-            type={showPassword? 'text': 'password'}
-            InputRightElement={
-              <Pressable onPress={isShowPassword}>
-                <Icon
-                  as={
-                    <MaterialIcons
-                      name={showPassword ? 'visibility' : 'visibility-off'}
-                    />
-                  }
-                  size={5}
-                  mr="2"
-                  color="black"></Icon>
-              </Pressable>
-            }
-            variant="rounded"
-            p={2}
-            placeholder={'*******'}
-            onChangeText={password => setPassword(password)}
-          />
-          {'password' in errors ? (
-            <FormControl.ErrorMessage>
-              {errors.password}
-            </FormControl.ErrorMessage>
-          ) : null}
-        </FormControl>
-        <Button
-        top={3}
-          borderRadius={50}
-          bg={COLOURS.secondary}
-          height={54}
-          onPress={() => validateForm()}>
-          {loading ? 'Please wait...' : 'SigIn'}
-
-        </Button>
-        </View>
-          
-
+   
+        <View style={styles.container}>
+     <ScrollView>
+      <View mt={20}>
+      <Center>
+        <Text
+          fontSize={'28px'}
         
-       
-       
-        {error && <Text style={{left: 30, color: 'red'}}>{error}</Text>}
-
-        {/* {error && Toast.show({
-          text: 'error'
-        })} */}
-      </KeyboardAwareScrollView>
-     
-       
-
-       
-      
-      <Pressable
-        // style={{marginTop: 'auto'}}
-        onPress={() => {
-          pros.navigation.navigate('Register');
-        }}>
-        <Text style={styles.formFooter}>
-          Don't have an account?{' '}
-          <Text size={10} color={'#1A2530'} fontFamily={'Poppins-Bold'}>
-            Sign up
-          </Text>
+          fontFamily={'body'}
+          fontWeight={'bold'}
+          color={'#1A2530'}>
+          Hello Again !
         </Text>
-      </Pressable>
-    </View>
+        <Text
+          fontWeight={'400'}
+          fontFamily={'body'}
+          fontSize={'16px'}
+          color={'#707B81'}>
+          Welcome Back You've Been Missed!
+        </Text>
+      </Center>
+
+      {/* //For Form */}
+      <View style={styles.form}>
+      <FormControl isInvalid={'username' in errors}>
+        <FormControl.Label
+          _text={{
+            fontFamily: 'body',
+            fontWeight: 500,
+            fontSize: 16,
+            color: '#1A2530',
+          }}>
+          Username
+        </FormControl.Label>
+        <Input
+        
+          variant="rounded"
+          autoCapitalize="none"
+          // value={username}
+          backgroundColor={COLOURS.white}
+          
+          p={2}
+          placeholder="Username"
+          fontFamily={'body'}
+          onChangeText={username => setUsername(username)}
+        />
+        {'username' in errors ? (
+          <FormControl.ErrorMessage>
+            {errors.username}
+          </FormControl.ErrorMessage>
+        ) : null}
+      </FormControl>
+      <FormControl isInvalid={'password' in errors}>
+        <FormControl.Label
+          _text={{
+            fontFamily: 'body',
+            fontWeight: 500,
+            fontSize: 16,
+            color: '#1A2530',
+          }}>
+          Password
+        </FormControl.Label>
+        <Input
+          fontFamily={'body'}
+          autoCapitalize="none"
+          backgroundColor={COLOURS.white}
+          // value={password}
+          type={showPassword? 'text': 'password'}
+          InputRightElement={
+            <Pressable onPress={isShowPassword}>
+              <Icon
+                as={
+                  <MaterialIcons
+                    name={showPassword ? 'visibility' : 'visibility-off'}
+                  />
+                }
+                size={5}
+                mr="2"
+                color="black"></Icon>
+            </Pressable>
+          }
+          variant="rounded"
+          p={2}
+          placeholder={'*******'}
+          onChangeText={password => setPassword(password)}
+        />
+        {'password' in errors ? (
+          <FormControl.ErrorMessage>
+            {errors.password}
+          </FormControl.ErrorMessage>
+        ) : null}
+      </FormControl>
+      <Button
+      top={3}
+        borderRadius={50}
+        bg={COLOURS.secondary}
+        height={54}
+        onPress={() => validateForm()}>
+        {loading ? 'Please wait...' : 'SigIn'}
+
+      </Button>
+      </View>
+        
+
+      
+     
+     
+      {error && <Text style={{left: 30, color: 'red'}}>{error}</Text>}
+
+      {/* {error && Toast.show({
+        text: 'error'
+      })} */}
+   
+   
+     
+
+     
+    <Pressable
+      // style={{bottom: 15}}
+      onPress={() => {
+        pros.navigation.navigate('Register');
+      }}>
+      <Text style={styles.formFooter}>
+        Don't have an account?{' '}
+        <Text size={FONTSIZE.Size16} color={'#1A2530'} fontFamily={'Poppins-Bold'}>
+          Sign up
+        </Text>
+      </Text>
+    </Pressable>
+    
+    
+   
+      </View>
+      </ScrollView>
+   
+     </View>
+   
+
+
+  
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
-    flexShrink: 1, 
-   
+    flex: 1,
+    // marginTop: 30,
+    
+  
     backgroundColor: COLOURS.background
     
   },
   form: {
     marginBottom: 24,
     paddingHorizontal: 24,
-    flexGrow: 1,
-    flexShrink: 1,
-    flexBasis: 0,
+    // flexGrow: 1,
+    // flexShrink: 1,
+    // flexBasis: 0,
   },
   formFooter: {
-    fontSize: 12,
+    fontSize:FONTSIZE.Size14,
     fontWeight: '400',
     color: '#707B81',
     textAlign: 'center',
