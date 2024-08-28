@@ -3,6 +3,7 @@ import {
   Button,
   FlatList,
   HStack,
+  Icon,
   ScrollView,
   Spinner,
   Text,
@@ -42,23 +43,29 @@ const DetailsScreen = ({route}) => {
   }
   return (
     <View style={styles.container}>
-      <HStack padding={2} justifyContent={'space-between'}>
-        <Pressable
-          onPress={() => {
-            navigation.goBack();
-          }}>
-          <Box
-            bg={COLOURS.white}
-            p={2}
-            shadow={2}
-            borderRadius={20}
-            mx={2}
-            mt={2}>
-            <AntDesign name="left" size={20} color="black"></AntDesign>
-          </Box>
-        </Pressable>
-
-        <HStack alignItems="center">
+      <View style={styles.header}>
+        <Box
+          height={10}
+          width={50}
+          bg={'white'}
+          rounded={'full'}
+          //  shadow={1}
+          alignItems={'center'}
+          justifyContent={'center'}>
+          <Pressable
+            onPress={() => {
+              navigation.goBack();
+            }}>
+            <Icon
+              size={6}
+              color={'black'}
+              as={
+                <AntDesign name="left"></AntDesign>
+                // <MaterialCommunityIcons name="dots-grid"></MaterialCommunityIcons>
+              }
+            />
+          </Pressable>
+        </Box>
         <Text
           ellipsizeMode="tail"
           numberOfLines={1}
@@ -66,42 +73,46 @@ const DetailsScreen = ({route}) => {
           fontFamily={'body'}>
           {SingleProduct?.title}
         </Text>
-        </HStack>
-
-      
         <Box
-          bg={COLOURS.white}
-          p={2}
-          shadow={2}
-          borderRadius={20}
-          mx={2}
-          mt={2}>
-          <Icons name="shopping-bag" size={20} color="black"></Icons>
+          height={10}
+          width={50}
+          bg={'white'}
+          rounded={'full'}
+          //  shadow={1}
+          alignItems={'center'}
+          justifyContent={'center'}>
+          <Pressable
+            onPress={() => {
+              navigation.goBack();
+            }}>
+            <Icon
+              size={6}
+              color={'black'}
+              as={<Icons name="shopping-bag"></Icons>}
+            />
+          </Pressable>
         </Box>
-      </HStack>
-
-      {/* /// For Image  */}
-      <View flex={15}>
-        <FlatList
-          data={SingleProduct.images}
-          horizontal
-          keyExtractor={(item, index) => {
-            return index.toString();
-          }}
-          renderItem={({item, index}) => {
-            return (
-              <View key={index.toString()} style={styles.header}>
+      </View>
+      <ScrollView>
+        {/* /// For Image  */}
+        <View alignItems={'center'}>
+          <FlatList
+            data={SingleProduct.images}
+            horizontal
+            keyExtractor={item => item.id}
+            renderItem={({item, index}) => {
+              return (
                 <FastImage
+                  key={index.toString()}
                   resizeMode={FastImage.resizeMode.cover}
                   style={{width: 200, height: 200, justifyContent: 'center'}}
                   source={{uri: item}}></FastImage>
-              </View>
-            );
-          }}></FlatList>
-      </View>
+              );
+            }}></FlatList>
+        </View>
 
-      {/* // For Item Image Show */}
-      <ScrollView>
+        {/* // For Item Image Show */}
+
         <View style={styles.menu}>
           <Text
             fontSize={15}
@@ -111,7 +122,7 @@ const DetailsScreen = ({route}) => {
             BEST SELLER
           </Text>
           <Text fontFamily={'body'} fontSize={18} fontWeight={'bold'}>
-            {SingleProduct?.title}
+            {SingleProduct?.title.substring(0,20)+"..."}
           </Text>
           {/* <Text fontSize={25} fontFamily={'body'}>
             {"Rating" +SingleProduct.rating}
@@ -213,14 +224,18 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    // left: 50,
-    width: 300,
-    
-    justifyContent: 'center',
+    marginTop: 3,
+
+    justifyContent: 'space-between',
+    flexDirection: 'row',
     alignItems: 'center',
+
+    borderRadius: 100,
+    padding: 10,
   },
+
   menu: {
-    flex: 1,
+    marginTop: 130,
 
     padding: 15,
     backgroundColor: 'white',
@@ -228,12 +243,6 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 28,
     borderTopLeftRadius: 28,
     overflow: 'hidden',
-  },
-  footer: {
-    height: 50, // Fixed height for footer
-    backgroundColor: 'lightcoral',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });
 export default DetailsScreen;

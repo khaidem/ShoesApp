@@ -13,9 +13,9 @@ import {
   Text,
   View,
   VStack,
-  CardItem
+  CardItem,
 } from 'native-base';
-import React, {useEffect, } from 'react';
+import React, {useEffect} from 'react';
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -35,7 +35,7 @@ import {Rating} from 'react-native-ratings';
 
 const HomeScreen = () => {
   const navigation = useNavigation();
-  const {categoryList} = useSelector(state => state.categories);
+  const {categoryList, loading1} = useSelector(state => state.categories);
   const {
     loading: loading2,
     productList,
@@ -57,13 +57,17 @@ const HomeScreen = () => {
   const renderFooter = () => {
     if (!loading2) return null;
     return (
-      <View style={{paddingVertical: 20}}>
-        <ActivityIndicator size="large" color="#0000ff" />
-      </View>
+      // <View style={{ justifyContent: 'center', alignContent:"center"}}>
+      <Spinner
+        style={{alignContent: 'center', justifyContent: 'center', padding: 10}}
+        size="lg">
+        Loading
+      </Spinner>
+      // </View>
     );
   };
 
-  if (loading2) {
+  if (loading1) {
     return (
       <HStack flex={1} space={2} justifyContent="center" alignContent="center">
         <Spinner size="lg">Loading</Spinner>
@@ -73,6 +77,8 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.conatiner}>
+     
+      <ScrollView>
       <View style={styles.header}>
         {/* // For header   */}
         <Box
@@ -127,82 +133,81 @@ const HomeScreen = () => {
           </Box>
         </Pressable>
       </View>
+    
       <SearchBar />
-
-      <View>
-        <FlatList
-          mt={2}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          data={categoryList}
-          keyExtractor={item => item.slug}
-          renderItem={({item}) => {
-            return (
-              <Pressable
-                onPress={() => {
-                  navigation.navigate('ProductDetails', {
-                    slug: item.slug,
-                  });
-                }}>
-                <View style={styles.categories}>
-                  <View style={styles.imageContainer}>
-                    <FastImage
-                      style={{
-                        height: 30,
-                        width: 25,
-                      }}
-                      source={{
-                        uri: 'https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/1.png',
-                      }}
-                    />
+        <View>
+          <FlatList
+            mt={2}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            data={categoryList}
+            keyExtractor={item => item.slug}
+            renderItem={({item}) => {
+              return (
+                <Pressable
+                  onPress={() => {
+                    navigation.navigate('ProductDetails', {
+                      slug: item.slug,
+                    });
+                  }}>
+                  <View style={styles.categories}>
+                    <View style={styles.imageContainer}>
+                      <FastImage
+                        style={{
+                          height: 30,
+                          width: 25,
+                        }}
+                        source={{
+                          uri: 'https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/1.png',
+                        }}
+                      />
+                    </View>
+                    <Text style={{marginLeft: 5}}>{item.name}</Text>
                   </View>
-                  <Text style={{marginLeft: 5}}>{item.name}</Text>
-                </View>
-              </Pressable>
-            );
-          }}
-        />
-      </View>
+                </Pressable>
+              );
+            }}
+          />
+        </View>
 
+        {/* /// For Popular */}
 
-      {/* /// For Popular */}
-
-      <View>
-        <HStack mt={5} justifyContent={'space-between'}>
-          <Text style={styles.styleText}>Popular Mobile</Text>
-          <Text style={{fontFamily: 'body', color: 'blue'}}>See all</Text>
-        </HStack>
-        <FlatList
-           mt={5}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          data={productList}
-          onEndReached={handleLoadMore}
-          onEndReachedThreshold={0.5}
-          ListFooterComponent={renderFooter}
-          keyExtractor={(item, index) => String(index)}
-          renderItem={({item, index}) => {
-            return (
-              <Pressable
-                key={index.toString()}
-                onPress={() => {
-                  navigation.navigate('Details', {
-                    itemId: item.id,
-                  });
-                }}>
-                <Box
-                  width={160}
-                  bg="white"
-                  borderRadius={15}
-                  // shadow={1}
-                  p={3}
-                  m={1}
-                  position="relative">
-                  <VStack space={2} alignItems={'flex-start'}>
-                    <FastImage
-                      style={{height: 120, width: 100}}
-                      source={{uri: `${item.thumbnail}`}}></FastImage>
-                    {/* <Image
+        <View>
+          <HStack mt={5} justifyContent={'space-between'}>
+            <Text style={styles.styleText}>Popular Mobile</Text>
+            <Text style={{fontFamily: 'body', color: 'blue'}}>See all</Text>
+          </HStack>
+          <FlatList
+            mt={5}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            data={productList}
+            onEndReached={handleLoadMore}
+            onEndReachedThreshold={0.5}
+            ListFooterComponent={renderFooter}
+            keyExtractor={(item, index) => String(index)}
+            renderItem={({item, index}) => {
+              return (
+                <Pressable
+                  key={index.toString()}
+                  onPress={() => {
+                    navigation.navigate('Details', {
+                      itemId: item.id,
+                    });
+                  }}>
+                  <Box
+                    width={160}
+                    bg="white"
+                    borderRadius={15}
+                    // shadow={1}
+                    p={3}
+                    m={1}
+                    position="relative">
+                    <VStack space={2} alignItems={'flex-start'}>
+                      <FastImage
+                        style={{height: 120, width: 100}}
+                        source={{uri: `${item.thumbnail}`}}></FastImage>
+                      {/* <Image
                       source={{uri: `${item.thumbnail}`}}
                       alt={'shoesImage'}
                       size={100}
@@ -210,119 +215,115 @@ const HomeScreen = () => {
                       alignSelf="center"
                       mb={3}
                     /> */}
-                    <Text
-                      fontFamily={'body'}
-                      ellipsizeMode="tail"
-                      numberOfLines={1}
-                      fontSize="15"
-                      color="blue.500"
-                      fontWeight="bold">
-                      {item.title}
-                    </Text>
-                    <Rating
-                      type="custom"
-                      //  ratingImage={WATER_IMAGE}
-                      ratingColor="yellow"
-                      //  ratingBackgroundColor='#c8c7c8'
-                      ratingCount={item.rating}
-                      imageSize={15}
-                      onFinishRating={this.ratingCompleted}
-                      style={{}}></Rating>
-                    <Text
-                      numberOfLines={1} // Limit the text to one line
-                      ellipsizeMode="tail"
-                      fontSize="sm">
-                      {item.description}
-                    </Text>
-                    <Text fontSize="md" fontWeight="bold">
-                      ₹{item.price}
-                    </Text>
-                  </VStack>
+                      <Text
+                        fontFamily={'body'}
+                        ellipsizeMode="tail"
+                        numberOfLines={1}
+                        fontSize="15"
+                        color="blue.500"
+                        fontWeight="bold">
+                        {item.title}
+                      </Text>
+                      <Rating
+                        type="custom"
+                        //  ratingImage={WATER_IMAGE}
+                        ratingColor="yellow"
+                        //  ratingBackgroundColor='#c8c7c8'
+                        ratingCount={item.rating}
+                        imageSize={15}
+                        onFinishRating={this.ratingCompleted}
+                        style={{}}></Rating>
+                      <Text
+                        numberOfLines={1} // Limit the text to one line
+                        ellipsizeMode="tail"
+                        fontSize="sm">
+                        {item.description}
+                      </Text>
+                      <Text fontSize="md" fontWeight="bold">
+                        ₹{item.price}
+                      </Text>
+                    </VStack>
 
-                  <Center
-                    borderTopLeftRadius={500}
-                    borderTopRightRadius={300}
-                    borderBottomLeftRadius={25}
-                    borderBottomRightRadius={300}
-                    position="absolute"
-                    bottom={0}
-                    right={0}
-                    bg="blue.500"
-                    borderRadius="full"
-                    size={8}>
-                    <MaterialIcons name="add" size={20} color="white" />
-                  </Center>
-                </Box>
-              </Pressable>
-            );
-          }}></FlatList>
+                    <Center
+                      borderTopLeftRadius={500}
+                      borderTopRightRadius={300}
+                      borderBottomLeftRadius={25}
+                      borderBottomRightRadius={300}
+                      position="absolute"
+                      bottom={0}
+                      right={0}
+                      bg="blue.500"
+                      borderRadius="full"
+                      size={8}>
+                      <MaterialIcons name="add" size={20} color="white" />
+                    </Center>
+                  </Box>
+                </Pressable>
+              );
+            }}></FlatList>
           {/* //For New Arrivals */}
 
-          
-        <HStack mt={5} justifyContent={'space-between'}>
-          <Text style={styles.styleText}>New Arrivals</Text>
-          <Text style={{color: 'blue', fontSize: 15}}>See all</Text>
-        </HStack>
+          <HStack mt={5} justifyContent={'space-between'}>
+            <Text style={styles.styleText}>New Arrivals</Text>
+            <Text style={{color: 'blue', fontSize: 15}}>See all</Text>
+          </HStack>
         </View>
         <View>
-        <FlatList
-          mt={5}
-          data={productList}
-          onEndReached={handleLoadMore}
-          onEndReachedThreshold={0.5}
-          ListFooterComponent={renderFooter}
-          showsVerticalScrollIndicator={false}
-          horizontal={true}
-          keyExtractor={item => item.id}
-          pagingEnabled={true}
-          // onScroll={handleScroll}
-          renderItem={({item, index}) => {
-            return (
+          <FlatList
+            mt={5}
+            data={productList}
+            onEndReached={handleLoadMore}
+            onEndReachedThreshold={0.5}
+            ListFooterComponent={renderFooter}
+            showsVerticalScrollIndicator={false}
+            horizontal={true}
+            keyExtractor={item => item.id}
+            pagingEnabled={true}
+            // onScroll={handleScroll}
+            renderItem={({item, index}) => {
+              return (
+                <View key={index.toString()} style={styles.card}>
+                  <HStack alignItems={'start'}>
+                    <VStack>
+                      <Text style={styles.bestChoiceText}>{item.title}</Text>
+                    
 
-             
-              <View key={index.toString()} style={styles.card}>
-                <HStack alignItems={'start'}>
-                  <VStack >
-                    <Text style={styles.bestChoiceText}>{item.title}</Text>
-                    <Rating
-                      type="custom"
-                      //  ratingImage={WATER_IMAGE}
-                      ratingColor="yellow"
-                      //  ratingBackgroundColor='#c8c7c8'
-                      ratingCount={item.rating}
-                      imageSize={20}
-                      onFinishRating={this.ratingCompleted}
-                      style={{alignItems: 'flex-start'}}></Rating>
+                      <HStack justifyContent={'space-between'}>
+                        <VStack>
+                        <Rating
+                        type="custom"
+                        //  ratingImage={WATER_IMAGE}
+                        ratingColor="yellow"
+                        //  ratingBackgroundColor='#c8c7c8'
+                        ratingCount={item.rating}
+                        imageSize={20}
+                        onFinishRating={this.ratingCompleted}
+                        style={{alignItems: 'flex-start'}}></Rating>
+                          <Text
+                            fontFamily={'body'}
+                            ellipsizeMode="tail"
+                            numberOfLines={1}
 
-                   
+                            // fontWeight="bold"
+                          >
+                            <Text fontWeight={'bold'}>Brand Name : </Text>
+                            {item.brand}
+                          </Text>
+                          <Text styles={styles.price}>₹{item.price}</Text>
+                        </VStack>
 
-                 
-                    <HStack justifyContent={'space-between'}>
-                    <Text
-                      fontFamily={'body'}
-                      ellipsizeMode="tail"
-                      numberOfLines={1}
-
-                      // fontWeight="bold"
-                    >
-                      <Text fontWeight={'bold'}>Brand Name : </Text>
-                      {item.brand}
-                    </Text>
-                    <FastImage
-                    style={{width: 100,
-                      height: 70,}}
-                    source={{uri: item.thumbnail}}></FastImage>
-                    </HStack>
-                    <Text styles={styles.price}>₹{item.price}</Text>
-                  </VStack>
-
-               
-                </HStack>
-              </View>
-            );
-          }}></FlatList>
-      </View>
-     </View>
+                        <FastImage
+                          style={{width: 50, height: 50, resizeMode: 'contain'}}
+                          source={{uri: item.thumbnail}}></FastImage>
+                      </HStack>
+                    </VStack>
+                  </HStack>
+                </View>
+              );
+            }}></FlatList>
+        </View>
+      </ScrollView>
+    </View>
   );
 };
 
@@ -332,7 +333,7 @@ const styles = StyleSheet.create({
   conatiner: {
     flex: 1,
     padding: 15,
-    backgroundColor: COLOURS.background,
+    backgroundColor: COLOURS.bg,
   },
   header: {
     marginTop: 3,
@@ -342,9 +343,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     // backgroundColor: '#5DADE2', // Blue color similar to the image
     borderRadius: 100, // Rounded corners
-    // paddingVertical: 5,
-    // paddingHorizontal: 15,
-    // margin: 2,
+    
     height: 35,
   },
   categories: {
@@ -379,7 +378,7 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: 'white',
     borderRadius: 20,
-    alignItems:'start',
+    alignItems: 'start',
 
     padding: 20,
 
@@ -414,6 +413,6 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     width: 100,
     height: 100,
-   padding: 19
+    padding: 19,
   },
 });

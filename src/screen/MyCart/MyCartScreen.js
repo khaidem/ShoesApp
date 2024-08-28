@@ -30,7 +30,7 @@ const MyCartScreen = ({navigation}) => {
       const jsonValue = await AsyncStorage.getItem('cart');
       retrievedProduct = JSON.parse(jsonValue);
       // const retrievedProduct = jsonValue != null ? JSON.parse(jsonValue) : null;
-      // console.log('Retrieved product:', retrievedProduct);
+      console.log('Retrieved product:', retrievedProduct);
       setProduct(retrievedProduct);
    
     } catch (e) {
@@ -234,7 +234,8 @@ const MyCartScreen = ({navigation}) => {
 };
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: COLOURS.bg
   },
   menu: {
     bottom:25,

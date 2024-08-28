@@ -3,6 +3,8 @@ import {
   Center,
   FlatList,
   HStack,
+  Icon,
+  IconButton,
   Image,
   SimpleGrid,
   Text,
@@ -42,128 +44,89 @@ const ShoesCart = () => {
       imageUrl: second_img,
     },
   ];
+  const numColumns = 2;
+  const data = [
+    {
+      id: 1,
+      name: 'Nike Jordan',
+      price: 58.7,
+      imageUrl: second_img,
+      isFavorite: true,
+    },
+    {
+      id: 2,
+      name: 'Nike Air Max',
+      price: 37.8,
+      imageUrl: second_img,
+      isFavorite: false,
+    },
+    {
+      id: 3,
+      name: 'Nike Club Max',
+      price: 47.7,
+      imageUrl: second_img,
+      isFavorite: true,
+    },
+    {
+      id: 4,
+      name: 'Nike Air Max',
+      price: 57.6,
+      imageUrl: second_img,
+      isFavorite: false,
+    },
+  ];
+  const renderItem = ({item}) => (
+    <Box
+      borderWidth="1"
+      bg={COLOURS.white}
+      borderColor="gray.200"
+      borderRadius="10"
+      p="3"
+      m="2"
+      width="45%">
+      <VStack space="2"  alignItems='start'>
+     
+     
+        <Pressable>
+        <AntDesign name="hearto" size={20}></AntDesign>
+       
+          <Image
+            source={item.imageUrl}
+            alt={item.name}
+            width="100"
+            height="70"
+            resizeMode="contain"
+          />
+        </Pressable>
+        <HStack justifyContent="space-between" alignItems="center" width="100%">
+          <Text fontSize="xs" color="blue.500">
+            BEST SELLER
+          </Text>
+          
+        </HStack>
+        <Text bold>{item.name}</Text>
+        <HStack justifyContent={'space-between'}>
+        <Text>${item.price.toFixed(2)}</Text>
+        <HStack space={1} mt={2}>
+          <Box size="2" bg="yellow.400" borderRadius="full" />
+          <Box size="2" bg="blue.400" borderRadius="full" />
+          {/* <Box size="2" bg="gray.400" borderRadius="full" /> */}
+        </HStack>
+        </HStack>
+       
+      </VStack>
+    </Box>
+  );
 
   return (
     <FlatList
-      // showsHorizontalScrollIndicator={false}
-      keyExtractor={item => item.id}
+      data={data}
       numColumns={2}
-      top={5}
-      contentContainerStyle={styles.container}
-      data={shoesData}
-      renderItem={({item}) => (
-        <Pressable
-          onPress={() => {
-            // navigation.navigate('Details')
-          }}>
-          <Box
-            width={160}
-            bg="white"
-            borderRadius={15}
-            // shadow={3}
-            p={3}
-            m={1}
-            position="relative">
-            <VStack >
-              <Box width={5} height={5} bg={COLOURS.bg}>
-                <AntDesign name="hearto" size={20}></AntDesign>
-              </Box>
-              <Image
-                source={item.imageUrl}
-                alt={''}
-                size={100}
-                resizeMode="contain"
-                alignSelf="center"
-                mb={3}
-              />
-              <Text fontSize="xs" color="blue.500" fontWeight="bold">
-                BEST SELLER
-              </Text>
-              <Text fontSize="md" fontWeight="bold">
-                {item.title}
-              </Text>
-              <HStack space={2} marginTop="2" justifyContent={'space-between'}>
-              <Text fontSize="md" fontWeight="bold">
-                {item.price}
-              </Text>
-              <HStack space={2}>
-              <Box
-                  width="16px"
-                  height="16px"
-                  borderRadius="8px"
-                  backgroundColor="yellow.300"
-                  borderWidth={1}
-                  borderColor="coolGray.300"
-                />
-                <Box
-                  width="16px"
-                  height="16px"
-                  borderRadius="8px"
-                  backgroundColor="teal.400"
-                  borderWidth={1}
-                  borderColor="coolGray.300"
-                />
-              </HStack>
-               
-              </HStack>
-             
-            </VStack>
-
-            {/* <Center
-            borderTopLeftRadius={500}
-            borderTopRightRadius={300}
-            borderBottomLeftRadius={25}
-            borderBottomRightRadius={300}
-            position="absolute"
-            bottom={0}
-            right={0}
-            bg="blue.500"
-            borderRadius="full"
-            size={8}>
-            <Icons name="add" size={20} color="white" />
-          </Center> */}
-          </Box>
-        </Pressable>
-      )}
+      keyExtractor={item => item.id.toString()}
+      renderItem={renderItem}
+      contentContainerStyle={{paddingBottom: 20, paddingHorizontal: 10}}
     />
+    
   );
 };
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 10,
-    // height: 250,
-  },
-  card: {
-    backgroundColor: 'white',
-    borderRadius: 15,
-    padding: 10,
-    marginRight: 10,
-    width: 180, // Adjust width as needed
-
-    alignItems: 'center',
-    shadowColor: '#000',
-    // shadowOffset: {width: 0, height: 2},
-    // shadowOpacity: 0.2,
-    // shadowRadius: 4,
-    // elevation: 1,
-  },
-  image: {
-    width: 150,
-    height: 150,
-    borderRadius: 10,
-    marginBottom: 10,
-  },
-  title: {
-    fontSize: FONTSIZE.Size16,
-    fontWeight: 'bold',
-    color: COLOURS.secondary,
-
-    alignSelf: 'flex-start',
-  },
-  subtitle: {
-    fontSize: FONTSIZE.Size14,
-    color: '#666',
-    alignSelf: 'flex-start',
-  },
-});
 export default ShoesCart;

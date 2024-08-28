@@ -1,4 +1,4 @@
-import {Box, HStack, Image, Text, View, VStack} from 'native-base';
+import {Box, HStack, Icon, Image, Text, View, VStack} from 'native-base';
 import React, {useState} from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import CustomForm from '../../component/FormControl';
@@ -9,7 +9,7 @@ const ProFileScreen = ({navigation}) => {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   return (
-    <View padding={4}>
+    <View bg={COLOURS.bg} padding={4}>
       <HStack justifyContent={'space-between'}>
           <Pressable
             onPress={() => {
@@ -18,18 +18,34 @@ const ProFileScreen = ({navigation}) => {
             <Box
               bg={COLOURS.white}
               p={3}
-              shadow={2}
+              // shadow={2}
               borderRadius={20}
               // mx={2}
               // mt={2}
               >
-              <AntDesign name="left" size={20} color="black"></AntDesign>
+                 <Icon
+              size={6}
+              color={'black'}
+              as={
+                <AntDesign name="left" ></AntDesign>
+               
+              }
+            />
+             
             </Box>
           </Pressable>
           <Text  fontSize={20} fontFamily={'body'} fontWeight={'bold'}>
             {'Profile'}
           </Text>
-          <AntDesign name="edit" size={30} color="black"></AntDesign>
+          <Icon
+              size={6}
+              color={'black'}
+              as={
+                <AntDesign name="edit"></AntDesign>
+               
+              }
+            />
+          
         </HStack>
         {/* <HStack justifyContent={'space-between'}>
         <AntDesign name="left" size={20}  color="#900"  ></AntDesign>

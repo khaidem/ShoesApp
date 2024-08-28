@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
     // marginTop: 30,
     
   
-    backgroundColor: COLOURS.background
+    backgroundColor: COLOURS.bg
     
   },
   form: {

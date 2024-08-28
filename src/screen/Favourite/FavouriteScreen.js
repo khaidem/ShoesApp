@@ -1,45 +1,83 @@
-import { Box, HStack, Pressable, Text, VStack } from 'native-base'
-import React from 'react'
-import { COLOURS } from '../../constant/Constant';
+import {Box, HStack, Icon, Pressable, Text, View, VStack} from 'native-base';
+import React from 'react';
+import {COLOURS} from '../../constant/Constant';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import ShoesCart from '../../component/ShoesCart';
+import {StyleSheet} from 'react-native';
 
 const FavouriteScreen = ({navigation}) => {
   return (
-    <VStack background={COLOURS.secondary} p={2} flex={1} bg={COLOURS.bg}>
-      <HStack justifyContent={"space-between"}>
-      <Pressable
-          onPress={() => {
-            navigation.goBack();
-          }}>
-          <Box
-            bg={COLOURS.white}
-            p={3}
-            shadow={2}
-            borderRadius={20}
-            mx={2}
-            mt={2}>
-            <AntDesign name="left" size={20} color="black"></AntDesign>
-          </Box>
-        </Pressable>
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Box
+          height={10}
+          width={50}
+          bg={'white'}
+          rounded={'full'}
+          alignItems={'center'}
+          justifyContent={'center'}>
+          <Pressable
+            onPress={() => {
+              navigation.dispatch(DrawerActions.openDrawer());
+            }}>
+            <Icon
+              size={6}
+              color={'black'}
+              as={<AntDesign name="left"></AntDesign>}
+            />
+          </Pressable>
+        </Box>
 
         <Text fontSize={20} fontFamily={'body'}>
-          {'Favourite'}
+          Favourite
         </Text>
-        <Box
-          bg={COLOURS.white}
-          p={3}
-          shadow={2}
-          borderRadius={20}
-          mx={2}
-          mt={2}>
-          <AntDesign name="hearto" size={20}color="black"></AntDesign>
-        </Box>
-      </HStack>
-      <ShoesCart/>
-    </VStack>
-  )
-}
 
-export default FavouriteScreen
+        <Pressable
+          onPress={() => {
+            navigation.dispatch(DrawerActions.openDrawer());
+          }}>
+          <Box
+            height={10}
+            width={50}
+            bg={'white'}
+            rounded={'full'}
+            //  shadow={1}
+            alignItems={'center'}
+            justifyContent={'center'}>
+            <Icon
+              size={6}
+              color={'black'}
+              as={<AntDesign name="hearto"></AntDesign>}
+            />
+          </Box>
+        </Pressable>
+      
+      </View>
+     
+      <View flex={1}>
+        <ShoesCart/>
+        </View>
+   
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 15,
+    backgroundColor: COLOURS.bg,
+  },
+  header: {
+    marginTop: 3,
+
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    alignItems: 'center',
+
+    borderRadius: 100,
+  },
+});
+
+export default FavouriteScreen;
