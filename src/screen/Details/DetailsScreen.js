@@ -122,7 +122,7 @@ const DetailsScreen = ({route}) => {
             BEST SELLER
           </Text>
           <Text fontFamily={'body'} fontSize={18} fontWeight={'bold'}>
-            {SingleProduct?.title.substring(0,20)+"..."}
+            {SingleProduct?.title}
           </Text>
           {/* <Text fontSize={25} fontFamily={'body'}>
             {"Rating" +SingleProduct.rating}
