@@ -54,11 +54,11 @@ const loginSlice = createSlice({
         state.user = action.payload;
         state.token = action.payload.token;
         
-        console.log("For Reducer Data",action.payload);
+        // console.log("For Reducer Data",action.payload);
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
-        console.log("Form Reducer Error",action.payload);
+        // console.log("Form Reducer Error",action.payload);
         state.error = action.payload;
       });
   },

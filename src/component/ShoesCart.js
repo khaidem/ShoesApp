@@ -21,29 +21,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useNavigation} from '@react-navigation/native';
 const ShoesCart = () => {
   const navigation = useNavigation();
-  const shoesData = [
-    {
-      id: '1',
-      title: 'Best Seller',
-      subtitle: 'Nike Jordan',
-      price: '345',
-      imageUrl: first_img,
-    },
-    {
-      id: '2',
-      title: 'Best Seller',
-      subtitle: 'Nike Jordan',
-      price: '345',
-      imageUrl: second_img,
-    },
-    {
-      id: '3',
-      title: 'Best Seller',
-      subtitle: 'Nike Jordan',
-      price: '345',
-      imageUrl: second_img,
-    },
-  ];
+  
   const numColumns = 2;
   const data = [
     {

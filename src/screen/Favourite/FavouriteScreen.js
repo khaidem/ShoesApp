@@ -19,8 +19,8 @@ const FavouriteScreen = ({navigation}) => {
           justifyContent={'center'}>
           <Pressable
             onPress={() => {
-              navigation.dispatch(DrawerActions.openDrawer());
-            }}>
+              navigation.goBack();
+            }}> 
             <Icon
               size={6}
               color={'black'}
@@ -35,7 +35,7 @@ const FavouriteScreen = ({navigation}) => {
 
         <Pressable
           onPress={() => {
-            navigation.dispatch(DrawerActions.openDrawer());
+            navigation.goBack();
           }}>
           <Box
             height={10}

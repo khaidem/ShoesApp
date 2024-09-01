@@ -13,6 +13,7 @@ import {
   useToast,
   ScrollView,
   Alert,
+  Box,
 } from 'native-base';
 
 import React, {useEffect, useState} from 'react';
@@ -66,6 +67,7 @@ const SigInScreen = pros => {
   // For loginButton
   const submitLogin = async () => {
     dispatch(loginUser({username, password}));
+    console.log("User Input" , username, password)
   
     // await AsyncStorage.setItem('token', JSON.stringify({username, password}));
   };
@@ -74,6 +76,8 @@ const SigInScreen = pros => {
       pros.navigation.navigate('DrawerNavigation');
     }
   }, [user, pros]);
+
+  
 
   return (
    
@@ -180,10 +184,12 @@ const SigInScreen = pros => {
       </View>
         
 
-      
+     
+  
+
      
      
-      {error && <Text style={{left: 30, color: 'red'}}>{error}</Text>}
+      {/* {error && <Text style={{left: 30, color: 'red'}}>{error}</Text>} */}
 
       {/* {error && Toast.show({
         text: 'error'

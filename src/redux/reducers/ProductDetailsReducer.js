@@ -5,7 +5,7 @@ import {PRODUCTDETAILURL} from '../../config/Urls';
 const initialState = {
   loading: false,
   ProductDetails: [],
-  error: '',
+  error: null,
   hasMore: true,
   limit: 10,
   total: 0,
